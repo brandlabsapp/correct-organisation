@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "558868245678",
+    "project_id": "correct-60a2c",
+    "storage_bucket": "correct-60a2c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:558868245678:android:36a02607a219d76eaf113f",
+        "android_client_info": {
+          "package_name": "com.correct"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnPC7ksmlsuC5VCiqJJmjL6mkiiVLvCZg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
