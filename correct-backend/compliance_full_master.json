@@ -1,0 +1,578 @@
+[
+  {
+    "title": "First & Subsequent Board Meeting Compliances",
+    "formId": "BOARD_MEETING_COMPLIANCE_001",
+    "state": "India",
+    "category": "Company Law",
+    "applicability": "Private Limited Companies",
+    "purpose": "To ensure companies meet their board meeting obligations under the Companies Act, 2013.",
+    "dueDateRule": "First meeting within 30 days of incorporation. Subsequent: 1 per quarter.",
+    "penalties": "Company fine: Rs.25,000; Director fine: Rs.5,000; Non-compliance in issue of Notice of Meeting: Rs.25,000.",
+    "section": "Section 173, 118 of Act, 2013 & Secretarial Standard 1 (SS-1) w.e.f. 01/07/2015",
+    "rules": "- First meeting within 30 days of incorporation (Sec.173(1)).\n- 4 meetings/year, one per quarter (Sec.173(2)).\n- Notice at least 7 days prior (Sec.173(3)).\n- Quorum: 1/3 or 2 directors minimum (Sec.174).\n- Minutes required for all meetings (Sec.118).\n- Director disclosures (Sec.184).",
+    "recurrence": "Quarterly (4 times a year)",
+    "tasks": [
+      {
+        "title": "Hold first Board Meeting",
+        "description": "Hold within 30 days of incorporation",
+        "deadline": "30 days from incorporation"
+      },
+      {
+        "title": "Schedule quarterly meetings",
+        "description": "One per financial quarter",
+        "deadline": "Every 3 months"
+      },
+      {
+        "title": "Issue meeting notice",
+        "description": "Give 7 days advance notice unless waived",
+        "deadline": "7 days before meeting"
+      },
+      {
+        "title": "Prepare and sign minutes",
+        "description": "Maintain signed minutes at registered office",
+        "deadline": "Immediately after meeting"
+      },
+      {
+        "title": "Maintain attendance register",
+        "description": "Attendance for each meeting to be logged",
+        "deadline": "During every meeting"
+      },
+      {
+        "title": "Director disclosures",
+        "description": "Collect disclosures under Sec.184",
+        "deadline": "At first Board meeting"
+      },
+      {
+        "title": "Appoint first auditor",
+        "description": "Board must appoint within 30 days",
+        "deadline": "30 days from incorporation"
+      },
+      {
+        "title": "File Form ADT-1",
+        "description": "After auditor appointment",
+        "deadline": "15 days from auditor appointment"
+      }
+    ],
+    "source": "https://www.indiafilings.com/learn/first-board-meeting-of-company/",
+    "content": "# Board Meeting Compliance for Private Limited Companies in India\n\n## Statutory Requirements (Companies Act, 2013)\n\n- **First meeting within 30 days:** The Companies Act mandates...\n\n## Timeline for Board Meetings\n\n- **First meeting:** Must be convened within 30 days of incorporation...\n\n## Documentation & Resolutions\n\n- **Notice and Agenda:** Issue a detailed notice to all directors...\n\n## Secretarial Standard (SS-1)\n\n- **Applicability:** Secretarial Standard\u20131 is mandatory for all companies...\n\n## Penalties for Non-Compliance\n\n- **Failure to call meetings/notice:** Section 173(4) imposes fines..."
+  },
+  {
+    "title": "Auditor Appointment Compliance (ADT-1)",
+    "formId": "AUDITOR_APPOINTMENT_ADT1_002",
+    "state": "India",
+    "category": "Company Law",
+    "applicability": "Private Limited Companies",
+    "purpose": "To ensure timely appointment of the first auditor and filing of Form ADT-1 as per Section 139 of the Companies Act, 2013.",
+    "dueDateRule": "Within 30 days of incorporation.",
+    "penalties": "Company Fine: Rs.25,000 to Rs.5,00,000; Director in default: up to 1 year imprisonment or fine between Rs.10,000 and Rs.1,00,000 or both.",
+    "section": "Section 139 of Companies Act, 2013",
+    "rules": "- Appointment of first auditor within 30 days of incorporation.\n- Filing of Form ADT-1 within 15 days of appointment.\n- ADT-1 to be filed with the Registrar of Companies (RoC).\n- Auditor to hold office till the conclusion of the first AGM.",
+    "recurrence": "One-time (at incorporation)",
+    "tasks": [
+      {
+        "title": "Appoint first auditor",
+        "description": "Board must appoint the first auditor within 30 days of incorporation",
+        "deadline": "30 days from incorporation"
+      },
+      {
+        "title": "File Form ADT-1",
+        "description": "File return of appointment of auditor with RoC",
+        "deadline": "15 days from auditor appointment"
+      }
+    ],
+    "source": "https://cleartax.in/s/form-adt-1",
+    "content": "# Auditor Appointment & ADT-1 Filing: Compliance Checklist 1. **First Board Meeting & Auditor Appointment (Sec 139(6)):** Convene the first Board meeting within 30 days of incorporation. Under Companies Act 2013 §139(6), the board must appoint the first statutory auditor (for a non-government company) within 30 days of registration. The appointed auditor will hold office until the first AGM. If the board fails to appoint in 30 days, the company must call an extraordinary general meeting (within 90 days of incorporation) for shareholders to appoint the auditor. (Government companies follow CAG rules under §139(7), but this does not apply to private companies.)2. **Board Resolution for Auditor Appointment:** Draft and pass a board resolution recording the auditor appointment. The resolution should cite the relevant law (Sections 139 and 142 and the Audit Rules) and specify the auditor’s name, firm registration, term (till first AGM), and remuneration. For example: *“RESOLVED THAT pursuant to Sections 139(6) and 142 of the Companies Act, 2013, M/s [Auditor/Firm Name] (Reg. No. XXXXX) be appointed as the First Auditor of the Company to hold office till the conclusion of the First Annual General Meeting, on such remuneration as may be mutually agreed with the Directors, plus reimbursement of out-of-pocket expenses…”*. Authorize a director or company secretary to file the requisite ADT-1 form and do all filings.3. **Auditor’s Consent & Eligibility Certificate:** Before or at the meeting, obtain the auditor’s written consent (Form ADT-2) and a certificate of eligibility under Section 141. The auditor’s certificate must confirm that they are qualified and not disqualified under the Companies Act/CA Act (Sec 141). (Rule 4(1) of the Audit Rules requires these documents.) These must be attached when filing ADT-1.4. **Form ADT-1 Filing (within 15 days):** File Form ADT-1 electronically with the Registrar within *15 days* of the Board meeting/appointment. (This is interpreted as 15 days from the meeting; MCA guidance confirms ADT-1 is due within 15 days after appointing an auditor, e.g., the first board meeting within 30 days of incorporation.) On the MCA e-filing portal, download or select Form ADT-1 (Companies > Active e-Forms). Fill in company details (CIN, name, etc.) and auditor details (name, membership no., PAN, address, appointment period). Attach required documents (see next step). Review and verify the form digitally using the director’s DSC, submit it, and pay the prescribed fee. (You will receive an acknowledgment email on successful filing.)5. **Documents to Attach with ADT-1:** Ensure the following are attached when submitting ADT-1:- **Board Resolution:** Copy of the board resolution (or AGM resolution) appointing the auditor.- **Auditor’s Consent Letter:** Written consent from the auditor for their appointment.- **Auditor’s Certificate (Sec 141):** Certificate from the auditor confirming they meet the eligibility criteria under Section 141 (i.e., not disqualified).- **Intimation to Auditor:** Copy of the notice/intimation given to the auditor about their appointment (as required by Section 139(1)).6. **MCA E-Filing Procedure:** Steps on the MCA Portal:- Log in with the company’s credentials (Director with DSC).- Navigate to **MCA Services → e-Filing → Company Forms** and select **Form ADT-1**.- Enter all required information (CIN, auditor’s details, period of appointment, etc.).- Upload attachments: board resolution, consent, certificate, etc., as PDFs.- Verify the filled form with the Director’s DSC and submit.- Pay the filing fee online (based on capital, see below). You will get an e-acknowledgment.7. **Fees & Penalties:** The normal ADT-1 filing fee depends on the company’s capital. For example,  Companies without share capital pay ₹200. those up to ₹5 lakh pay ₹300, and It rises to ₹600 for large caps. If ADT-1 is filed late, Additional fees apply (multiples of the normal fee): 2× if up to 30 days late; 4× for 30–60 days; 6× for 60–90 days; 10× for 90–180 days; and 12× beyond 180 days. (These are mandated by Sections 448–449.). For example, filing 40 days late incurs 4× normal fees.) Note: There is no separate fine specified for failing to appoint within 30 days, but non-compliance can attract penalties under the Act. 8. **Exemptions & Special Cases:** No special exemption exists for new private companies regarding first auditor appointment or ADT-1 filing—the above steps apply to *all* companies except government firms. One-person companies and s**mall companies** are *exempt only from audit-rotation* rules (Section 139(2) states that rotation provisions do not apply to them). However, they **must still appoint** a statutory auditor on time and file ADT-1. (In contrast, government companies’ first auditor is appointed by the CAG [Section 139(7)].) Notably, while MCA rules technically mention ADT-1 under Section 139(1) only, practice is to file ADT-1 even for the first auditor to avoid non-compliance. ![Screenshot 2025-05-02 at 9.55.46 PM.png](attachment:ea12c18d-fc9c-4bd2-9756-d09211a696ed:Screenshot_2025-05-02_at_9.55.46_PM.png)"
+  },
+  {
+    "title": "Issue of Share Certificates",
+    "formId": "ISSUE_SHARE_CERTIFICATES_003",
+    "state": "India",
+    "category": "Company Law",
+    "applicability": "Private Limited Companies",
+    "purpose": "To ensure timely issuance of share certificates to shareholders in accordance with Section 56(4) of the Companies Act, 2013.",
+    "dueDateRule": "Within 60 days of incorporation or new allotment.",
+    "penalties": "Company Fine: Rs.25,000 to Rs.5,00,000; Directors Fine: Rs.10,000 up to Rs.1,00,000.",
+    "section": "Section 56(4) of Companies Act, 2013",
+    "rules": "- Company must issue share certificates within 60 days of incorporation or new allotment.\n- Share certificates must be signed by at least two directors and the company secretary (if appointed).\n- The share certificate should include the shareholder’s name, number of shares, and distinctive numbers.\n- Entries must be made in the register of members.",
+    "recurrence": "One-time (at incorporation) and upon every new allotment",
+    "tasks": [
+      {
+        "title": "Prepare share certificates",
+        "description": "Generate share certificates for each shareholder",
+        "deadline": "Within 60 days of incorporation or allotment"
+      },
+      {
+        "title": "Obtain signatures on certificates",
+        "description": "Certificates must be signed by at least two directors and the company secretary (if any)",
+        "deadline": "Immediately after preparation"
+      },
+      {
+        "title": "Update register of members",
+        "description": "Enter shareholding details in the statutory register",
+        "deadline": "After issuance of share certificates"
+      }
+    ],
+    "source": "https://cleartax.in/s/share-certificate",
+    "content": "# Issuance of Share Certificates (New Private Ltd Company, India)\n\n1. **Allotment to Initial Subscribers (MOA subscribers):** The subscribers named in the Memorandum of Association become members on incorporation. Upon incorporation, the company should issue share certificates to these founders. Their names must be entered in the *Register of Members* and share capital reflected as per the MOA.\n2. **Timeline (Section 56, 2013):** As per **Section 56(4)(a)** of the Companies Act 2013, share certificates to initial subscribers must be delivered *within two months from the date of incorporation*. (For any subsequent share allotments after incorporation, Section 56(4)(b) requires certificates to be issued within two months of the allotment date.) Note: This two-month timeline applies even if subscription money has not yet been fully paid (subscribers have up to 180 days under Sec. 10A to pay, but the certificate must still be issued within 2 months).\n3. **Board Resolution Authorization:** No share certificate can be issued without a board resolution. Companies (Share Capital and Debentures) Rules 2014, Rule 5(1)(a) provides that \"no certificate of any share…shall be issued except in pursuance of a resolution passed by the Board\". In the first (or relevant) Board meeting, pass a resolution authorizing entry of subscriber names in the Register of Members and directing specific officers (e.g., two directors or one director and the Company Secretary) to sign the share certificates. *Sample resolution language:* \"RESOLVED THAT share certificates in Form SH‑1 be issued to the subscribers to the MOA, and that [Name] and [Name], being directors (and the Company Secretary), be authorized to sign and (if applicable) affix the common seal to these certificates in accordance with Section 46.\".\n4. **Certificate Format and Content:** Each share certificate must follow the prescribed **Form SH‑1** (or as near thereto). It must include the company name, certificate number, name and address of the shareholder, number and class of shares, distinctive numbers of the shares, the nominal value of each share, and the total amount paid (and unpaid, if any) on those shares. The certificate should state the paid-up capital covered and be marked \"issued under the seal of the company\" (if a seal is used).\n5. **Common Seal and Signatures:** Although a common seal is no longer mandatory under the 2015 amendment, if the company has one, it must be affixed on the share certificate. In all cases, the certificate must be signed by **two directors** or by **one director and the company secretary** (if one is appointed). If no common seal is used, simply ensure the authorized signatories sign manually or by facsimile. At least one signatory should not be a managing or whole-time director. (In a One Person Company, one director and the CS or other authorized person can sign.)\n6. **Stamp Duty (Central & State):** Share certificates must bear proper stamp duty. Under the **Indian Stamp Act** (as amended by the Finance Act 2019), issuance of securities (including shares) attracts a central stamp duty of **0.005%** (i.e., ₹5 per ₹1 lakh). On top of this, each state's Stamp Act prescribes its own rate on share certificates. For example, Maharashtra charges 0.1% of the share value (₹1 per ₹1000); Gujarat, Karnataka, Kerala, Madhya Pradesh, Rajasthan, Tamil Nadu, etc., charge ₹1 per ₹1000 (or part thereof) of value; Haryana and Himachal Pradesh charge ₹0.40 per certificate plus a ₹1 revenue stamp; while several states (Assam, Arunachal, Bihar, Chhattisgarh, Goa, Punjab, etc.) impose a flat fee (e.g., ₹5 or ₹10 per certificate). The company must affix the appropriate stamp value (adhesive or impressed) on each certificate; an unstamped or under-stamped certificate is not valid. Always verify the current rates under the relevant State Stamp Act and the Central Schedule.\n7. **Register Maintenance:** After issuing each certificate, promptly update the *Register of Members* (Sec 88) with the new member's details (name, address, folio number, number of shares, certificate number, date of issue, etc.). Maintaining this register is mandatory (failure attracts penalties). It is also prudent to maintain a **share certificate book/folio**, logging every certificate number issued, date of issue, and owner, to prevent duplication and for audit trail—although not specified in the Act, this is a common secretarial practice.\n8. **ROC Filings:** No ROC return is required solely for issuing certificates to the original subscribers, because those shares are deemed allotted on incorporation. (As one advisory notes, *\"in case of initial subscription, no PAS-3 need be filed.\"*) In other words, Form PAS-03 (Allotment of Securities) is not filed for the MOA subscribers. However, if the company makes any new share allotment after incorporation, it must file Form **PAS-03** within 30 days of the allotment. Separately, remember to file **Form INC-20A** (Commencement of Business) within 180 days of incorporation, providing evidence of receipt of initial subscription money (although INC-20A deals with commencement, not share certificates per se).\n9. **Penalties for Non-Compliance:** Non-delivery or delay in issuing share certificates is penal under the Act. Section 56(6) (as originally enacted) prescribed fines of **₹25,000–5,00,000** on the company and **₹10,000–1,00,000** on every officer in default. In practice, ROCs have imposed fixed penalties for late issuance. For example, a regional director fined a company and its officers ₹25,000 each for a 17-day delay and ₹50,000 each for a 74-day delay. Because these penalties are substantial and not waivable, the company should ensure certificates are issued well within the statutory time frame to avoid compliance actions.\n\n**Sources:** Companies Act, 2013 (Sections 2(55), 46, 56, 88) and rules; Companies (Share Capital and Debentures) Rules, 2014 (Rules 5, 11); MCA/RD orders and commentary; State Stamp Act schedules."
+  },
+  {
+    "title": "Declaration for Commencement of Business",
+    "formId": "COMMENCEMENT_BUSINESS_004",
+    "state": "India",
+    "category": "Company Law",
+    "applicability": "Private Limited Companies",
+    "purpose": "To ensure companies file the declaration of commencement of business as per Section 10A of the Companies Act, 2013.",
+    "dueDateRule": "Within 180 days of incorporation.",
+    "penalties": "Company Fine: Rs.50,000; Director in Default: Rs.1,000 per day up to Rs.1,00,000.",
+    "section": "Section 10A(1)(a) of Companies Act, 2013 & Rule 23A of Companies (Incorporation) Rules, 2014",
+    "rules": "- Company must file Form INC-20A within 180 days of incorporation.\n- The form must be digitally signed by a director and certified by a professional (CA/CS/CMA).\n- The declaration confirms that the company has received the paid-up share capital.\n- Required for companies having share capital before commencing business or borrowing.",
+    "recurrence": "One-time (at incorporation)",
+    "tasks": [
+      {
+        "title": "Collect paid-up share capital",
+        "description": "Ensure the subscribed share capital is deposited in the company’s bank account",
+        "deadline": "Before filing INC-20A"
+      },
+      {
+        "title": "File Form INC-20A",
+        "description": "File declaration of commencement of business with RoC",
+        "deadline": "Within 180 days of incorporation"
+      },
+      {
+        "title": "Get professional certification",
+        "description": "Form must be certified by CA/CS/CMA",
+        "deadline": "Before submission of Form INC-20A"
+      }
+    ],
+    "source": "https://cleartax.in/s/declaration-form-20a-commencement-of-business",
+    "content": "# Declaration of Commencement of Business.\n\n## Applicability (Section 10A)\n\n- Applicable only to **companies with share capital** incorporated on or after 2 Nov 2018. As per Section 10A, such a company **must not commence business or borrow** until a declaration (Form INC-20A) is filed. The director's declaration confirms that every subscriber to the Memorandum has paid for their shares.\n\n## Timeline\n\n- **Deadline:** File Form INC-20A **within 180 days of incorporation**. No extension beyond 180 days is allowed.\n- **Late Filing:** Filing after 180 days is subject to higher fees (up to 12× the normal fee for very late filings) and continuing penalties.\n\n## Paid‑up Share Capital Requirement\n\n- **Subscription Paid:** All subscribers to the Memorandum must have paid the agreed share value into the company's bank account before filing. Evidence of this payment (e.g. bank statement) is mandatory.\n- **Minimum Capital:** Ensure the minimum paid‑up capital (if any) is deposited as required by the company's MoA before filing.\n\n## Required Documents\n\n- **Bank Statement:** A copy of the company's bank statement showing the deposit of share subscription funds. (This serves as proof that subscribers have paid.)\n- **Subscriber Proof:** If required by MCA, attach any official \"Subscribers' proof of payment\" document as listed in the Form's instructions.\n- **Registered Office Photo:** A photograph of the registered office (exterior and interior) with company nameplate visible and at least one Director/KMP in frame. This is a mandatory attachment.\n- **Board Resolution:** A certified copy of the board resolution authorizing the filing of INC-20A. The resolution number and date must be entered in the form.\n- **Director's Declaration:** A declaration, signed by a director (with DIN), verifying compliance with Section 10A. This must be verified (signed) by a practising CA/CS/CMA.\n- **Other Documents:** Copy of Certificate of Incorporation (for reference), and any sectoral regulator approval (e.g. RBI license) if the company's business requires it. Ensure Director's DSC is registered on MCA to sign the form.\n\n## Board Resolution\n\n- **Resolution to File INC-20A:** The Board should pass a resolution in a meeting authorizing one or more directors to sign and file Form INC-20A. A sample resolution excerpt: *\"RESOLVED that pursuant to Section 10A(1)(a) of the Companies Act and Rule 23A, the Board authorizes [Director Name] to file e-Form INC-20A…\"*.\n- **Record Details:** Note the resolution number and date, and enter these in the INC-20A form's \"Declaration\" section.\n\n## E‑Filing Steps (MCA Portal)\n\n1. **Login:** Go to the MCA21 portal ([www.mca.gov.in](http://www.mca.gov.in/)) and log in with the company's account (or authorized signatory).\n2. **Select e-Form:** Navigate to *MCA Services* → *e-Filing* → *e-Forms*, and choose **INC-20A** (Declaration for Commencement of Business).\n3. **Fill Form Details:** Enter the company's CIN, registered address, details of the director signing the form (DIN, name), date of business commencement, paid-up capital details, etc. Ensure all information matches the company records.\n4. **Attach Documents:** Upload all required attachments in PDF: bank statement/proof of share payment, board resolution PDF, registered office photo, subscriber sheet (if any), and professional certificate (CA/CS/CMA). Label each attachment as per MCA instructions.\n5. **Pay Fees:** Calculate the fee based on nominal share capital (e.g. ₹200 for <₹1L capital, up to ₹600 for ≥₹1Cr). Pay the fee using the MCA fee payment system. Late filings (if any) attract higher multiples of the basic fee.\n6. **Digital Signature:** Use an **approved DSC** (Director's digital signature) to sign the form. Only a director of the company (or a practising professional if allowed) can sign.\n7. **Submit Form:** Review and submit the form. Note the SRN (Service Request Number) for tracking. The form will be sent to the ROC for processing. An acknowledgment is generated upon successful submission.\n\n## Consequences of Non‑Filing\n\n- **No Business Activities:** Until Form INC-20A is filed and approved, the company is **not legally allowed to commence any business or exercise borrowing powers**. Bankers and regulators typically treat such companies as inactive.\n- **Penalties:** Section 10A(2) imposes a fine of **₹50,000 on the company** and **₹1,000 per day (up to ₹1 lakh) on each defaulting officer (director)** for failure to file.\n- **Strike-Off Risk:** If INC-20A remains unfiled 180 days after incorporation and the ROC believes the company is dormant, the ROC **may initiate name removal (strike-off)** proceedings.\n- **Additional Fees:** Late filing (even within 180 days) requires paying additional fee multiples (2×, 4×, etc.). Repeated non-compliance can lead to disqualification of directors.\n\n## Exemptions\n\n- **No Share Capital:** Companies that are **incorporated without any share capital** are exempt, since Section 10A applies only to companies \"having share capital\". Such companies need not file INC-20A.\n- **Other Entities:** Form INC-20A is specific to companies; LLPs, partnerships, or sole proprietorships do not use this form.\n- **Section 8 Companies:** Even not-for-profit companies with share capital must file INC-20A. Only if a Section 8 company has no share capital would this requirement not apply (per the \"no share capital\" exemption).\n\n**Sources:** Companies Act 2013 (Section 10A) and MCA e-Form guidelines; MCA/ROC instructions; Tax and compliance guides."
+  },
+  {
+    "title": "DIR-3 DIN KYC Filing",
+    "formId": "DIR3_DIN_KYC_005",
+    "state": "India",
+    "category": "Company Law",
+    "applicability": "All Directors of Private Limited Companies",
+    "purpose": "To ensure all company directors update their KYC annually as per Rule 12A of the Companies (Appointment and Qualification of Directors) Rules, 2014.",
+    "dueDateRule": "Between April and September every year.",
+    "penalties": "Additional Fee: Rs.5,000 per DIN for late filing.",
+    "section": "Rule 12A of Companies (Appointment and Qualification of Directors) Rules, 2014",
+    "rules": "- All directors with a DIN must file DIR-3 KYC annually.\n- Filing window is from April 1st to September 30th.\n- Non-compliance leads to DIN deactivation.\n- Filing can be done via DIR-3 KYC form or DIR-3 KYC Web for those who filed previously without changes.",
+    "recurrence": "Annual",
+    "tasks": [
+      {
+        "title": "Collect KYC documents",
+        "description": "Obtain PAN, Aadhaar, personal email and mobile, and address proof from each director",
+        "deadline": "Before filing window opens"
+      },
+      {
+        "title": "File DIR-3 KYC",
+        "description": "Submit DIN KYC using DIR-3 KYC form (or Web if no changes from previous year)",
+        "deadline": "Between April 1st and September 30th"
+      }
+    ],
+    "source": "https://cleartax.in/s/directors-kyc-mca",
+    "content": "# DIR-3 DIN KYC Filing Compliance Guide (India)\n\n## 1. Overview of DIR-3 KYC (Purpose & Legal Mandate)\n\n**DIR-3 KYC** is an annual compliance introduced by the Ministry of Corporate Affairs (MCA) for all company directors in India who hold a Director Identification Number (DIN). The purpose is to verify and update the *Know Your Customer (KYC)* details of DIN holders, ensuring the accuracy of directors' personal and contact information in the MCA records. This measure was first introduced in 2018 (via MCA Notification G.S.R. 615(E)) as part of a regulatory push to weed out bogus or duplicate DINs and to maintain an up-to-date registry of directors. It is a **legal mandate** under Rule 12A of the Companies (Appointment and Qualification of Directors) Rules, 2014, which requires every individual holding a DIN to annually submit their KYC details to the Central Government. In essence, **if you have a DIN (Director ID Number), you must file DIR-3 KYC each year**, regardless of whether you actively serve as a director that year. Non-compliance leads to DIN deactivation as per law.\n\n**Why it's important:** The KYC filing confirms the director's identity and contact details (like PAN, phone number, email, address), helping prevent identity misuse and ensuring that only genuine, traceable individuals are associated with companies. It boosts transparency in corporate governance by keeping director credentials current and verified. Directors who fail to comply by the due date will face penalties and cannot use their DIN for any company filings until the KYC is completed and the DIN reactivated (details on penalties in Section 7).\n\n## 2. Who Needs to File DIR-3 KYC (Eligibility & Applicability)\n\n**Every individual who has been allotted a DIN** is required to file DIR-3 KYC, provided the DIN is in \"Approved\" status. This includes:\n\n- **All Directors of Indian companies** (private, public, LLP designated partners with DPIN, etc.) who have an active DIN allotted on or before March 31 of a given financial year. For example, if you were issued a DIN any time up to 31 March 2025, you must file the DIR-3 KYC for the year 2025.\n- **DIN holders who are not currently directors:** Even if you are not presently a director in any company, or your directorship has ceased, as long as you possess a DIN, the annual KYC requirement applies. It also applies to directors of struck-off companies and those who have resigned – the DIN remains active and thus KYC must be filed.\n- **Disqualified directors:** Directors disqualified under Section 164 of the Companies Act are **still required** to complete DIN KYC compliance. Being disqualified does not exempt one from filing; the KYC ensures the DIN data remains up-to-date.\n- **Foreign nationals or NRIs with DIN:** Directors of Indian companies who are foreign nationals or non-residents holding a DIN must also file KYC. (The form accommodates foreign addresses and country codes for phone numbers.)\n- **When DIN was allotted:** If your DIN was allotted on or **before March 31** of a financial year, you need to do KYC within the deadline of the upcoming financial year (generally by 30th Sept, see Section 6). If you obtained a new DIN after March 31 of the current year, your first KYC filing will be due by the due date of the *next* year. For instance, a DIN issued in April 2025 will need to file DIR-3 KYC by 30 Sept 2026.\n\n**In summary:** **all individuals with a valid DIN** (whether serving as director or not, whether Indian or foreign) must file DIR-3 KYC each year. There are **no exceptions** based on company type – directors of Private Limited Companies, being DIN holders, are fully covered by this compliance. Failing to file will mark the DIN as \"Deactivated due to non-filing\" and trigger penalties (discussed later).\n\n## 3. Types of DIR-3 KYC Forms: e-Form vs. DIR-3 KYC-Web\n\nThere are two modes to complete the director KYC, depending on whether it's your first time or a subsequent annual filing without changes. The two are: **(a)** DIR-3 KYC **e-Form**, and **(b)** DIR-3 KYC-**WEB** (online service). It's important to understand which one applies to you:\n\n- **DIR-3 KYC e-Form (PDF form upload):** This is the *standard electronic form* for director KYC. **Use the e-Form** in the following cases:\n    - If you **have never filed DIR-3 KYC before** (first-time KYC for a new DIN).\n    - If you filed KYC in previous years but now **need to update any information** – e.g. you changed your personal mobile number or email, or other details. According to MCA rules, any update in a director's *mobile number or email ID* requires filing the KYC via the e-Form (not via the web service).\n    - If your DIN was **deactivated due to missing a prior KYC deadline**. In such case, you must file the e-Form to update KYC and pay the late fee (after which the DIN will be reactivated).\n    - If instructed by the system – for example, if any detail doesn't match records, the web option might not be available and you'd need to use the e-Form.\n\n- **DIR-3 KYC-WEB (Web-Based KYC):** This is an online web service introduced by MCA as a simplified way for directors to confirm their KYC in subsequent years. **Use the KYC-Web** option if **all of the following** conditions are met: **(i)** you have already filed a DIR-3 KYC e-Form in a previous year, **(ii)** your DIN is in \"Approved\" status, and **(iii)** there are **no changes or updates** required in your details since the last KYC. In such cases, you can do an annual KYC confirmation through the web portal without filling the entire form again. The web KYC is essentially a quick confirmation – it will fetch your existing details from the MCA records and allow you to verify them via OTP.\n    \n    **When using DIR-3 KYC-Web:** You log into the MCA portal and submit your DIN on the web service; the system will display your registered email and phone (partially masked) and send OTPs for verification. Once you verify the OTPs and confirm that your details on record are correct, the submission is done (no document upload or DSC is required for the web method). A successful KYC-Web filing is considered compliance for that year. This option saves time as it avoids the need for digital signatures or professional certification each year, **but it can only be used if your information hasn't changed**. If any detail (even contact info) needs change, the web service will not allow you to edit it – you'd have to use the e-Form or other forms (e.g. DIR-6 for changing address, etc.) to update the details first.\n    \n\n> Note: Choosing the correct method is crucial. For example, if your email or phone number changed since last year, do not proceed with KYC-Web (it won't update those). Instead, update through the appropriate form (such as DIR-6 for address change, or directly via DIR-3 KYC e-form for new phone/email) and file the KYC e-Form. Conversely, if nothing changed, KYC-Web is the easiest way to remain compliant. Using the wrong method either results in incomplete compliance or the system will reject the submission.\n> \n\n**PAN, Aadhaar, Passport, Address proofs, and your contact info** are the key items. Also have your DIN, MCA login and DSC on hand. All documents you attach must be clear and either in English or translated. **Remember to self-attest** each copy (sign and date), and get them **certified by a professional** as required. Missing attachments or unsigned documents are a common reason for form rejection.\n\n## 6. Due Dates and Deadlines\n\n**DIR-3 KYC is an annual filing** and has a specific deadline each year. The timeline is as follows:\n\n- **Annual Due Date:** **30th September of every year** is the general deadline to file your DIR-3 KYC for the previous financial year. In other words, by 30 September each year, you must have completed KYC for all DINs you held as of the end of the last financial year. For example: for all directors who had a DIN on 31 March 2025, the due date to file DIR-3 KYC (for FY 2024-25) would be 30 September 2025.\n- **DIN allotment timing:** If you were allotted a DIN **on or after April 1** of a year, you are not required to do the KYC in that same calendar year. Your first KYC will be due by 30th September of the *next* year. (This gives new DIN holders up to ~18 months max before their first KYC deadline, depending on when in the year DIN was obtained.) Example: DIN issued on 5 April 2025 -> KYC to be filed by 30 Sept 2026.\n- **Early Filing Window:** MCA typically opens the window for KYC filings from April 1 of each year up to the deadline (initially the rule specified 30 April, but it has since been extended to 30 September in practice). It's advisable to file as early as possible after April to avoid last-minute rush. You do **not** need to wait till September; if your details are ready (or if using web KYC), you can file any time between April and September each year.\n- **Extensions (if any):** The Government may occasionally extend the deadline via official circulars in special circumstances. For instance, in 2022 the due date was extended to 15th October 2022 without late fees. However, these are exceptions rather than the rule. One should **not rely on extensions** – plan to meet the 30 September deadline. Any extension, if announced, will be communicated through MCA's official notices or circulars on their website. Always verify any news of extension from the MCA site or a trusted professional source.\n\nIn summary, **September 30** is the key date every director should mark on their compliance calendar each year for DIN KYC. Missing this deadline triggers immediate consequences (discussed next). There is **no fee for filing the KYC if done on or before 30th September** – it is a zero-cost compliance when done timely. The process can (and should) be completed annually even if the person has ceased to be director or the company is inactive, as long as the DIN exists.\n\n## 7. Penalties and Consequences for Late or Non-Filing\n\nFailure to file DIR-3 KYC within the prescribed deadline can lead to significant repercussions. Below are the penalties and consequences of late or non-compliance:\n\n- **DIN Deactivation:** If a director does not complete the KYC filing by the due date (e.g., by 30th September), the **MCA 21 system will mark the DIN as \"Deactivated due to non-filing of DIR-3 KYC\"**. This deactivation is automatic and happens immediately after the cut-off date passes (unless an extension is given). A deactivated DIN is essentially **invalid** for all purposes until reactivated.\n- **Inability to Use DIN:** Once deactivated, the DIN holder is **barred from filing any forms or engaging in any director actions** with that DIN. Practically, this means:\n    - The individual **cannot be appointed as a director** in any new company or LLP, since the DIN won't be in \"Approved\" status.\n    - They **cannot sign any documents** that require a DIN (such as ROC filings, board resolutions where DIN is quoted, etc.).\n    - The company cannot file certain forms involving that director (e.g., DIR-12 for change in directorship, or annual returns listing that director) – the MCA system will reject filings where a DIN is inactive. Any filing for appointment/resignation or other compliance that lists this DIN will be considered **invalid until the DIN is reactivated**. Essentially, the person's directorship is put on hold – they are not legally recognized as a current director of any company during the period of DIN deactivation. (They don't lose the actual DIN number, but it's suspended.)\n- **Late Filing Penalty (Fee of ₹5,000):** To reactivate a DIN after missing the deadline, the director must complete the DIR-3 KYC filing **with a hefty late fee**. The penalty for late filing is **₹5,000** per DIN as per the Companies (Registration Offices and Fees) Rules. This fee is in addition to regular filing (which is free on time). The ₹5,000 becomes payable on the MCA portal at the time of form submission – the system will not accept the KYC form after due date unless this fee is paid. **No waiver** of this fee is generally allowed; it's a statutory charge for non-compliance. For example, if you miss the 30 Sept deadline and file on 1 October, you will incur ₹5,000 penalty that must be paid before your KYC is processed.\n- **Penalty Payment and DIN Reactivation:** After you file the DIR-3 KYC form with the late fee, the MCA will **reactivate your DIN** (usually within a day or so of form approval) as per Rule 11(3) of the director rules. The status will change from \"Deactivated\" back to \"Approved\" once the payment and filing are acknowledged. Until you do so, the DIN remains deactivated indefinitely. There is no increasing fine beyond ₹5,000; however, this is a one-time fee each year if you miss that year's deadline (e.g., missing two separate years would mean two separate ₹5,000 penalties whenever you choose to file those).\n- **Continuous Non-filing – Potential DIN Cancellation:** While not common, if a director continuously ignores the DIR-3 KYC compliance for an extended period, the **DIN may be permanently deactivated or removed** from the registry. MCA has indicated that if KYC is not done for **5 consecutive years**, the DIN could be completely cancelled (treated as if surrendered). This means the individual loses that DIN and would have to apply for a fresh DIN (subject to approval) if they wish to become a director again, which can be a complex situation. Additionally, not having a valid DIN for prolonged time essentially disqualifies the person from acting as a director during that period. It's a scenario best avoided by simply filing the KYC each year.\n- **Other Legal Consequences:** As of now, the primary \"penalty\" is the monetary fee and DIN deactivation. There is **no separate fine or imprisonment** provision under the Act specifically for not filing DIR-3 KYC (apart from DIN getting disabled and the fee). However, having an inactive DIN can indirectly cause non-compliance for the company as well (for example, if the company cannot file something because a director's DIN is inactive, that could lead to company-level penalties). In extreme cases, if a director's non-compliance impedes a company's regulatory filings, it could attract regulator's attention. Thus, it's crucial for companies to ensure all their directors' DINs are KYC compliant each year to avoid any governance issues.\n- **Aftermath of Non-compliance:** Once a DIN is deactivated for KYC non-filing, **the director must file the DIR-3 KYC (with fee) to restore their DIN** – there's no other shortcut. Until then, they effectively **cease to be an active director** in the eyes of law. It's important to note this does not remove them from the company's board automatically, but it suspends their legal capacity to act as director. Companies are expected to ensure their directors' DINs are active; otherwise, any document signed by such a director could be invalid.\n\nIn summary, **missing the KYC deadline will cost you ₹5,000 and your ability to function as a director until resolved**. MCA has taken a strict stance on this compliance. The penalty is steep to encourage timely filing, and the deactivation ensures immediate enforcement. Always file before 30th Sept to avoid these hassles. If you realize you missed the date, rectify it as soon as possible by filing with the fee – the longer you wait, the longer your DIN remains deactivated (and remember the 5-year rule which could lead to permanent deactivation).."
+  },
+  {
+    "title": "Disclosure of Interest (MBP-1)",
+    "formId": "DISCLOSURE_INTEREST_MBP1_006",
+    "state": "India",
+    "category": "Company Law",
+    "applicability": "Private Limited Companies",
+    "purpose": "To ensure directors disclose their interests in other entities annually as per Section 184 of the Companies Act, 2013.",
+    "dueDateRule": "At the first board meeting of each financial year, typically in April.",
+    "penalties": "Director in default: Fine of Rs.1,00,000.",
+    "section": "Section 184 of the Companies Act, 2013",
+    "rules": "- Every director must submit Form MBP-1 disclosing their interest in companies, firms, or other associations.\n- This must be done at the first Board Meeting of each financial year or upon any change during the year.\n- MBP-1 must be noted in the minutes of the meeting.\n- Director should not participate in discussions where they have an interest.",
+    "recurrence": "Annual (every financial year)",
+    "tasks": [
+      {
+        "title": "Collect MBP-1 from directors",
+        "description": "Obtain duly filled and signed MBP-1 forms from all directors",
+        "deadline": "Before or at the first board meeting of the financial year"
+      },
+      {
+        "title": "Record in meeting minutes",
+        "description": "Ensure the disclosures are recorded in the minutes of the board meeting",
+        "deadline": "During the first board meeting of the financial year"
+      }
+    ],
+    "source": "",
+    "content": ""
+  },
+  {
+    "title": "MSME I Filing",
+    "formId": "MSME_I_FILING_007",
+    "state": "India",
+    "category": "Company Law",
+    "applicability": "Private Limited Companies falling under the Specified Companies Order, 2019",
+    "purpose": "To ensure half-yearly disclosure to ROC about outstanding payments to Micro and Small Enterprises exceeding 45 days, as per the Specified Companies Order, 2019.",
+    "dueDateRule": "On or before 30th April & before 30th October of the subsequent financial year.",
+    "penalties": "Additional ROC Filing Penalty: Up to 12 times the normal filing fees; prosecution under MSMED Act, 2006 and ROC.",
+    "section": "Specified Companies (Furnishing of Information about Payment to Micro and Small Enterprise Suppliers) Order, 2019",
+    "rules": "- Applicable to companies that receive goods/services from Micro or Small Enterprises and have payments pending for more than 45 days.\n- Form MSME I must be filed twice a year: for the period April–September (due by 30th October), and October–March (due by 30th April).\n- The filing must disclose the name of supplier, amount due, and reason for delay.\n- Filing is mandatory even if there are no such outstanding dues (NIL return).",
+    "recurrence": "Biannual (April and October)",
+    "tasks": [
+      {
+        "title": "Identify outstanding payments to MSMEs",
+        "description": "Review accounts payable to identify dues exceeding 45 days to Micro and Small Enterprises",
+        "deadline": "Before April 30 and October 30"
+      },
+      {
+        "title": "File Form MSME I",
+        "description": "Submit half-yearly return to ROC with details of such outstanding payments",
+        "deadline": "By 30th April and 30th October"
+      }
+    ],
+    "source": "",
+    "content": ""
+  },
+  {
+    "title": "DPT-3 Filing (Return of Deposits)",
+    "formId": "DPT3_RETURN_OF_DEPOSITS_008",
+    "state": "India",
+    "category": "Company Law",
+    "applicability": "Private Limited Companies (excluding government companies)",
+    "purpose": "To ensure annual disclosure of deposits or transactions not considered as deposits under the Companies (Acceptance of Deposits) Amendment Rules, 2019.",
+    "dueDateRule": "On or before 30th June of the subsequent financial year.",
+    "penalties": "Additional DPT-3 Filing Penalty: Up to Rs.3,900 (12 times the normal filing fees).",
+    "section": "Companies (Acceptance of Deposits) Amendment Rules, 2019",
+    "rules": "- All companies other than government companies must file Form DPT-3 annually.\n- Applicable for deposits accepted or any money received not considered as deposits.\n- Filing includes auditor’s certificate if applicable.\n- Must be filed even for NIL returns if company has received such transactions.",
+    "recurrence": "Annual (by 30th June)",
+    "tasks": [
+      {
+        "title": "Compile deposit and non-deposit transactions",
+        "description": "Identify all deposits and qualifying non-deposit transactions during the financial year",
+        "deadline": "Before June 30"
+      },
+      {
+        "title": "File Form DPT-3",
+        "description": "Submit the return of deposits or particulars of non-deposit transactions with ROC",
+        "deadline": "On or before 30th June"
+      }
+    ],
+    "source": "",
+    "content": ""
+  },
+  {
+    "title": "Maintenance of Statutory Registers",
+    "formId": "STATUTORY_REGISTERS_009",
+    "state": "India",
+    "category": "Company Law",
+    "applicability": "Private Limited Companies",
+    "purpose": "To ensure the maintenance and timely updating of mandatory statutory registers as required under the Companies Act, 2013.",
+    "dueDateRule": "To be maintained continuously and updated from time to time.",
+    "penalties": "Penalty: Rs.50,000 which may extend to Rs.3,00,000; Further fine: Rs.1,000 per day for continued default.",
+    "section": "Various Sections of the Companies Act, 2013",
+    "rules": "- Companies must maintain 7 to 8 mandatory statutory registers.\n- These include Register of Members, Directors and KMP, Charges, Loans and Investments, Contracts and Arrangements (MBP-4), etc.\n- Registers must be kept at the registered office and be accessible for inspection.\n- Entries must be accurate and updated in a timely manner.",
+    "recurrence": "Ongoing compliance",
+    "tasks": [
+      {
+        "title": "Maintain all statutory registers",
+        "description": "Ensure all required registers (members, directors, charges, contracts, etc.) are maintained",
+        "deadline": "Ongoing, as and when events occur"
+      },
+      {
+        "title": "Update registers on changes",
+        "description": "Promptly record any changes such as new appointments, allotments, or contracts",
+        "deadline": "Immediately upon any change"
+      },
+      {
+        "title": "Keep registers at registered office",
+        "description": "Ensure registers are stored at the company’s registered office and available for inspection",
+        "deadline": "Continuously"
+      }
+    ],
+    "source": "",
+    "content": ""
+  },
+  {
+    "title": "Annual General Meeting (AGM) Compliance",
+    "formId": "AGM_COMPLIANCE_010",
+    "state": "India",
+    "category": "Company Law",
+    "applicability": "Private Limited Companies (if not exempted from holding AGM)",
+    "purpose": "To ensure that companies conduct their Annual General Meeting (AGM) in accordance with the Companies Act, 2013 and Secretarial Standard 2 (SS-2).",
+    "dueDateRule": "AGM to be held every year within prescribed timelines.",
+    "penalties": "Default in holding AGM: Company and directors liable to a fine up to Rs.1,00,000 and Rs.5,000 for every day of delay. Minutes Book: Company penalty up to Rs.25,000; Directors penalty Rs.5,000 each.",
+    "section": "Sections 96, 101, 118 of the Companies Act, 2013 & Secretarial Standard 2 (SS-2) w.e.f. 01/07/2015",
+    "rules": "- AGM must be held annually within the prescribed time (9 months from financial year end for first AGM; 6 months for subsequent AGMs).\n- Notice of AGM to be sent to all members, directors, and auditors at least 21 clear days in advance.\n- Minutes of the AGM must be recorded and signed.\n- Attendance register for the meeting must be maintained and signed.\n- Agenda must include adoption of financials, appointment/reappointment of auditors, and other shareholder matters.",
+    "recurrence": "Annual",
+    "tasks": [
+      {
+        "title": "Schedule AGM",
+        "description": "Plan and conduct the AGM within prescribed timeline",
+        "deadline": "Annually before statutory due date"
+      },
+      {
+        "title": "Send notice of AGM",
+        "description": "Dispatch notice to members, directors, and auditors at least 21 clear days before the AGM",
+        "deadline": "Minimum 21 days before AGM"
+      },
+      {
+        "title": "Maintain attendance register",
+        "description": "Have all attendees sign the AGM attendance register",
+        "deadline": "During AGM"
+      },
+      {
+        "title": "Prepare and sign AGM minutes",
+        "description": "Record minutes of AGM and store them at the registered office",
+        "deadline": "Immediately after AGM"
+      }
+    ],
+    "source": "",
+    "content": ""
+  },
+  {
+    "title": "Annual ROC Filings",
+    "formId": "ANNUAL_ROC_FILINGS_011",
+    "state": "India",
+    "category": "Company Law",
+    "applicability": "Private Limited Companies",
+    "purpose": "To ensure timely filing of annual returns, financial statements, and auditor appointment with the Registrar of Companies (ROC) as per the Companies Act, 2013.",
+    "dueDateRule": "MGT-7: within 60 days of AGM; AOC-4: within 30 days of AGM; ADT-1: within 15 days of AGM.",
+    "penalties": "AOC-4: Rs.100/day of delay; MGT-7: Rs.100/day of delay; Company Fine: Rs.50,000 up to Rs.5,00,000.",
+    "section": "Section 92 of Companies Act, 2013; Rule 11 & Rule 12 of Companies (Management and Administration) Rules, 2014",
+    "rules": "- MGT-7 (Annual Return) to be filed within 60 days from the date of AGM.\n- AOC-4 (Financial Statements) to be filed within 30 days from the date of AGM.\n- ADT-1 (Auditor Appointment) to be filed within 15 days of the AGM if reappointed.\n- Filing must be done digitally with the appropriate fees and certifications.\n- Non-compliance attracts per-day late filing fees and penal provisions under the Act.",
+    "recurrence": "Annual",
+    "tasks": [
+      {
+        "title": "File MGT-7 (Annual Return)",
+        "description": "File annual return with ROC within 60 days of the AGM",
+        "deadline": "60 days from AGM date"
+      },
+      {
+        "title": "File AOC-4 (Financial Statements)",
+        "description": "Submit financial statements with ROC within 30 days of the AGM",
+        "deadline": "30 days from AGM date"
+      },
+      {
+        "title": "File ADT-1 (Auditor Appointment)",
+        "description": "File auditor reappointment details within 15 days of the AGM",
+        "deadline": "15 days from AGM date"
+      }
+    ],
+    "source": "",
+    "content": ""
+  },
+  {
+    "title": "Sharing of Bank Statements, Invoices, Vouchers, Expense Sheet",
+    "formId": "FINANCIAL_DOCUMENT_SHARING_012",
+    "state": "India",
+    "category": "Financial Compliance",
+    "applicability": "Private Limited Companies",
+    "purpose": "To ensure regular sharing of financial documents for timely tax filings, GST compliance, and internal accounting accuracy.",
+    "dueDateRule": "To be shared monthly, quarterly, or half-yearly based on internal accounting cycle and statutory requirements.",
+    "penalties": "Non-compliance may lead to Advance Tax or GST defaults, attracting interest, penalties, or legal notices from tax authorities.",
+    "section": "Indirect compliance linked with Income Tax Act & GST Act provisions",
+    "rules": "- Bank statements, invoices, and vouchers must be compiled and shared with the accountant or financial consultant regularly.\n- Helps track GST liability, input tax credit, and advance tax dues accurately.\n- Periodic sharing ensures proper bookkeeping and compliance with audit standards.\n- Sharing frequency can be monthly, quarterly, or half-yearly depending on company policy and tax filing cycle.",
+    "recurrence": "Periodic (Monthly/Quarterly/Half-Yearly)",
+    "tasks": [
+      {
+        "title": "Compile bank statements and invoices",
+        "description": "Gather all bank statements, invoices, and vouchers for the relevant period",
+        "deadline": "Monthly/Quarterly/Half-Yearly, based on company’s compliance calendar"
+      },
+      {
+        "title": "Share with accountant",
+        "description": "Send compiled documents to accountant or finance team for bookkeeping and tax compliance",
+        "deadline": "Immediately after each compilation cycle"
+      },
+      {
+        "title": "Cross-check advance tax and GST liability",
+        "description": "Ensure all liabilities are calculated correctly based on updated financial records",
+        "deadline": "Before relevant tax payment due dates"
+      }
+    ],
+    "source": "",
+    "content": ""
+  },
+  {
+    "title": "Sharing of Last Financial Year's Financial Documents",
+    "formId": "FY_FINANCIAL_DOCUMENTS_013",
+    "state": "India",
+    "category": "Financial Compliance",
+    "applicability": "Private Limited Companies",
+    "purpose": "To ensure timely compilation and submission of financial documents for preparing accurate financial statements and avoiding delays and penalties.",
+    "dueDateRule": "Between 1st April and 30th April each year.",
+    "penalties": "Delayed submission can lead to late filing of financial statements, attracting additional ROC and tax penalties.",
+    "section": "Indirect compliance with Companies Act, 2013 and Income Tax Act requirements; related to maintenance of books under Section 128.",
+    "rules": "- All financial documents of the previous financial year must be compiled and submitted to the accounting team.\n- Includes bank statements, sales and purchase invoices, vouchers, and expense reports.\n- Helps complete timely preparation of financial statements for audit and ROC filing.\n- Delay in this step can result in cascading delays across audit, AGM, and ROC compliance.",
+    "recurrence": "Annual (April 1–30)",
+    "tasks": [
+      {
+        "title": "Compile last F.Y. financial documents",
+        "description": "Collect all bank statements, invoices, vouchers, and expense sheets for the previous financial year",
+        "deadline": "By 30th April"
+      },
+      {
+        "title": "Share with finance/audit team",
+        "description": "Submit compiled documents to accounting/audit team for preparation of financials",
+        "deadline": "Before 30th April"
+      },
+      {
+        "title": "Confirm data completeness",
+        "description": "Cross-check that all months are covered and no transaction records are missing",
+        "deadline": "Before initiating financial statement drafting"
+      }
+    ],
+    "source": "https://cleartax.in/s/maintenance-books-accounts",
+    "content": ""
+  },
+  {
+    "title": "Preparation of Financial Statements by Accountant",
+    "formId": "FINANCIAL_STATEMENTS_PREPARATION_014",
+    "state": "India",
+    "category": "Company Law",
+    "applicability": "Private Limited Companies",
+    "purpose": "To ensure timely preparation of financial statements in accordance with Section 129 of the Companies Act, 2013, for smooth AGM and ROC return filing.",
+    "dueDateRule": "Before 30th July each year.",
+    "penalties": "Delay may lead to cascading penalties related to late AGM, audit, and ROC filings, including AOC-4.",
+    "section": "Section 129 of the Companies Act, 2013",
+    "rules": "- Financial statements must be prepared in compliance with Schedule III of the Companies Act, 2013.\n- Must include the balance sheet, profit and loss account, cash flow statement (if applicable), and notes to accounts.\n- Statements must be approved by the Board and then adopted at the AGM.\n- Basis for filing AOC-4 with the Registrar of Companies.",
+    "recurrence": "Annual (by 30th July)",
+    "tasks": [
+      {
+        "title": "Prepare financial statements",
+        "description": "Accountant to prepare balance sheet, P&L account, and other financial reports for the previous financial year",
+        "deadline": "Before 30th July"
+      },
+      {
+        "title": "Review and finalise statements",
+        "description": "Ensure accuracy and compliance with Schedule III before submission to Board",
+        "deadline": "Before board approval meeting"
+      },
+      {
+        "title": "Submit for board approval",
+        "description": "Present the final financials to the Board of Directors for approval ahead of AGM",
+        "deadline": "Before AGM notice is issued"
+      }
+    ],
+    "source": "https://cleartax.in/s/aoc-4-form",
+    "content": ""
+  },
+  {
+    "title": "Tax Audit by the Auditors",
+    "formId": "TAX_AUDIT_015",
+    "state": "India",
+    "category": "Tax Compliance",
+    "applicability": "Private Limited Companies with annual revenue exceeding Rs.1 crore",
+    "purpose": "To ensure tax audit is conducted and reported in compliance with Section 44AB of the Income Tax Act, 1961.",
+    "dueDateRule": "Before 20th August each year.",
+    "penalties": "Penalty: Lesser of 0.5% of turnover/gross receipts or Rs.1,50,000.",
+    "section": "Section 44AB of the Income Tax Act, 1961",
+    "rules": "- Tax audit is mandatory if annual turnover exceeds Rs.1 crore (or higher threshold based on digital transactions).\n- Audit must be conducted by a Chartered Accountant.\n- Audit report must be filed in Form 3CA/3CB and 3CD.\n- Delay in audit affects ITR filing and can trigger financial penalties.",
+    "recurrence": "Annual (by 20th August)",
+    "tasks": [
+      {
+        "title": "Appoint auditor for tax audit",
+        "description": "Engage Chartered Accountant to conduct tax audit as per Section 44AB",
+        "deadline": "Immediately after financials are finalized"
+      },
+      {
+        "title": "Conduct and complete tax audit",
+        "description": "Auditor to complete audit and prepare Form 3CA/3CB and 3CD",
+        "deadline": "Before 20th August"
+      },
+      {
+        "title": "File tax audit report",
+        "description": "Submit tax audit report electronically with the Income Tax Department",
+        "deadline": "Before 20th August"
+      }
+    ],
+    "source": "",
+    "content": ""
+  },
+  {
+    "title": "Statutory Audit by the Auditors",
+    "formId": "STATUTORY_AUDIT_016",
+    "state": "India",
+    "category": "Company Law & Audit Compliance",
+    "applicability": "Private Limited Companies",
+    "purpose": "To ensure completion of statutory audit before AGM approval of financials and prevent delays in ROC filings and company compliance.",
+    "dueDateRule": "Before 5th September (Pre-AGM Approval of Financials)",
+    "penalties": "Company and Directors: Fine up to Rs.1,00,000 and Rs.5,000 per day of delay. ROC Filing: Rs.100/day for AOC-4 and MGT-7. Company Fine: Rs.50,000 up to Rs.5,00,000.",
+    "section": "Statutory audit governed under Companies Act, 2013 and Chartered Accountants Act (UDIN requirement)",
+    "rules": "- Statutory audit must be completed before approval of financial statements in AGM.\n- Delay in audit or UDIN generation can delay AGM and ROC filings.\n- Audit report must be signed and certified by auditor with valid UDIN.\n- Delay may lead to penalty under Companies Act and additional late fees for ROC filings.\n- Essential for timely submission of AOC-4, MGT-7, and financial compliance.",
+    "recurrence": "Annual (by 5th September)",
+    "tasks": [
+      {
+        "title": "Appoint statutory auditor",
+        "description": "Ensure auditor is formally appointed and provided with all required financial data",
+        "deadline": "Well before audit timeline"
+      },
+      {
+        "title": "Complete statutory audit",
+        "description": "Auditor to finalize and certify financial statements including UDIN generation",
+        "deadline": "Before 5th September"
+      },
+      {
+        "title": "Provide signed audit report for AGM",
+        "description": "Ensure audited financials are ready for board and shareholder approval in AGM",
+        "deadline": "Before AGM approval meeting"
+      }
+    ],
+    "source": "",
+    "content": ""
+  },
+  {
+    "title": "Company Income Tax Return Filing",
+    "formId": "INCOME_TAX_RETURN_FILING_017",
+    "state": "India",
+    "category": "Tax Compliance",
+    "applicability": "Private Limited Companies",
+    "purpose": "To ensure timely filing of income tax return by companies under the Income Tax Act, 1961 and avoid penalties, interest, or prosecution.",
+    "dueDateRule": "On or before 31st October every year.",
+    "penalties": "Late filing fee: Rs.5,000 or Rs.10,000; Interest: 1% per month on tax due; Penalty: Up to 200% of tax evaded; Director Imprisonment: 3 to 7 years, Fine: Rs.10,000 to Rs.1,00,000.",
+    "section": "Sections 234F, 234A, 270A, and 276CC of Income Tax Act, 1961",
+    "rules": "- Income Tax Return (ITR-6) must be filed by companies annually.\n- Filing must be done electronically using a digital signature.\n- If tax is due, interest under Section 234A and penalties under Section 270A may apply.\n- Late filing fee is levied under Section 234F.\n- Non-filing may trigger prosecution under Section 276CC.",
+    "recurrence": "Annual (by 31st October)",
+    "tasks": [
+      {
+        "title": "Calculate tax liability",
+        "description": "Compute final tax payable for the financial year based on audited financials",
+        "deadline": "Before return preparation begins"
+      },
+      {
+        "title": "Prepare and file income tax return",
+        "description": "File ITR-6 electronically with digital signature",
+        "deadline": "On or before 31st October"
+      },
+      {
+        "title": "Pay any self-assessment tax due",
+        "description": "Clear outstanding tax to avoid interest or prosecution",
+        "deadline": "Before or during ITR filing"
+      }
+    ],
+    "source": "",
+    "content": ""
+  },
+  {
+    "title": "Auditor Appointment Compliance (ADT-1)",
+    "formId": "AUDITOR_APPOINTMENT_ADT1_002",
+    "state": "India",
+    "category": "Company Law",
+    "applicability": "Private Limited Companies",
+    "purpose": "To ensure timely appointment of the first auditor and filing of Form ADT-1 as per Section 139 of the Companies Act, 2013.",
+    "dueDateRule": "Within 30 days of incorporation.",
+    "penalties": "Company Fine: Rs.25,000 to Rs.5,00,000; Director in default: up to 1 year imprisonment or fine between Rs.10,000 and Rs.1,00,000 or both.",
+    "section": "Section 139 of Companies Act, 2013",
+    "rules": "- Appointment of first auditor within 30 days of incorporation.\n- Filing of Form ADT-1 within 15 days of appointment.\n- ADT-1 to be filed with the Registrar of Companies (RoC).\n- Auditor to hold office till the conclusion of the first AGM.",
+    "recurrence": "One-time (at incorporation)",
+    "tasks": [
+      {
+        "title": "Appoint first auditor",
+        "description": "Board must appoint the first auditor within 30 days of incorporation",
+        "deadline": "30 days from incorporation"
+      },
+      {
+        "title": "File Form ADT-1",
+        "description": "File return of appointment of auditor with RoC",
+        "deadline": "15 days from auditor appointment"
+      }
+    ],
+    "source": "https://cleartax.in/s/form-adt-1",
+    "content": ""
+  }
+]

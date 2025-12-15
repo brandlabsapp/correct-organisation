@@ -1,0 +1,38 @@
+{
+	"name": "correct-agent",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "mastra dev",
+		"build": "mastra build",
+		"start": "mastra start"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "module",
+	"engines": {
+		"node": ">=20.9.0"
+	},
+	"dependencies": {
+		"@ai-sdk/openai": "^2.0.64",
+		"@mastra/core": "^0.24.0",
+		"@mastra/evals": "^0.14.3",
+		"@mastra/libsql": "^0.16.2",
+		"@mastra/loggers": "^0.10.19",
+		"@mastra/memory": "^0.15.11",
+		"ioredis": "^5.8.2",
+		"zod": "^4.1.12"
+	},
+	"devDependencies": {
+		"@types/node": "^24.10.0",
+		"mastra": "^0.18.0",
+		"typescript": "^5.9.3"
+	},
+	"overrides": {
+		"zod": "^3.25.76",
+		"ai": "^4.3.19"
+	}
+}

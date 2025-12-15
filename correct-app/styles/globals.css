@@ -1,0 +1,181 @@
+@import 'tailwindcss';
+
+@font-face {
+	font-family: 'Nicky Sans';
+	src: url('../app/fonts/NickySans-Regular.woff2') format('woff2');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@theme {
+	--color-background: hsl(222.2 84% 4.9%);
+	--color-foreground: hsl(210 40% 98%);
+
+	--color-card: hsl(0 0% 100%);
+	--color-card-foreground: hsl(222.2 84% 4.9%);
+
+	--color-popover: hsl(0 0% 100%);
+	--color-popover-foreground: hsl(222.2 84% 4.9%);
+
+	--color-primary: hsl(222.2 47.4% 11.2%);
+	--color-primary-foreground: hsl(210 40% 98%);
+
+	--color-secondary: hsl(210 40% 96.1%);
+	--color-secondary-foreground: hsl(222.2 47.4% 11.2%);
+
+	--color-muted: hsl(210 40% 96.1%);
+	--color-muted-foreground: hsl(215.4 16.3% 46.9%);
+
+	--color-accent: hsl(210 40% 96.1%);
+	--color-accent-foreground: hsl(222.2 47.4% 11.2%);
+
+	--color-destructive: hsl(0 84.2% 60.2%);
+	--color-destructive-foreground: hsl(210 40% 98%);
+
+	--color-border: hsl(214.3 31.8% 91.4%);
+	--color-input: hsl(214.3 31.8% 91.4%);
+	--color-ring: hsl(222.2 84% 4.9%);
+
+	/* Custom colors from config */
+	--color-beige: #f7f4f2;
+	--color-gray: #b3b3b3;
+	--color-gray-light: #c7c7c7;
+	--color-gray-dark: #454746;
+	--color-green: #68c978;
+	--color-green-dark: #0c9409;
+	--color-black: #070401;
+	--color-blue: #dbe8fa;
+	--color-blue-dark: #9fc7ff;
+	--color-blue-light: #f1f4f8;
+	--color-secondarygray: #cccccc;
+	--color-secondarygray-light: #99999b;
+	--color-secondarygray-dark: #808080;
+	--color-lightgray: #f1f4f8;
+	--color-lightgray-dark: #e6e6e6;
+	--color-red: #ff0000;
+	--color-red-light: #d85140;
+
+	/* Border radius */
+	--radius: 0.5rem;
+	--radius-sm: 8px;
+	--radius-md: 10px;
+	--radius-lg: 12px;
+	--radius-xl: 14px;
+
+	/* Font family */
+	--font-nicky-sans: 'Nicky Sans', sans-serif;
+
+	/* Font sizes with line heights */
+	--text-heading1: 64px;
+	--text-heading1--line-height: 1.2;
+	--text-mobile-heading1: 32px;
+	--text-mobile-heading1--line-height: 1.2;
+	--text-subheading1: 48px;
+	--text-subheading1--line-height: 1.2;
+	--text-mobile-subheading1: 24px;
+	--text-mobile-subheading1--line-height: 1.2;
+	--text-heading2: 32px;
+	--text-heading2--line-height: 1.3;
+	--text-mobile-heading2: 24px;
+	--text-mobile-heading2--line-height: 1.3;
+	--text-heading3: 24px;
+	--text-heading3--line-height: 1.4;
+	--text-mobile-heading3: 18px;
+	--text-mobile-heading3--line-height: 1.4;
+	--text-heading4: 20px;
+	--text-heading4--line-height: 1.5;
+	--text-mobile-heading4: 16px;
+	--text-mobile-heading4--line-height: 1.5;
+	--text-heading5: 18px;
+	--text-heading5--line-height: 1.5;
+	--text-mobile-heading5: 14px;
+	--text-mobile-heading5--line-height: 1.5;
+	--text-body1: 16px;
+	--text-body1--line-height: 1.5;
+	--text-body2: 14px;
+	--text-body2--line-height: 1.5;
+	--text-body3: 12px;
+	--text-body3--line-height: 1.5;
+	--text-body4: 9px;
+	--text-body4--line-height: 1.5;
+
+	/* Container */
+	--container-padding: 2rem;
+	--container-2xl: 1400px;
+
+	/* Animations */
+	@keyframes accordion-down {
+		from {
+			height: 0;
+		}
+		to {
+			height: var(--radix-accordion-content-height);
+		}
+	}
+
+	@keyframes accordion-up {
+		from {
+			height: var(--radix-accordion-content-height);
+		}
+		to {
+			height: 0;
+		}
+	}
+
+	@keyframes caret-blink {
+		0%,
+		70%,
+		100% {
+			opacity: 1;
+		}
+		20%,
+		50% {
+			opacity: 0;
+		}
+	}
+
+	--animate-accordion-down: accordion-down 0.2s ease-out;
+	--animate-accordion-up: accordion-up 0.2s ease-out;
+	--animate-caret-blink: caret-blink 1.25s ease-out infinite;
+}
+
+.dark {
+	--color-background: hsl(222.2 84% 4.9%);
+	--color-foreground: hsl(210 40% 98%);
+
+	--color-card: hsl(222.2 84% 4.9%);
+	--color-card-foreground: hsl(210 40% 98%);
+
+	--color-popover: hsl(222.2 84% 4.9%);
+	--color-popover-foreground: hsl(210 40% 98%);
+
+	--color-primary: hsl(210 40% 98%);
+	--color-primary-foreground: hsl(222.2 47.4% 11.2%);
+
+	--color-secondary: hsl(217.2 32.6% 17.5%);
+	--color-secondary-foreground: hsl(210 40% 98%);
+
+	--color-muted: hsl(217.2 32.6% 17.5%);
+	--color-muted-foreground: hsl(215 20.2% 65.1%);
+
+	--color-accent: hsl(217.2 32.6% 17.5%);
+	--color-accent-foreground: hsl(210 40% 98%);
+
+	--color-destructive: hsl(0 62.8% 30.6%);
+	--color-destructive-foreground: hsl(210 40% 98%);
+
+	--color-border: hsl(217.2 32.6% 17.5%);
+	--color-input: hsl(217.2 32.6% 17.5%);
+	--color-ring: hsl(212.7 26.8% 83.9%);
+}
+
+/* Tailwind base layer */
+@layer base {
+	* {
+		@apply m-0 p-0 box-border;
+	}
+	body {
+		@apply bg-background text-black;
+	}
+}
