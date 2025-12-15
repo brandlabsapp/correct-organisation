@@ -27,6 +27,7 @@ import { BullModule } from '@nestjs/bullmq';
 import { QdrantModule } from './qdrant/qdrant.module';
 import { ExtractionService } from './extraction/extraction.service';
 import { MastraModule } from './mastra/mastra.module';
+import { ExtractionController } from './extraction/extraction.controller';
 @Module({
   imports: [
     CacheModule.register({
@@ -78,7 +79,7 @@ import { MastraModule } from './mastra/mastra.module';
     QdrantModule,
     MastraModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, ExtractionController],
   providers: [AppService, OpenaiService, N8nService, OtpService, ExtractionService],
 })
 export class AppModule {}
