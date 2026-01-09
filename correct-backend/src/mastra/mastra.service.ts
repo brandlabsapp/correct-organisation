@@ -27,7 +27,7 @@ export class MastraService {
     messages: string[],
     conversationId: string,
     metadata?: any,
-  ) {
+  ): Promise<any> {
     if (!agentId) {
       agentId = AGENT_ID;
     }

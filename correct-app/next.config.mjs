@@ -31,13 +31,10 @@ const nextConfig = {
 		],
 		// Enable modern image formats (WebP, AVIF)
 		formats: ['image/avif', 'image/webp'],
-		// Optimize image quality (default is 75, we keep it for balance)
-		quality: 75,
 	},
 
 	// Performance optimizations
 	compress: true, // Enable gzip compression
-	swcMinify: true, // Use SWC for faster minification (default in Next.js 16)
 	productionBrowserSourceMaps: false, // Disable source maps in production to reduce bundle size
 
 	// Automatic tree-shaking for heavy libraries

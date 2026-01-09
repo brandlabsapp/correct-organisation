@@ -10,10 +10,14 @@ import {
 import { AuthService } from './auth.service';
 import { AuthDTO, VerifyOtpDTO } from './constants/auth.dto';
 import { Public } from './public.decorator';
-import { ApiTags, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Auth } from './auth.decorator';
 import { NotificationService } from '@/notification/notification.service';
 import { PushService } from '@/notification/push/push.service';
+import {
+  ErrorResponseDto,
+  ValidationErrorResponseDto,
+} from '@/core/dto/api-responses.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -22,10 +26,19 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly notificationService: NotificationService,
     private readonly pushService: PushService,
-  ) {}
+  ) { }
 
   @Public()
+  @ApiOperation({
+    summary: 'User Login',
+    description: 'Initiate login process. Sends an OTP to the provided phone number.',
+  })
   @ApiBody({ type: AuthDTO })
+  @ApiResponse({
+    status: 201,
+    description: 'Login initiated successfully',
+  })
+  @ApiResponse({ status: 400, type: ValidationErrorResponseDto })
   @Post('login')
   async signIn(@Body() signInDto: AuthDTO) {
     try {
@@ -92,7 +105,16 @@ export class AuthController {
   // }
 
   @Public()
+  @ApiOperation({
+    summary: 'Verify OTP',
+    description: 'Validate the OTP sent to the user phone.',
+  })
   @ApiBody({ type: VerifyOtpDTO })
+  @ApiResponse({
+    status: 201,
+    description: 'OTP verified successfully, returns access token.',
+  })
+  @ApiResponse({ status: 401, type: ErrorResponseDto, description: 'Invalid OR Expired OTP' })
   @Post('verify-otp')
   async verifyOtp(@Body() data: VerifyOtpDTO) {
     const token = await this.authService.verifyOtp(data);

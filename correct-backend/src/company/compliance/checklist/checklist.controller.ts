@@ -10,13 +10,15 @@ import {
 import { ChecklistService } from './checklist.service';
 import { CreateChecklistDto } from './dto/create-checklist.dto';
 import { NotificationService } from '@/notification/notification.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('compliance')
 @Controller('checklist')
 export class ChecklistController {
   constructor(
     private readonly checklistService: ChecklistService,
     private readonly notificationService: NotificationService,
-  ) {}
+  ) { }
 
   @Post()
   async create(@Body() createChecklistDto: CreateChecklistDto) {

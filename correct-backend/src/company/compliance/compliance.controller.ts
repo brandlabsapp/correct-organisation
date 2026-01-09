@@ -16,14 +16,16 @@ import { CreateComplianceDto } from './dto/create-compliance.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { SupabaseStorageService } from '@/supabase/supabase-storage.service';
 import { DocumentService } from '@/vault/document/document.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('compliance')
 @Controller('compliance')
 export class ComplianceController {
   constructor(
     private readonly complianceService: ComplianceService,
     private readonly supabaseStorageService: SupabaseStorageService,
     private readonly documentService: DocumentService,
-  ) {}
+  ) { }
 
   @Post()
   async create(@Body() createComplianceDto: CreateComplianceDto) {

@@ -7,14 +7,16 @@ import {
   Delete,
   Post,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AdminService } from './admin.service';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { CreateAdminDto, LoginAdminDto } from './dto/create-admin.dto';
 import { CreateChecklistDto } from './dto/checklist.dto';
 
+@ApiTags('admin')
 @Controller('admin')
 export class AdminController {
-  constructor(private readonly adminService: AdminService) {}
+  constructor(private readonly adminService: AdminService) { }
 
   @Get(':id')
   async getAdminById(@Param('id') id: string) {

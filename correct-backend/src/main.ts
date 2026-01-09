@@ -40,20 +40,47 @@ async function bootstrap() {
   app.useGlobalFilters(new GlobalExceptionFilter());
 
   const config = new DocumentBuilder()
-    .setTitle('Compliance Backend')
-    .setDescription('The Compliance Description')
-    .setVersion('1.0')
-    .addTag('Compliance')
-    .addBearerAuth()
+    .setTitle('Correct Compliance - API')
+    .setDescription(
+      'The API documentation for Correct Compliance backend. This API handles authentication, company filings, document extraction, and compliance tasks.',
+    )
+    .setVersion('1.1.0')
+    .addTag('auth', 'Identity and Access Management')
+    .addTag('user', 'User Profile and Management')
+    .addTag('company', 'Company and Business logic')
+    .addTag('compliance', 'Compliance monitoring and tasks')
+    .addTag('vault', 'Secure Document Storage')
+    .addTag('notifications', 'Push and in-app notifications')
+    .addTag('ai-chat', 'AI Conversation and Mastra integration')
+    .addTag('extraction', 'Document processing and AI extraction')
+    .addTag('admin', 'Administrative operations')
+    .addTag('billing', 'Subscription and billing management')
+    .addTag('system', 'Core system and health checks')
+    .addBearerAuth({
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
+      name: 'JWT',
+      description: 'Enter JWT token',
+      in: 'header',
+    })
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document, {
-    customSiteTitle: 'Compliance API Docs',
+    customSiteTitle: 'Correct API Docs',
     customfavIcon:
       'https://cdn.iconscout.com/icon/free/png-256/free-correct-1-226447.png',
-    customCss: '.swagger-ui .topbar { display: none }',
+    customCss: `
+      .swagger-ui .topbar { display: none }
+      .swagger-ui .info { margin-bottom: 20px }
+    `,
     jsonDocumentUrl: '/docs-json',
+    swaggerOptions: {
+      persistAuthorization: true,
+      displayRequestDuration: true,
+      filter: true,
+    },
   });
 
   await app.listen(process.env.PORT || 8000);

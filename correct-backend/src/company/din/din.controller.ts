@@ -1,11 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { DinService } from './din.service';
 import { CreateDinDto } from './dto/create-din.dto';
 import { UpdateDinDto } from './dto/update-din.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('company')
 @Controller('din')
 export class DinController {
-  constructor(private readonly dinService: DinService) {}
+  constructor(private readonly dinService: DinService) { }
 
   @Post()
   create(@Body() createDinDto: CreateDinDto) {

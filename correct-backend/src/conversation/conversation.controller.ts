@@ -10,10 +10,12 @@ import {
 import { ConversationService } from './conversation.service';
 import { CreateConversationDto } from './dto/create-conversation.dto';
 import { UpdateConversationDto } from './dto/update-conversation.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('ai-chat')
 @Controller('conversation')
 export class ConversationController {
-  constructor(private readonly conversationService: ConversationService) {}
+  constructor(private readonly conversationService: ConversationService) { }
 
   @Post()
   async generateResponse(@Body() createConversationDto: CreateConversationDto) {

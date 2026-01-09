@@ -13,7 +13,9 @@ import { memoryStorage } from 'multer';
 import { ExtractionService } from '@/extraction/extraction.service';
 import { QdrantService } from '@/qdrant/qdrant.service';
 import { CORRECT_COLLECTION } from '@/core/constants';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('vault')
 @Controller('document')
 export class DocumentController {
   constructor(
@@ -21,7 +23,7 @@ export class DocumentController {
     private readonly supabaseStorageService: SupabaseStorageService,
     private readonly extractionService: ExtractionService,
     private readonly qdrantService: QdrantService,
-  ) {}
+  ) { }
 
   @Post('upload')
   @UseInterceptors(

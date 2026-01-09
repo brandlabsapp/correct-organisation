@@ -21,13 +21,16 @@ import {
 } from 'src/core/helpers/s3';
 import { DocumentService } from './document/document.service';
 import { FolderService } from './folder/folder.service';
+import { ApiTags } from '@nestjs/swagger';
+
+@ApiTags('vault')
 @Controller('vault')
 export class VaultController {
   constructor(
     private readonly vaultService: VaultService,
     private readonly documentService: DocumentService,
     private readonly folderService: FolderService,
-  ) {}
+  ) { }
 
   @Get('company/:companyId')
   async findUserFolders(@Param('companyId') companyId: string) {

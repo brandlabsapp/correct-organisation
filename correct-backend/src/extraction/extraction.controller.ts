@@ -6,10 +6,12 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ExtractionService } from './extraction.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('extraction')
 @Controller()
 export class ExtractionController {
-  constructor(private readonly extractionService: ExtractionService) {}
+  constructor(private readonly extractionService: ExtractionService) { }
 
   /**
    * Equivalent to the previous Python `/process-pdf/` endpoint.
@@ -23,5 +25,3 @@ export class ExtractionController {
     return { text };
   }
 }
-
-

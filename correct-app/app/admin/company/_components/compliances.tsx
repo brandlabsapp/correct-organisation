@@ -58,8 +58,8 @@ interface ComplianceTableMeta {
 	handleRemove: (id: number) => void;
 }
 
-declare module '@tanstack/table-core' {
-	interface TableMeta<TData extends unknown> extends ComplianceTableMeta {}
+declare module '@tanstack/react-table' {
+	interface TableMeta<TData extends unknown> extends ComplianceTableMeta { }
 }
 
 const columns: ColumnDef<Compliance>[] = [
@@ -114,15 +114,15 @@ const columns: ColumnDef<Compliance>[] = [
 						compliance.status === 'completed'
 							? 'Completed'
 							: compliance.status === 'in-progress'
-							? 'In Progress'
-							: 'Not Started'
+								? 'In Progress'
+								: 'Not Started'
 					}
 					color={
 						compliance.status === 'completed'
 							? 'green'
 							: compliance.status === 'in-progress'
-							? 'yellow'
-							: 'red'
+								? 'yellow'
+								: 'red'
 					}
 					width='sm'
 				/>

@@ -12,10 +12,12 @@ import { CreateNotificationDto } from './dto/create-notification.dto';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
 import { CreateNotificationChangeDto } from './dto/create-notification-change.dto';
 import { CreateNotificationObjectDto } from './dto/create-notification-object.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('notifications')
 @Controller('notification')
 export class NotificationController {
-  constructor(private readonly notificationService: NotificationService) {}
+  constructor(private readonly notificationService: NotificationService) { }
 
   @Post()
   async createNotification(

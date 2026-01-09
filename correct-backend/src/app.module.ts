@@ -53,9 +53,24 @@ import { ExtractionController } from './extraction/extraction.controller';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         pinoHttp: {
-          level: configService.get('LOG_LEVEL'),
+          level: configService.get('LOG_LEVEL') || 'info',
           genReqId: (request) =>
             request.headers['x-correlation-id'] || uuidv4(),
+          hooks: {
+            logMethod(inputArgs, method) {
+              const [arg1] = inputArgs;
+              if (
+                arg1 &&
+                typeof arg1 === 'object' &&
+                'context' in arg1 &&
+                (arg1['context'] === 'RoutesResolver' ||
+                  arg1['context'] === 'RouterExplorer')
+              ) {
+                return;
+              }
+              return method.apply(this, inputArgs);
+            },
+          },
         },
       }),
     }),
@@ -80,6 +95,12 @@ import { ExtractionController } from './extraction/extraction.controller';
     MastraModule,
   ],
   controllers: [AppController, ExtractionController],
-  providers: [AppService, OpenaiService, N8nService, OtpService, ExtractionService],
+  providers: [
+    AppService,
+    OpenaiService,
+    N8nService,
+    OtpService,
+    ExtractionService,
+  ],
 })
-export class AppModule {}
+export class AppModule { }

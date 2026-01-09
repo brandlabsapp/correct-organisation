@@ -1,9 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
 import { CompanyMembersService } from './company-members.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('company')
 @Controller('company-members')
 export class CompanyMembersController {
-  constructor(private readonly companyMemberServices: CompanyMembersService) {}
+  constructor(private readonly companyMemberServices: CompanyMembersService) { }
   @Get('existing/:userId')
   async findAllCompaniesByUser(@Param('userId') userId: string) {
     try {

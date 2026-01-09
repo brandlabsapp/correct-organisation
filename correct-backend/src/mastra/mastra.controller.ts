@@ -10,12 +10,12 @@ import { MastraService } from './mastra.service';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CompanyService } from '@/company/company.service';
 @Controller('mastra')
-@ApiTags('Mastra')
+@ApiTags('ai-chat')
 export class MastraController {
   constructor(
     private readonly mastraService: MastraService,
     private readonly companyService: CompanyService,
-  ) {}
+  ) { }
 
   @Get()
   @ApiOperation({ summary: 'Get all agents' })
@@ -58,7 +58,7 @@ export class MastraController {
       conversationId?: string;
       metadata?: any;
     },
-  ) {
+  ): Promise<any> {
     const { agentId, messages, conversationId, metadata } = body;
     const response = await this.mastraService.generateResponse(
       agentId,

@@ -7,7 +7,9 @@ import {
   MemoryHealthIndicator,
   DiskHealthIndicator,
 } from '@nestjs/terminus';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('system')
 @Controller('health')
 export class HealthController {
   private readonly logger = new Logger(HealthController.name);
@@ -20,7 +22,7 @@ export class HealthController {
     private sequelize: SequelizeHealthIndicator,
     private memory: MemoryHealthIndicator,
     private disk: DiskHealthIndicator,
-  ) {}
+  ) { }
 
   @Get()
   @HealthCheck()

@@ -14,13 +14,15 @@ import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { CreateCompanyMembersDto } from './dto/company-member.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('company')
 @Controller('company')
 export class CompanyController {
   constructor(
     private readonly companyService: CompanyService,
     private readonly companyMemberServices: CompanyMembersService,
-  ) {}
+  ) { }
 
   @Post('register')
   create(@Body() createCompanyDto: CreateCompanyDto) {
