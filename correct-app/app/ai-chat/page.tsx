@@ -54,7 +54,7 @@ interface ChatSession {
 
 const AIChatPage = () => {
 	const router = useRouter();
-	const { user, logout, company, isAuthenticated } = useUserAuth();
+	const { user, logout, company, isAuthenticated, isLoading: isAuthLoading } = useUserAuth();
 	const { dismiss } = useToast();
 	const [currentMessage, setCurrentMessage] = useState('');
 	const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
@@ -74,7 +74,7 @@ const AIChatPage = () => {
 		},
 	]);
 	const [activeChatId, setActiveChatId] = useState('1');
-	const [isLoading, setIsLoading] = useState(false);
+	const [isMessageLoading, setIsMessageLoading] = useState(false);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -222,6 +222,8 @@ const AIChatPage = () => {
 		if (!activeChat) return;
 
 		// Check authentication before sending message
+		if (isAuthLoading) return; // Wait for initial auth check if refreshing
+
 		if (!isAuthenticated || !user) {
 			// Store the message for after login
 			sessionStorage.setItem('pendingMessage', currentMessage.trim());
@@ -234,7 +236,7 @@ const AIChatPage = () => {
 		const filesToUpload = [...attachedFiles];
 		setCurrentMessage('');
 		setAttachedFiles([]);
-		setIsLoading(true);
+		setIsMessageLoading(true);
 
 		let uploadedFiles: UploadedFile[] = [];
 		if (filesToUpload.length > 0) {
@@ -267,23 +269,25 @@ const AIChatPage = () => {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
+					Authorization: `Bearer ${user.token || localStorage.getItem('Authentication')}`,
 				},
 				body: JSON.stringify({
-					query: messageToSend,
-					sessionId: activeChatId,
 					messages: [{ role: 'user', content: messageToSend }],
 					data: {
 						userId: user?.id,
 						companyId: company?.id,
-						conversationId: activeChatId,
+						conversationId: activeChatId === '1' ? undefined : parseInt(activeChatId),
 					},
+					files: uploadedFiles,
 				}),
 			});
 
-			if (response.ok) {
-				const data = await response.json();
+			const data = await response.json();
+
+			if (data.success) {
 				console.log('data from ai chat', data);
-				let assistantContent = data.output;
+				// The proxy returns { data: { botContent, ... }, success: true }
+				let assistantContent = data.data?.botContent;
 
 				const assistantMessage: Message = {
 					id: (Date.now() + 1).toString(),
@@ -293,6 +297,11 @@ const AIChatPage = () => {
 					role: 'assistant',
 					timestamp: new Date(),
 				};
+
+				// Update activeChatId if the response contains a new conversation ID
+				if (data.data?.conversation?.id && activeChatId === '1') {
+					setActiveChatId(String(data.data.conversation.id));
+				}
 
 				setChatSessions((prev) =>
 					prev.map((chat) =>
@@ -306,31 +315,22 @@ const AIChatPage = () => {
 					)
 				);
 			} else {
-				throw new Error('Failed to get response');
+				showErrorToast({
+					title: 'Error',
+					message: data.message || 'Failed to get response',
+				});
+				// Restore message text on error
+				setCurrentMessage(messageToSend);
 			}
 		} catch (error) {
-			console.error('Error getting AI response:', error);
-
-			const errorMessage: Message = {
-				id: (Date.now() + 1).toString(),
-				content: 'I apologize, but I encountered an error. Please try again later.',
-				role: 'assistant',
-				timestamp: new Date(),
-			};
-
-			setChatSessions((prev) =>
-				prev.map((chat) =>
-					chat.id === activeChatId
-						? {
-							...chat,
-							messages: [...chat.messages, errorMessage],
-							lastUpdated: new Date(),
-						}
-						: chat
-				)
-			);
+			console.error('Error in handleSendMessage:', error);
+			showErrorToast({
+				title: 'Error',
+				message: 'An error occurred while sending the message',
+			});
+			setCurrentMessage(messageToSend);
 		} finally {
-			setIsLoading(false);
+			setIsMessageLoading(false);
 		}
 	};
 
@@ -387,8 +387,8 @@ const AIChatPage = () => {
 							key={chat.id}
 							onClick={() => handleChatSelect(chat.id)}
 							className={`p-3 rounded-lg cursor-pointer mb-2 transition-colors ${activeChatId === chat.id
-									? 'bg-blue text-white'
-									: 'hover:bg-gray-50 text-gray-900'
+								? 'bg-blue text-white'
+								: 'hover:bg-gray-50 text-gray-900'
 								}`}
 						>
 							<div className='flex items-center'>
@@ -487,8 +487,8 @@ const AIChatPage = () => {
 							>
 								<div
 									className={`max-w-[85%] md:max-w-[70%] rounded-lg px-4 py-3 ${message.role === 'user'
-											? 'bg-accent text-white'
-											: 'bg-white border border-gray-200 text-gray-900'
+										? 'bg-accent text-white'
+										: 'bg-white border border-gray-200 text-gray-900'
 										}`}
 								>
 									{message.files && message.files.length > 0 && (
@@ -530,18 +530,15 @@ const AIChatPage = () => {
 								</div>
 							</div>
 						))}
-
-						{isLoading && (
-							<div className='flex justify-start'>
-								<div className='bg-white border border-gray-200 rounded-lg px-4 py-3'>
-									<div className='flex items-center space-x-2'>
-										<div className='animate-pulse flex space-x-1'>
-											<div className='w-2 h-2 bg-gray-400 rounded-full'></div>
-											<div className='w-2 h-2 bg-gray-400 rounded-full'></div>
-											<div className='w-2 h-2 bg-gray-400 rounded-full'></div>
-										</div>
-										<span className='text-sm text-gray-500'>Analyzing...</span>
+						{isMessageLoading && (
+							<div className='flex justify-start mb-4'>
+								<div className='bg-gray-100 rounded-2xl px-4 py-2 flex items-center space-x-2'>
+									<div className='animate-pulse flex space-x-1'>
+										<div className='w-2 h-2 bg-gray-400 rounded-full'></div>
+										<div className='w-2 h-2 bg-gray-400 rounded-full'></div>
+										<div className='w-2 h-2 bg-gray-400 rounded-full'></div>
 									</div>
+									<span className='text-sm text-gray-500'>Analyzing...</span>
 								</div>
 							</div>
 						)}
@@ -578,7 +575,7 @@ const AIChatPage = () => {
 								type='button'
 								variant='ghost'
 								onClick={() => document.getElementById('file-upload-chat')?.click()}
-								disabled={isLoading}
+								disabled={isMessageLoading}
 								aria-label='Upload file'
 								className='h-10 w-10 shrink-0 rounded-full p-0 text-gray-600 hover:bg-gray-100'
 							>
@@ -599,18 +596,22 @@ const AIChatPage = () => {
 									onKeyPress={handleKeyPress}
 									placeholder='Ask anything about compliances'
 									className='w-full h-12 md:h-12 text-sm md:text-base rounded-2xl pr-24 md:pr-24 bg-gray-100 border-0 focus-visible:ring-2 focus-visible:ring-accent placeholder:text-gray-500'
-									disabled={isLoading}
+									disabled={isMessageLoading}
 								/>
 								<div className='absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1'>
 									<Button
 										onClick={handleSendMessage}
 										disabled={
-											(!currentMessage.trim() && attachedFiles.length === 0) || isLoading
+											(!currentMessage.trim() && attachedFiles.length === 0) || isMessageLoading
 										}
 										aria-label='Send'
-										className='h-8 w-8 p-0 rounded-full text-white disabled:bg-gray-300 disabled:opacity-50'
+										className='h-10 w-10 shrink-0 rounded-full bg-blue-600 p-0 text-white hover:bg-blue-700 disabled:bg-gray-100 disabled:text-gray-400'
 									>
-										<Send className='h-4 w-4' />
+										{isMessageLoading ? (
+											<div className='h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent' />
+										) : (
+											<Send className='h-5 w-5' />
+										)}
 									</Button>
 								</div>
 							</div>

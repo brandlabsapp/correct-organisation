@@ -22,33 +22,27 @@ export function AuthLayoutWrapper({ children }: AuthLayoutWrapperProps) {
 
 	if (isPublicRoute) {
 		return (
-			<>
+			<UserProvider>
 				<Header />
 				{children}
-			</>
-		);
-	}
-
-	if (isHomePage) {
-		return <UserProvider>{children}</UserProvider>;
-	}
-
-	if (isAuthPage) {
-		return (
-			<>
-				<Toaster />
-				{children}
-			</>
+			</UserProvider>
 		);
 	}
 
 	return (
 		<UserProvider>
-			<AdminProvider>
-				<Toaster />
-				<Header />
-				{children}
-			</AdminProvider>
+			{isAuthPage ? (
+				<>
+					<Toaster />
+					{children}
+				</>
+			) : (
+				<AdminProvider>
+					<Toaster />
+					<Header />
+					{children}
+				</AdminProvider>
+			)}
 		</UserProvider>
 	);
 }

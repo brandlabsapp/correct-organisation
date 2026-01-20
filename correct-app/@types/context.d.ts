@@ -65,6 +65,7 @@ declare namespace AppTypes {
 	export interface UserAuthContextType {
 		user: User | null;
 		isAuthenticated: boolean;
+		isLoading: boolean;
 		login: (userData: User) => void;
 		logout: () => void;
 		updateUser: (userData: User) => void;

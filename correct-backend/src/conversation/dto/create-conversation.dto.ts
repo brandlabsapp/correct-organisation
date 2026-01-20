@@ -1,12 +1,14 @@
 import { IsNumber, IsOptional } from 'class-validator';
 export class CreateConversationDto {
   @IsNumber()
+  @IsOptional()
   userId: number;
   @IsNumber()
+  @IsOptional()
   companyId: number;
   @IsNumber()
   @IsOptional()
-  converastionId: number;
+  conversationId: number;
   @IsOptional()
   startDate: Date;
   @IsOptional()

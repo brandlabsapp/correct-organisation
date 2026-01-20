@@ -47,14 +47,14 @@ export class Conversation extends Model<Conversation> {
   @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
   })
   userId: number;
 
   @ForeignKey(() => CompanyDetails)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
   })
   companyId: number;
 

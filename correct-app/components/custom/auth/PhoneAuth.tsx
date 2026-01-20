@@ -8,6 +8,7 @@ import { MAX_RESEND_ATTEMPTS } from '@/utils/constants/constant';
 import useOtpCountdown from '@/hooks/use-countdown';
 import OtpVerificationForm from './OtpVerificationForm';
 import PhoneInputForm from './PhoneInput';
+import { useUserAuth } from '@/contexts/user';
 
 const PhoneFormSchema = z.object({
 	phoneNumber: z.string().regex(/^\d{10}$/, 'Invalid phone number'),
@@ -71,6 +72,7 @@ export default function PhoneAuth() {
 	const [phoneNumber, setPhoneNumber] = useState<string>('');
 	const { countdown, resetCountdown } = useOtpCountdown(isOtpSent);
 
+	const { login } = useUserAuth();
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const token = searchParams.get('token');
@@ -114,8 +116,19 @@ export default function PhoneAuth() {
 					title: 'Success',
 					message: 'OTP verified successfully.',
 				});
-				localStorage.setItem('Authentication', result.access_token);
-				localStorage.setItem('companyId', result.id);
+				const userData = result.data;
+				const accessToken = userData.access_token;
+				localStorage.setItem('Authentication', accessToken);
+				if (userData.companyDetails && userData.companyDetails.length > 0) {
+					localStorage.setItem('companyId', String(userData.companyDetails[0].id));
+				}
+
+				// Update global auth state immediately
+				login({
+					...userData,
+					token: accessToken, // Map access_token to token field if needed by AppTypes.User
+				});
+
 				handleSuccessRedirect(result);
 			} else {
 				showErrorToast({
@@ -171,9 +184,8 @@ export default function PhoneAuth() {
 
 			showSuccessToast({
 				title: 'Success',
-				message: `OTP resent successfully. ${
-					MAX_RESEND_ATTEMPTS - resendAttempts - 1
-				} attempts remaining.`,
+				message: `OTP resent successfully. ${MAX_RESEND_ATTEMPTS - resendAttempts - 1
+					} attempts remaining.`,
 			});
 		} catch (error) {
 			console.error('Error resending OTP:', error);

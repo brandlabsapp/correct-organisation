@@ -24,6 +24,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 	const [company, setCompany] = useState<AppTypes.Company | null>(null);
 	const [members, setMembers] = useState<AppTypes.Member[]>([]);
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 	const isInitializingRef = useRef(false);
 	const hasInitializedRef = useRef(false);
 
@@ -88,6 +89,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 			const pathname = window.location.pathname;
 			if (allowedRoutes.includes(pathname)) {
 				isInitializingRef.current = false;
+				setIsLoading(false);
 				return;
 			}
 
@@ -113,6 +115,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 				}
 			} finally {
 				isInitializingRef.current = false;
+				setIsLoading(false);
 			}
 		};
 
@@ -139,6 +142,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 			value={{
 				user,
 				isAuthenticated,
+				isLoading,
 				login,
 				logout,
 				updateUser,

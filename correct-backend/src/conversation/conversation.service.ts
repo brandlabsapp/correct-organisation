@@ -24,7 +24,7 @@ export class ConversationService {
     private readonly conversationMessageRepository: typeof ConversationMessage,
     private readonly n8nService: N8nService,
     private readonly mastraService: MastraService,
-  ) {}
+  ) { }
 
   async getResponseFromN8N(createConversationDto: any) {
     try {
@@ -52,7 +52,11 @@ export class ConversationService {
         );
       }
       const latestMessage =
-        messages.length > 0 ? messages[messages.length - 1] : messages[0];
+        messages && messages.length > 0 ? messages[messages.length - 1] : (messages ? messages[0] : null);
+
+      if (!latestMessage) {
+        throw new BadRequestException('No messages provided');
+      }
 
       const agentId = 'orchestratorAgent';
       const mastraResponse = await this.mastraService.generateResponse(
@@ -117,7 +121,7 @@ export class ConversationService {
       }
 
       this.logger.log(
-        `Created new conversation ${conversation.id} for user ${userId} and company ${companyId}`,
+        `Created new conversation ${conversation.id} for user ${userId || 'GUEST'} and company ${companyId || 'NONE'}`,
       );
 
       return conversation;
@@ -136,7 +140,7 @@ export class ConversationService {
       const response = await this.conversationRepository.findAll({
         where: {
           userId,
-          companyId,
+          ...(companyId !== undefined && { companyId }),
         },
         order: [['createdAt', 'DESC']],
         include: [ConversationMessage],
