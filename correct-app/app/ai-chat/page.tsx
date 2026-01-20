@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useUserAuth } from '@/contexts/user';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -52,7 +53,8 @@ interface ChatSession {
 }
 
 const AIChatPage = () => {
-	const { user, logout, company } = useUserAuth();
+	const router = useRouter();
+	const { user, logout, company, isAuthenticated } = useUserAuth();
 	const { dismiss } = useToast();
 	const [currentMessage, setCurrentMessage] = useState('');
 	const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
@@ -219,6 +221,15 @@ const AIChatPage = () => {
 		if (!currentMessage.trim() && attachedFiles.length === 0) return;
 		if (!activeChat) return;
 
+		// Check authentication before sending message
+		if (!isAuthenticated || !user) {
+			// Store the message for after login
+			sessionStorage.setItem('pendingMessage', currentMessage.trim());
+			sessionStorage.setItem('loginSource', 'ai-chat');
+			router.push('/login?redirect=ai-chat');
+			return;
+		}
+
 		const messageToSend = currentMessage;
 		const filesToUpload = [...attachedFiles];
 		setCurrentMessage('');
@@ -243,10 +254,10 @@ const AIChatPage = () => {
 			prev.map((chat) =>
 				chat.id === activeChatId
 					? {
-							...chat,
-							messages: [...chat.messages, userMessage],
-							lastUpdated: new Date(),
-					  }
+						...chat,
+						messages: [...chat.messages, userMessage],
+						lastUpdated: new Date(),
+					}
 					: chat
 			)
 		);
@@ -287,10 +298,10 @@ const AIChatPage = () => {
 					prev.map((chat) =>
 						chat.id === activeChatId
 							? {
-									...chat,
-									messages: [...chat.messages, assistantMessage],
-									lastUpdated: new Date(),
-							  }
+								...chat,
+								messages: [...chat.messages, assistantMessage],
+								lastUpdated: new Date(),
+							}
 							: chat
 					)
 				);
@@ -311,10 +322,10 @@ const AIChatPage = () => {
 				prev.map((chat) =>
 					chat.id === activeChatId
 						? {
-								...chat,
-								messages: [...chat.messages, errorMessage],
-								lastUpdated: new Date(),
-						  }
+							...chat,
+							messages: [...chat.messages, errorMessage],
+							lastUpdated: new Date(),
+						}
 						: chat
 				)
 			);
@@ -349,9 +360,8 @@ const AIChatPage = () => {
 			)}
 
 			<div
-				className={`absolute md:relative z-50 w-80 bg-white border-r border-gray-200 flex flex-col transition-transform duration-300 ease-in-out ${
-					isDrawerOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-				} h-full`}
+				className={`absolute md:relative z-50 w-80 bg-white border-r border-gray-200 flex flex-col transition-transform duration-300 ease-in-out ${isDrawerOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+					} h-full`}
 			>
 				<div className='p-4 border-b border-gray-200'>
 					<div className='flex items-center justify-between mb-3 md:mb-0'>
@@ -376,30 +386,26 @@ const AIChatPage = () => {
 						<div
 							key={chat.id}
 							onClick={() => handleChatSelect(chat.id)}
-							className={`p-3 rounded-lg cursor-pointer mb-2 transition-colors ${
-								activeChatId === chat.id
+							className={`p-3 rounded-lg cursor-pointer mb-2 transition-colors ${activeChatId === chat.id
 									? 'bg-blue text-white'
 									: 'hover:bg-gray-50 text-gray-900'
-							}`}
+								}`}
 						>
 							<div className='flex items-center'>
 								<MessageSquare
-									className={`w-4 h-4 mr-2 ${
-										activeChatId === chat.id ? 'text-black' : 'text-gray-500'
-									}`}
+									className={`w-4 h-4 mr-2 ${activeChatId === chat.id ? 'text-black' : 'text-gray-500'
+										}`}
 								/>
 								<div className='flex-1 min-w-0'>
 									<p
-										className={`text-sm font-medium truncate ${
-											activeChatId === chat.id ? 'text-black' : 'text-gray-900'
-										}`}
+										className={`text-sm font-medium truncate ${activeChatId === chat.id ? 'text-black' : 'text-gray-900'
+											}`}
 									>
 										{chat.title}
 									</p>
 									<p
-										className={`text-xs ${
-											activeChatId === chat.id ? 'text-black' : 'text-gray-500'
-										}`}
+										className={`text-xs ${activeChatId === chat.id ? 'text-black' : 'text-gray-500'
+											}`}
 									>
 										{chat.messages.length} messages
 									</p>
@@ -476,16 +482,14 @@ const AIChatPage = () => {
 						{activeChat?.messages.map((message) => (
 							<div
 								key={message.id}
-								className={`flex ${
-									message.role === 'user' ? 'justify-end' : 'justify-start'
-								}`}
+								className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'
+									}`}
 							>
 								<div
-									className={`max-w-[85%] md:max-w-[70%] rounded-lg px-4 py-3 ${
-										message.role === 'user'
+									className={`max-w-[85%] md:max-w-[70%] rounded-lg px-4 py-3 ${message.role === 'user'
 											? 'bg-accent text-white'
 											: 'bg-white border border-gray-200 text-gray-900'
-									}`}
+										}`}
 								>
 									{message.files && message.files.length > 0 && (
 										<div className='mb-3 space-y-2'>
@@ -518,9 +522,8 @@ const AIChatPage = () => {
 									)}
 									<Markdown content={message.content} />
 									<p
-										className={`text-xs mt-2 ${
-											message.role === 'user' ? 'text-blue-100' : 'text-gray-500'
-										}`}
+										className={`text-xs mt-2 ${message.role === 'user' ? 'text-blue-100' : 'text-gray-500'
+											}`}
 									>
 										{format(message.timestamp, 'HH:mm')}
 									</p>

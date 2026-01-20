@@ -44,4 +44,4 @@ export const templateData = [
 	},
 ];
 
-export const allowedRoutes = ['/auth', '/admin', '/correct', '/ai-chat'];
+export const allowedRoutes = ['/', '/auth', '/admin', '/correct', '/ai-chat', '/login'];

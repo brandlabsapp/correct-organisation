@@ -81,7 +81,6 @@
     "stopword": "^3.0.1",
     "swagger-ui-express": "^5.0.1",
     "tesseract.js": "^5.1.0",
-    "twilio": "^5.6.1",
     "uuid": "^13.0.0",
     "zod": "^3.23.8"
   },

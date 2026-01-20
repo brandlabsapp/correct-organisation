@@ -27,7 +27,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang='en' className='font-nicky-sans'>
+		<html lang='en' className='font-nicky-sans' suppressHydrationWarning>
 			<head>
 				<link rel='icon' href='/assets/logo/logo.svg' />
 			</head>

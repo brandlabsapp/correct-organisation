@@ -6,64 +6,15 @@ const formUrlEncoded = (x: { [key: string]: string }): string =>
 
 @Injectable()
 export class OtpService {
-  private msg91: any;
-  private apiKey: string;
-  private token: string;
-  private sid: string;
-  private from: string;
-  private dltEntityId: string;
-  private dltTemplateId: string;
-
   private msg91AuthKey: string;
   private msg91TemplateId: string;
   private msg91OtpTemplateId: string;
 
   constructor() {
-    this.apiKey = process.env.SMS_API_KEY!;
-    this.token = process.env.SMS_API_SECRET!;
-    this.sid = process.env.SMS_SENDER_ID!;
-    this.dltEntityId = process.env.SMS_DLT_ENTITY_ID!;
-    this.dltTemplateId = process.env.SMS_DLT_TEMPLATE_ID!;
-    this.from = 'CORRCT';
-
     // MSG91 Flow API configuration
     this.msg91AuthKey = process.env.MSG91_AUTH_KEY!;
     this.msg91TemplateId = process.env.MSG91_TEMPLATE_ID!;
     this.msg91OtpTemplateId = process.env.MSG91_OTP_TEMPLATE_ID!;
-  }
-
-  async sendSMSWithExotel(to: string, otp: string | null) {
-    const body = `Dear User, please proceed with this OTP ${otp}. From Myna Mahila Foundation`;
-
-    const url = `https://${this.apiKey}:${this.token}@api.exotel.com/v1/Accounts/${this.sid}/Sms/send`;
-
-    console.log('url', url);
-
-    axios
-      .post(
-        url,
-        formUrlEncoded({
-          From: this.from,
-          To: `91${to}`,
-          Body: body,
-          DltEntityId: this.dltEntityId,
-          DltTemplateId: this.dltTemplateId,
-        }),
-        {
-          withCredentials: true,
-          headers: {
-            Accept: 'application/x-www-form-urlencoded',
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        },
-      )
-      .then((res: any) => {
-        console.log(`statusCode: ${res.status}`);
-        console.log(res.data);
-      })
-      .catch((error: any) => {
-        console.error('error', error);
-      });
   }
 
   async sendOtpWithMSG91Flow(
@@ -129,22 +80,21 @@ export class OtpService {
       }
 
       const url = 'https://control.msg91.com/api/v5/otp';
+      const formattedMobile = mobile.startsWith('91') ? mobile : `91${mobile}`;
 
       const queryParams = new URLSearchParams({
-        mobile: mobile.startsWith('91') ? mobile : `91${mobile}`,
-        authkey: this.msg91AuthKey,
+        mobile: formattedMobile,
         otp_expiry: otpExpiry.toString(),
         template_id: this.msg91OtpTemplateId,
         realTimeResponse: realTimeResponse ? '1' : '0',
       });
 
-      const body = JSON.stringify({ otp: otp });
-
       const response = await axios.post(
         `${url}?${queryParams.toString()}`,
-        body,
+        { otp },
         {
           headers: {
+            authkey: this.msg91AuthKey,
             'Content-Type': 'application/json',
           },
         },
@@ -153,7 +103,13 @@ export class OtpService {
       console.log('MSG91 OTP Send Response:', response.data);
       return response.data;
     } catch (error) {
-      console.error('Error sending OTP via MSG91 OTP API:', error);
+      if (axios.isAxiosError(error)) {
+        console.error('MSG91 API Error (Send):', {
+          status: error.response?.status,
+          data: error.response?.data,
+          message: error.message,
+        });
+      }
       throw error;
     }
   }
@@ -182,7 +138,13 @@ export class OtpService {
       console.log('MSG91 OTP Verify Response:', response.data);
       return response.data;
     } catch (error) {
-      console.error('Error verifying OTP via MSG91 OTP API:', error);
+      if (axios.isAxiosError(error)) {
+        console.error('MSG91 API Error (Verify):', {
+          status: error.response?.status,
+          data: error.response?.data,
+          message: error.message,
+        });
+      }
       throw error;
     }
   }
@@ -199,20 +161,31 @@ export class OtpService {
       }
 
       const url = 'https://control.msg91.com/api/v5/otp/retry';
+      const formattedMobile = mobile.startsWith('91') ? mobile : `91${mobile}`;
 
       const queryParams = new URLSearchParams({
-        authkey: this.msg91AuthKey,
         retrytype: retryType,
-        mobile: mobile.startsWith('91') ? mobile : `91${mobile}`,
+        mobile: formattedMobile,
       });
 
-      const response = await axios.get(`${url}?${queryParams.toString()}`);
+      const response = await axios.get(`${url}?${queryParams.toString()}`, {
+        headers: {
+          authkey: this.msg91AuthKey,
+        },
+      });
 
       console.log('MSG91 OTP Resend Response:', response.data);
       return response.data;
     } catch (error) {
-      console.error('Error resending OTP via MSG91 OTP API:', error);
+      if (axios.isAxiosError(error)) {
+        console.error('MSG91 API Error (Resend):', {
+          status: error.response?.status,
+          data: error.response?.data,
+          message: error.message,
+        });
+      }
       throw error;
     }
   }
 }
+
