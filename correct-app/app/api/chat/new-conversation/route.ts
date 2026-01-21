@@ -6,8 +6,8 @@ export const POST = async (req: Request) => {
 	try {
 		const { userId, companyId } = await req.json();
 
-		if (!userId || !companyId) {
-			return errorHandler(null, 'User ID and Company ID are required', 400);
+		if (!userId) {
+			return errorHandler(null, 'User ID is required', 400);
 		}
 
 		const payload = {

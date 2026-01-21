@@ -26,6 +26,7 @@ import {
 	showErrorToast,
 } from '@/lib/utils/toast-handlers';
 import { useToast } from '@/hooks/use-toast';
+import { constructFromSymbol } from 'date-fns/constants';
 
 interface UploadedFile {
 	id?: string;
@@ -37,7 +38,7 @@ interface UploadedFile {
 }
 
 interface Message {
-	id: string;
+	id?: string;
 	content: string;
 	role: 'user' | 'assistant';
 	timestamp: Date;
@@ -66,6 +67,8 @@ const AIChatPage = () => {
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 
 	const activeChat = chatSessions.find((chat) => chat.id === activeChatId);
+
+	console.log("activeChat",activeChat)
 
 	const scrollToBottom = () => {
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -154,7 +157,6 @@ const AIChatPage = () => {
 				);
 				
 				setChatSessions(formattedSessions);
-                // If we found sessions, set active to the first one if we are currently on default '1'
                 if (activeChatId === '1' && formattedSessions.length > 0) {
                     setActiveChatId(formattedSessions[0].id);
                 }
@@ -184,26 +186,11 @@ const AIChatPage = () => {
 				message: 'Failed to load conversation history',
 			});
             // On error also create a default chat so user isn't stuck empty
-            const newChatId = Date.now().toString();
-                 const newChat: ChatSession = {
-                     id: newChatId,
-                     title: 'New Compliance Chat',
-                     messages: [
-                         {
-                             id: Date.now().toString(),
-                             content: "Hello! I'm your compliance assistant. How can I help you today?",
-                             role: 'assistant',
-                             timestamp: new Date(),
-                         },
-                     ],
-                     lastUpdated: new Date(),
-                 };
-                 setChatSessions([newChat]);
-                 setActiveChatId(newChatId);
+
 		} finally {
             setIsLoadingConversations(false);
         }
-	}, [user?.id, company?.id, activeChatId]);
+	}, [user?.id, company?.id]); // Removed activeChatId to prevent infinite loop
 
 	useEffect(() => {
 		// Fetch even if company is null, as long as user is authenticated
@@ -212,14 +199,21 @@ const AIChatPage = () => {
 		}
 	}, [isAuthenticated, user, company, fetchConversations]);
 
-	const createNewChat = () => {
-		const newChatId = Date.now().toString();
+	const createNewChat = async () => {
+		const response = await fetch('/api/chat/new-conversation', {
+			method: 'POST',
+			body: JSON.stringify({
+				userId: user?.id,
+				companyId: company?.id,
+			}),
+		})
+		const { data } = await response.json()
+		const newChatId = data.id	
 		const newChat: ChatSession = {
 			id: newChatId,
 			title: 'New Compliance Chat',
 			messages: [
 				{
-					id: Date.now().toString(),
 					content: "Hello! I'm your compliance assistant. How can I help you today?",
 					role: 'assistant',
 					timestamp: new Date(),
@@ -227,6 +221,7 @@ const AIChatPage = () => {
 			],
 			lastUpdated: new Date(),
 		};
+
 
 		setChatSessions((prev) => [newChat, ...prev]);
 		setActiveChatId(newChatId);
