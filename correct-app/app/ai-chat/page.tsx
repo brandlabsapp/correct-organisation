@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUserAuth } from '@/contexts/user';
 import { Button } from '@/components/ui/button';
@@ -58,21 +58,8 @@ const AIChatPage = () => {
 	const { dismiss } = useToast();
 	const [currentMessage, setCurrentMessage] = useState('');
 	const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
-	const [chatSessions, setChatSessions] = useState<ChatSession[]>([
-		{
-			id: '1',
-			title: 'Compliance Questions',
-			messages: [
-				{
-					id: '1',
-					content: "Hello! I'm your compliance assistant. How can I help you today?",
-					role: 'assistant',
-					timestamp: new Date(),
-				},
-			],
-			lastUpdated: new Date(),
-		},
-	]);
+	const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
+    const [isLoadingConversations, setIsLoadingConversations] = useState(true);
 	const [activeChatId, setActiveChatId] = useState('1');
 	const [isMessageLoading, setIsMessageLoading] = useState(false);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -116,6 +103,114 @@ const AIChatPage = () => {
 			}
 		}
 	}, []);
+
+	const fetchConversations = useCallback(async () => {
+		if (!user?.id) return;
+        
+        setIsLoadingConversations(true);
+		try {
+			const companyIdParam = company?.id ? company.id : 'null';
+			const response = await fetch(`/api/chat/${user.id}/${companyIdParam}`);
+			const data = await response.json();
+
+			if (data.success && data.data && data.data.length > 0) {
+				const formattedSessions: ChatSession[] = data.data.map(
+					(conv: any) => {
+						const messages: Message[] = [];
+
+						const sortedMessages = (conv.messages || []).sort(
+							(a: any, b: any) =>
+								new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+						);
+
+						sortedMessages.forEach((msg: any) => {
+							// Push user message
+							if (msg.userContent) {
+								messages.push({
+									id: `${msg.uuid}-user`,
+									content: msg.userContent,
+									role: 'user',
+									timestamp: new Date(msg.timestamp),
+								});
+							}
+							// Push assistant message
+							if (msg.botContent) {
+								messages.push({
+									id: `${msg.uuid}-assistant`,
+									content: msg.botContent,
+									role: 'assistant',
+									timestamp: new Date(msg.timestamp),
+								});
+							}
+						});
+
+						return {
+							id: conv.id.toString(),
+							title: conv.title || 'New Compliance Chat',
+							messages: messages,
+							lastUpdated: new Date(conv.updatedAt || conv.createdAt),
+						};
+					}
+				);
+				
+				setChatSessions(formattedSessions);
+                // If we found sessions, set active to the first one if we are currently on default '1'
+                if (activeChatId === '1' && formattedSessions.length > 0) {
+                    setActiveChatId(formattedSessions[0].id);
+                }
+			} else {
+                 // No conversations found, create a default one
+                 const newChatId = Date.now().toString();
+                 const newChat: ChatSession = {
+                     id: newChatId,
+                     title: 'New Compliance Chat',
+                     messages: [
+                         {
+                             id: Date.now().toString(),
+                             content: "Hello! I'm your compliance assistant. How can I help you today?",
+                             role: 'assistant',
+                             timestamp: new Date(),
+                         },
+                     ],
+                     lastUpdated: new Date(),
+                 };
+                 setChatSessions([newChat]);
+                 setActiveChatId(newChatId);
+            }
+		} catch (error) {
+			console.error('Failed to fetch conversations:', error);
+			showErrorToast({
+				title: 'Error',
+				message: 'Failed to load conversation history',
+			});
+            // On error also create a default chat so user isn't stuck empty
+            const newChatId = Date.now().toString();
+                 const newChat: ChatSession = {
+                     id: newChatId,
+                     title: 'New Compliance Chat',
+                     messages: [
+                         {
+                             id: Date.now().toString(),
+                             content: "Hello! I'm your compliance assistant. How can I help you today?",
+                             role: 'assistant',
+                             timestamp: new Date(),
+                         },
+                     ],
+                     lastUpdated: new Date(),
+                 };
+                 setChatSessions([newChat]);
+                 setActiveChatId(newChatId);
+		} finally {
+            setIsLoadingConversations(false);
+        }
+	}, [user?.id, company?.id, activeChatId]);
+
+	useEffect(() => {
+		// Fetch even if company is null, as long as user is authenticated
+		if (isAuthenticated && user) {
+			fetchConversations();
+		}
+	}, [isAuthenticated, user, company, fetchConversations]);
 
 	const createNewChat = () => {
 		const newChatId = Date.now().toString();
@@ -221,11 +316,12 @@ const AIChatPage = () => {
 		if (!currentMessage.trim() && attachedFiles.length === 0) return;
 		if (!activeChat) return;
 
-		// Check authentication before sending message
-		if (isAuthLoading) return; // Wait for initial auth check if refreshing
+		if (isAuthLoading) return; 
+
+		console.log("isAuthenticated", isAuthenticated);
+		console.log("user", user);
 
 		if (!isAuthenticated || !user) {
-			// Store the message for after login
 			sessionStorage.setItem('pendingMessage', currentMessage.trim());
 			sessionStorage.setItem('loginSource', 'ai-chat');
 			router.push('/login?redirect=ai-chat');
@@ -382,37 +478,51 @@ const AIChatPage = () => {
 				</div>
 
 				<ScrollArea className='flex-1 p-2'>
-					{chatSessions.map((chat) => (
-						<div
-							key={chat.id}
-							onClick={() => handleChatSelect(chat.id)}
-							className={`p-3 rounded-lg cursor-pointer mb-2 transition-colors ${activeChatId === chat.id
-								? 'bg-blue text-white'
-								: 'hover:bg-gray-50 text-gray-900'
-								}`}
-						>
-							<div className='flex items-center'>
-								<MessageSquare
-									className={`w-4 h-4 mr-2 ${activeChatId === chat.id ? 'text-black' : 'text-gray-500'
-										}`}
-								/>
-								<div className='flex-1 min-w-0'>
-									<p
-										className={`text-sm font-medium truncate ${activeChatId === chat.id ? 'text-black' : 'text-gray-900'
+					{isLoadingConversations ? (
+						<div className="space-y-2 p-2">
+							{[1, 2, 3].map((i) => (
+								<div key={i} className="animate-pulse flex items-center p-3">
+									<div className="rounded-full bg-gray-200 h-8 w-8 mr-3"></div>
+									<div className="flex-1 space-y-2">
+										<div className="h-4 bg-gray-200 rounded w-3/4"></div>
+										<div className="h-3 bg-gray-200 rounded w-1/2"></div>
+									</div>
+								</div>
+							))}
+						</div>
+					) : (
+						chatSessions.map((chat) => (
+							<div
+								key={chat.id}
+								onClick={() => handleChatSelect(chat.id)}
+								className={`p-3 rounded-lg cursor-pointer mb-2 transition-colors ${activeChatId === chat.id
+									? 'bg-blue text-white'
+									: 'hover:bg-gray-50 text-gray-900'
+									}`}
+							>
+								<div className='flex items-center'>
+									<MessageSquare
+										className={`w-4 h-4 mr-2 ${activeChatId === chat.id ? 'text-black' : 'text-gray-500'
 											}`}
-									>
-										{chat.title}
-									</p>
-									<p
-										className={`text-xs ${activeChatId === chat.id ? 'text-black' : 'text-gray-500'
-											}`}
-									>
-										{chat.messages.length} messages
-									</p>
+									/>
+									<div className='flex-1 min-w-0'>
+										<p
+											className={`text-sm font-medium truncate ${activeChatId === chat.id ? 'text-black' : 'text-gray-900'
+												}`}
+										>
+											{chat.title}
+										</p>
+										<p
+											className={`text-xs ${activeChatId === chat.id ? 'text-black' : 'text-gray-500'
+												}`}
+										>
+											{chat.messages.length} messages
+										</p>
+									</div>
 								</div>
 							</div>
-						</div>
-					))}
+						))
+					)}
 				</ScrollArea>
 
 				<div className='p-3.5 border-t border-gray-200'>

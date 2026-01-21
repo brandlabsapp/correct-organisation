@@ -56,6 +56,8 @@ export const databaseProviders = [
           config = databaseConfig.development;
       }
 
+      console.log('config',config)
+
       const dialectOptions: Record<string, any> = {
         statement_timeout: 5000,
       };
@@ -114,21 +116,6 @@ export const databaseProviders = [
 
       if (process.env.SYNC === 'true') {
         logger.log('Syncing database schema...');
-        try {
-          await sequelize.query(
-            'ALTER TABLE "Users" ALTER COLUMN "otpVerified" TYPE BOOLEAN USING "otpVerified"::boolean;'
-          );
-        } catch (e) { }
-        try {
-          await sequelize.query(
-            'ALTER TABLE "Conversations" ALTER COLUMN "companyId" DROP NOT NULL;'
-          );
-        } catch (e) { }
-        try {
-          await sequelize.query(
-            'ALTER TABLE "Conversations" ALTER COLUMN "userId" DROP NOT NULL;'
-          );
-        } catch (e) { }
         await sequelize.sync({ alter: true });
         logger.log('Database schema sync complete');
       } else {

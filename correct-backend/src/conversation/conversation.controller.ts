@@ -52,10 +52,11 @@ export class ConversationController {
     @Param('companyId') companyId: string,
   ) {
     try {
+      const parsedCompanyId = companyId === 'null' ? null : +companyId;
       const response =
         await this.conversationService.getConversationByUserAndCompany(
           +userId,
-          +companyId,
+          parsedCompanyId,
         );
       return response;
     } catch (e) {

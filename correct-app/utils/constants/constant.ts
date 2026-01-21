@@ -44,4 +44,6 @@ export const templateData = [
 	},
 ];
 
-export const allowedRoutes = ['/', '/auth', '/admin', '/correct', '/ai-chat', '/login'];
+export const allowedRoutes = ['/', '/auth', '/admin', '/correct', '/login'];
+
+export const AGENT_ID = 'orchestratorAgent'

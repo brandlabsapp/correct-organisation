@@ -1,4 +1,3 @@
-import { N8nService } from './../n8n/n8n.service';
 import {
   BadRequestException,
   Inject,
@@ -8,11 +7,13 @@ import {
 import { Conversation } from './entities/conversation.entity';
 import { ConversationMessage } from './entities/conversationMessages.entity';
 import {
+  AGENT_ID,
   CONVERSATION_MESSAGES_REPOSITORY,
   CONVERSATION_REPOSITORY,
 } from '@/core/constants';
 import { UpdateConversationDto } from './dto/update-conversation.dto';
 import { MastraService } from '@/mastra/mastra.service';
+import { CreateConversationDto } from './dto/create-conversation.dto';
 
 @Injectable()
 export class ConversationService {
@@ -22,18 +23,16 @@ export class ConversationService {
     private readonly conversationRepository: typeof Conversation,
     @Inject(CONVERSATION_MESSAGES_REPOSITORY)
     private readonly conversationMessageRepository: typeof ConversationMessage,
-    private readonly n8nService: N8nService,
     private readonly mastraService: MastraService,
   ) {}
 
-  async getResponseFromMastra(createConversationDto: any) {
+  async getResponseFromMastra(createConversationDto: CreateConversationDto) {
     try {
       const { userId, companyId, messages, conversationId } =
         createConversationDto;
       let conversation: Conversation | null = null;
-
+      console.log("conversation id",conversationId)
       console.log('createConversationDto', createConversationDto);
-
       console.log('messages', messages);
 
       if (!conversationId) {
@@ -51,12 +50,13 @@ export class ConversationService {
           },
         );
       }
+
+      console.log("Conversation id",conversation.id)
       const latestMessage =
         messages.length > 0 ? messages[messages.length - 1] : messages[0];
 
-      const agentId = 'orchestratorAgent';
       const mastraResponse = await this.mastraService.generateResponse(
-        agentId,
+        AGENT_ID,
         [latestMessage.content],
         String(conversation.id),
       );
@@ -67,18 +67,23 @@ export class ConversationService {
       const extractedToolResults = Array.isArray(mastraResponse?.steps)
         ? mastraResponse.steps.flatMap((s: any) => s?.toolResults || [])
         : undefined;
+        
       const normalizedToolResults =
         extractedToolResults && extractedToolResults.length
           ? extractedToolResults
           : null;
 
+      // Extract bot content from nested Mastra response structure
+      // The top-level text may be empty; actual content is in the last step's output
+      const botContent = this.extractBotContent(mastraResponse);
+
       const conversationMessage =
         await this.conversationMessageRepository.create({
           conversationId: conversation.id,
           userContent: latestMessage.content,
-          botContent: mastraResponse?.text,
+          botContent: botContent,
           timestamp: new Date(),
-          agentId: agentId,
+          agentId: AGENT_ID,
           threadId: String(conversation.id),
           resourceId: String(conversation.id),
           usage: mastraResponse?.usage || null,
@@ -88,7 +93,7 @@ export class ConversationService {
       return {
         conversation: conversation,
         messageId: conversationMessage.uuid,
-        botContent: mastraResponse.text,
+        botContent: botContent,
       };
     } catch (error) {
       this.logger.error(
@@ -98,6 +103,38 @@ export class ConversationService {
       );
       throw error;
     }
+  }
+
+
+  private extractBotContent(mastraResponse: any): string | null {
+    if (mastraResponse?.text && mastraResponse.text.trim() !== '') {
+      return mastraResponse.text;
+    }
+
+    if (Array.isArray(mastraResponse?.steps) && mastraResponse.steps.length > 0) {
+      for (let i = mastraResponse.steps.length - 1; i >= 0; i--) {
+        const step = mastraResponse.steps[i];
+        
+        const output = step?.response?.body?.output;
+        if (Array.isArray(output)) {
+          for (const outputItem of output) {
+            if (outputItem?.type === 'message' && Array.isArray(outputItem?.content)) {
+              for (const contentItem of outputItem.content) {
+                if (contentItem?.type === 'output_text' && contentItem?.text) {
+                  return contentItem.text;
+                }
+              }
+            }
+          }
+        }
+
+        if (step?.text && step.text.trim() !== '') {
+          return step.text;
+        }
+      }
+    }
+
+    return null;
   }
 
   /**
@@ -131,8 +168,30 @@ export class ConversationService {
     }
   }
 
-  async getConversationByUserAndCompany(userId: number, companyId: number) {
+  async getConversationByUserAndCompany(userId: number, companyId: number | null) {
     try {
+      const whereClause: any = { userId };
+      if (companyId) {
+        whereClause.companyId = companyId;
+      }
+      // If companyId is explicitly null, should we query for where companyId is NULL?
+      // Assuming 'null' means "no specific company context" or "personal context".
+      // If the intent is to find conversations associated with *this* user and *optional* company.
+      // If companyId is passed as null from controller (because URL was 'null'), we might want to find personal conversations?
+      // Or maybe the query should just be specific.
+      // Let's look at the original code:
+      /*
+        where: {
+          userId,
+          companyId,
+        },
+      */
+      // If companyId is null, Sequelize where { companyId: null } checks for NULL.
+      // So passing null is fine if we want to match rows where companyId IS NULL.
+      // If the user meant "ignore companyId", that's different.
+      // But given the context of "correct-organisation" and "correct-app", it seems strict.
+      // I will proceed with passing null to match NULL in DB.
+      
       const response = await this.conversationRepository.findAll({
         where: {
           userId,
