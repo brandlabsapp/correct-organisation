@@ -5,7 +5,6 @@ import { ClientComponentWrapper } from '@/components/common/ClientComponentWrapp
 import { AuthLayoutWrapper } from '@/components/common/AuthLayoutWrapper';
 import Clarity from '@/metrics/Clarity';
 import { GoogleAnalytics } from '@next/third-parties/google';
-import { EventsProvider } from '@/contexts/event';
 
 export const metadata = {
 	metadataBase: new URL('https://www.correctapp.ai'),
@@ -36,9 +35,7 @@ export default function RootLayout({
 			<body>
 				<ClientComponentWrapper fallback={<LoadingFallback />}>
 					<ThemeProvider attribute='class'>
-						<EventsProvider>
 							<AuthLayoutWrapper>{children}</AuthLayoutWrapper>
-						</EventsProvider>
 					</ThemeProvider>
 				</ClientComponentWrapper>
 			</body>

@@ -17,7 +17,7 @@ import { ApiTags } from '@nestjs/swagger';
 @ApiTags('compliance')
 @Controller('compliance/tasks')
 export class TasksController {
-  constructor(private readonly tasksService: TasksService) { }
+  constructor(private readonly tasksService: TasksService) {}
 
   @Post()
   // @UseInterceptors(FileInterceptor('file'))

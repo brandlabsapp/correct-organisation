@@ -15,12 +15,12 @@ import { ApiTags } from '@nestjs/swagger';
 @ApiTags('ai-chat')
 @Controller('conversation')
 export class ConversationController {
-  constructor(private readonly conversationService: ConversationService) { }
+  constructor(private readonly conversationService: ConversationService) {}
 
   @Post()
   async generateResponse(@Body() createConversationDto: CreateConversationDto) {
     try {
-      const response = await this.conversationService.getResponseFromN8N(
+      const response = await this.conversationService.getResponseFromMastra(
         createConversationDto,
       );
       return response;
