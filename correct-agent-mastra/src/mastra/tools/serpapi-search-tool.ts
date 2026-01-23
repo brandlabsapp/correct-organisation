@@ -121,7 +121,7 @@ export const serpApiSearchTool = createTool({
 				relevanceScore: z.number(),
 				searchEngine: z.string(),
 				date: z.string().optional(),
-			})
+			}),
 		),
 		totalFound: z.number(),
 		searchQuery: z.string(),
@@ -142,7 +142,7 @@ export const serpApiSearchTool = createTool({
 			context.resultLimit,
 			context.engine,
 			context.location,
-			context.apiKey
+			context.apiKey,
 		);
 	},
 });
@@ -153,7 +153,7 @@ const searchSerpApi = async (
 	resultLimit: number = 10,
 	engine: string = 'google',
 	location?: string,
-	apiKey?: string
+	apiKey?: string,
 ) => {
 	try {
 		// Get API key from parameter or environment variable
@@ -162,7 +162,6 @@ const searchSerpApi = async (
 
 		if (!serpApiKey) {
 			console.warn('SerpApi API key not found, falling back to mock data');
-			// return await fallbackSerpApiSearch(query, jurisdiction, resultLimit);
 		}
 
 		// Build search query with jurisdiction if provided
@@ -194,7 +193,7 @@ const searchSerpApi = async (
 
 		if (!response.ok) {
 			throw new Error(
-				`SerpApi search failed: ${response.status} ${response.statusText}`
+				`SerpApi search failed: ${response.status} ${response.statusText}`,
 			);
 		}
 
@@ -308,7 +307,7 @@ const extractDomain = (url: string): string => {
 // Helper function to detect jurisdiction from result
 const detectJurisdiction = (
 	result: SerpApiResult,
-	requestedJurisdiction?: string
+	requestedJurisdiction?: string,
 ): string => {
 	if (requestedJurisdiction) return requestedJurisdiction;
 
@@ -337,7 +336,7 @@ const detectJurisdiction = (
 const calculateRelevanceScore = (
 	result: SerpApiResult,
 	query: string,
-	jurisdiction?: string
+	jurisdiction?: string,
 ): number => {
 	let score = 0.5; // Base score
 	const queryLower = query.toLowerCase();
@@ -381,7 +380,7 @@ const calculateRelevanceScore = (
 const fallbackSerpApiSearch = async (
 	query: string,
 	jurisdiction?: string,
-	resultLimit: number = 10
+	resultLimit: number = 10,
 ) => {
 	const mockLegalResources = [
 		{
@@ -445,13 +444,13 @@ const fallbackSerpApiSearch = async (
 	let filteredResults = mockLegalResources.filter(
 		(resource) =>
 			resource.title.toLowerCase().includes(queryLower) ||
-			resource.snippet.toLowerCase().includes(queryLower)
+			resource.snippet.toLowerCase().includes(queryLower),
 	);
 
 	if (jurisdiction) {
 		const jurisdictionLower = jurisdiction.toLowerCase();
 		filteredResults = filteredResults.filter((resource) =>
-			resource.jurisdiction.toLowerCase().includes(jurisdictionLower)
+			resource.jurisdiction.toLowerCase().includes(jurisdictionLower),
 		);
 	}
 

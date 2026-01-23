@@ -34,12 +34,12 @@ export default function LearnPage() {
 
 	return (
 		<SidebarLayout>
-			<div className='p-5 lg:p-8 space-y-5 lg:space-y-6 max-w-7xl mx-auto w-full h-full overflow-y-scroll'>
+			<div className='p-5 lg:p-8 space-y-5 lg:space-y-6 max-w-7xl lg:mx-0 lg:max-w-full h-full overflow-y-scroll'>
 				<h1 className='text-heading4 font-semibold'>Learn</h1>
 				<Input
 					type='text'
 					placeholder='Search Compliance'
-					className='w-full bg-white lg:max-w-2xl'
+					className='w-full bg-white max-w-2xl lg:max-w-full'
 					icon={<Search className='h-5 w-5 text-gray-400' />}
 					value={searchQuery}
 					onChange={(e) => setSearchQuery(e.target.value)}

@@ -85,8 +85,6 @@ export default function PhoneAuth() {
 			message: 'Please wait while we send an OTP to your phone number',
 		});
 
-		console.log(data.phoneNumber);
-
 		try {
 			const result = await authService.sendOtp(data.phoneNumber);
 
@@ -122,11 +120,9 @@ export default function PhoneAuth() {
 				if (userData.companyDetails && userData.companyDetails.length > 0) {
 					localStorage.setItem('companyId', String(userData.companyDetails[0].id));
 				}
-
-				// Update global auth state immediately
 				login({
 					...userData,
-					token: accessToken, // Map access_token to token field if needed by AppTypes.User
+					token: accessToken,
 				});
 
 				handleSuccessRedirect(result);
@@ -149,14 +145,12 @@ export default function PhoneAuth() {
 			router.push('/ai-chat');
 			return;
 		}
-
 		const loginSource = sessionStorage.getItem('loginSource');
 		if (loginSource === 'ai-chat') {
 			sessionStorage.removeItem('loginSource');
 			router.push('/ai-chat');
 			return;
 		}
-
 		if (token) {
 			router.push('/dashboard');
 		} else if (result.data?.companyDetails?.length > 0) {
@@ -184,8 +178,9 @@ export default function PhoneAuth() {
 
 			showSuccessToast({
 				title: 'Success',
-				message: `OTP resent successfully. ${MAX_RESEND_ATTEMPTS - resendAttempts - 1
-					} attempts remaining.`,
+				message: `OTP resent successfully. ${
+					MAX_RESEND_ATTEMPTS - resendAttempts - 1
+				} attempts remaining.`,
 			});
 		} catch (error) {
 			console.error('Error resending OTP:', error);

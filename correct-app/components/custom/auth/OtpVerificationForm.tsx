@@ -8,6 +8,7 @@ import {
 	InputOTPGroup,
 	InputOTPSlot,
 } from '@/components/ui/input-otp';
+import { REGEXP_ONLY_DIGITS } from 'input-otp';
 import { MAX_RESEND_ATTEMPTS } from '@/utils/constants/constant';
 
 const OtpFormSchema = z.object({
@@ -68,6 +69,7 @@ const OtpVerificationForm = ({
 						maxLength={6}
 						onChange={(value) => form.setValue('pin', value)}
 						disabled={isLoading}
+						pattern={REGEXP_ONLY_DIGITS}
 					>
 						<InputOTPGroup className='justify-between gap-2 lg:gap-3'>
 							{Array.from({ length: 6 }, (_, i) => (

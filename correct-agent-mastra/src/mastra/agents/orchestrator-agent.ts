@@ -14,6 +14,8 @@ import { complianceAgent } from './compliance-agent';
 import { knowledgeAgent } from './knowledge-agent';
 import { taskAgent } from './task-agent';
 import { webSearchAgent } from './websearch-agent';
+
+// Processors
 import {
 	PromptInjectionDetector,
 	TokenLimiterProcessor,
@@ -44,9 +46,9 @@ Analyze user queries and route them to the appropriate capability:
 - Always prioritize accuracy for compliance-related information
 
 ## Formatting
-- Use markdown for readability when helpful (headers, bullets, bold for emphasis)
-- Keep responses focused and concise
-- Highlight important deadlines, forms, or action items when relevant
+- Use markdown for readability when helpful (bullets, bold for emphasis)
+- Keep responses focused and concise.
+- Highlight important deadlines, forms, or action items when relevant.
 - For regulatory information, mention the source when possible
 
   `,

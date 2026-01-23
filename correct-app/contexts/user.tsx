@@ -14,7 +14,7 @@ import { showErrorToast } from '@/lib/utils/toast-handlers';
 import { allowedRoutes } from '@/utils/constants/constant';
 
 const UserAuthContext = createContext<AppTypes.UserAuthContextType | undefined>(
-	undefined
+	undefined,
 );
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -55,26 +55,23 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 			const formattedcompanyId = queryCompanyId || companyId || localComapanyId;
 			if (!formattedcompanyId) return;
 			localStorage.setItem('companyId', String(formattedcompanyId));
-			try {
-				const response = await fetch(`/api/profile/company/${formattedcompanyId}`);
-				const data = await response.json();
-				if (data.success) {
-					setCompany(data.data);
-					setMembers(data.data.members);
-				} else {
-					showErrorToast({
-						title: 'Error',
-						message: data.message || 'Failed to fetch company details',
-					});
-				}
-			} catch (error) {
+			const response = await fetch(`/api/profile/company/${formattedcompanyId}`);
+			const data = await response.json();
+			if (data.success) {
+				setCompany(data.data);
+				setMembers(data.data.members);
+			} else {
 				showErrorToast({
 					title: 'Error',
-					message: 'An error occurred while fetching company details',
+					message: data.message || 'Failed to fetch company details',
 				});
+				clearCookies('Authentication');
+				clearCookies('companyId');
+				localStorage.clear();
+				router.push('/login');
 			}
 		},
-		[]
+		[],
 	);
 
 	useEffect(() => {
