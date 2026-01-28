@@ -1,7 +1,12 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { CheckCircle } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SidebarLayout } from '@/components/common/sidebar-layout';
 import { ChecklistCard } from '@/components/checklist/checklist-card';
+import { LoadingFallback } from '@/components/common/LoadingFallback';
 
 interface ComplianceItem {
 	id: string;
@@ -51,9 +56,6 @@ const fetchData = async (
 			(item: ComplianceItem) => item.status === 'completed'
 		);
 
-		console.log('ongoing', ongoing);
-		console.log('completed', completed);
-
 		return { ongoing, completed };
 	} catch (error) {
 		console.error('Error fetching data:', error);
@@ -61,20 +63,43 @@ const fetchData = async (
 	}
 };
 
-export default async function AllCompliances(props: {
-	searchParams: Promise<{ company: string }>;
-}) {
-	const searchParams = await props.searchParams;
-	const companyId = searchParams.company;
+export default function AllCompliances() {
+	const searchParams = useSearchParams();
+	const companyId = searchParams.get('company');
+
+	const [ongoingComplianceItems, setOngoingComplianceItems] = useState<ComplianceItem[]>([]);
+	const [completedComplianceItems, setCompletedComplianceItems] = useState<ComplianceItem[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		if (!companyId) {
+			setIsLoading(false);
+			return;
+		}
+
+		const loadData = async () => {
+			try {
+				const { ongoing, completed } = await fetchData(companyId);
+				setOngoingComplianceItems(ongoing);
+				setCompletedComplianceItems(completed);
+			} catch (error) {
+				console.error('Failed to fetch compliance data:', error);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		loadData();
+	}, [companyId]);
+
 	if (!companyId) {
 		console.error('No companyId provided');
-		return;
+		return null;
 	}
 
-	const {
-		ongoing: ongoingComplianceItems,
-		completed: completedComplianceItems,
-	} = await fetchData(companyId);
+	if (isLoading) {
+		return <LoadingFallback />;
+	}
 
 	return (
 		<SidebarLayout>

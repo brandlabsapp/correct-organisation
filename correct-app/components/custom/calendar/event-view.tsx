@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
 	AlertDialog,
 	AlertDialogCancel,
@@ -6,9 +7,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { useEvents } from '@/contexts/event';
 import { CalendarEvent } from '@/utils/data';
-
 import { X } from 'lucide-react';
 import { EventDeleteForm } from './event-delete-form';
 import { EventEditForm } from './event-edit-form';
@@ -18,16 +17,16 @@ interface EventViewProps {
 }
 
 export function EventView({ event }: EventViewProps) {
-	const { eventViewOpen, setEventViewOpen } = useEvents();
+	const [open, setOpen] = useState(false);
 
 	return (
 		<>
-			<AlertDialog open={eventViewOpen}>
+			<AlertDialog open={open}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
 						<AlertDialogTitle className='flex flex-row justify-between items-center'>
 							<h1>{event?.title}</h1>
-							<AlertDialogCancel onClick={() => setEventViewOpen(false)}>
+							<AlertDialogCancel onClick={() => setOpen(false)}>
 								<X className='h-5 w-5' />
 							</AlertDialogCancel>
 						</AlertDialogTitle>
@@ -35,9 +34,8 @@ export function EventView({ event }: EventViewProps) {
 							{event?.start && event?.end && (
 								<tr>
 									<th>Time:</th>
-									<td>{`${event?.start?.toLocaleTimeString() || ''} - ${
-										event?.end?.toLocaleTimeString() || ''
-									}`}</td>
+									<td>{`${event?.start?.toLocaleTimeString() || ''} - ${event?.end?.toLocaleTimeString() || ''
+										}`}</td>
 								</tr>
 							)}
 							{event?.description && (

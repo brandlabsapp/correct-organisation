@@ -1,7 +1,10 @@
-import DocumentManagement from '@/components/custom/vault/DocumentManagement';
-import type { Metadata } from 'next';
+'use client';
 
-// --------fetch data from the server-------
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import DocumentManagement from '@/components/custom/vault/DocumentManagement';
+import { LoadingFallback } from '@/components/common/LoadingFallback';
+
 async function fetchData(companyId: string) {
 	if (!companyId) {
 		console.error('No companyId provided');
@@ -21,16 +24,9 @@ async function fetchData(companyId: string) {
 	}
 	const { data } = await response.json();
 
-	console.log('data', data);
-
 	const folders = data.folders || [];
 	const documents = Array.from(new Set([...data.documents]));
 	const currentFolder = data.folders[0] || null;
-
-	if (!response.ok) {
-		console.error('Failed to fetch data', response);
-		throw new Error('Failed to fetch data');
-	}
 
 	return {
 		folders,
@@ -39,29 +35,46 @@ async function fetchData(companyId: string) {
 	};
 }
 
-export const metadata: Metadata = {
-	title: 'Vault',
-	description: 'Vault',
-	keywords: [
-		'Vault',
-		'Compliance',
-		'Compliance Management',
-		'Compliance Tracker',
-	],
-};
+export default function Vault() {
+	const searchParams = useSearchParams();
+	const companyId = searchParams.get('company');
 
-// ---------------- Server Component ----------------
-export default async function Vault(props: {
-	searchParams: Promise<{ company: string }>;
-}) {
-	const searchParams = await props.searchParams;
-	if (!searchParams.company) {
+	const [data, setData] = useState<{
+		folders: any[];
+		documents: any[];
+		currentFolder: any;
+	} | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		if (!companyId) {
+			setIsLoading(false);
+			return;
+		}
+
+		const loadData = async () => {
+			try {
+				const result = await fetchData(companyId);
+				setData(result || null);
+			} catch (error) {
+				console.error('Failed to fetch vault data:', error);
+				setData(null);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		loadData();
+	}, [companyId]);
+
+	if (!companyId) {
 		console.error('No companyId provided');
 		return null;
 	}
 
-	const companyId = searchParams.company;
-	const data = await fetchData(companyId);
+	if (isLoading) {
+		return <LoadingFallback />;
+	}
 
 	return (
 		<DocumentManagement

@@ -72,7 +72,7 @@ export function Sidebar() {
 			className={cn(
 				'left-0 top-14 z-40 min-h-screen bg-white border-r border-gray-200 transition-all duration-300 ease-in-out',
 				'hidden md:flex flex-col',
-				isCollapsed ? 'w-16' : 'w-64'
+				isCollapsed ? 'w-16' : 'w-64',
 			)}
 		>
 			<div
@@ -100,14 +100,14 @@ export function Sidebar() {
 							return (
 								<li key={item.href}>
 									<Link
-										href={`${item.href}?company=${company?.id || companyId}`}
+										href={`${item.href}?company=${company?.uuid || companyId}`}
 										className={cn(
 											'flex items-center p-6 rounded-full text-body3 font-medium transition-colors h-12',
 											'hover:bg-gray-100',
 											isCollapsed ? 'justify-center' : 'justify-start',
 											isActive
 												? 'bg-gray-100 text-black'
-												: 'text-gray-600 hover:text-gray-900'
+												: 'text-gray-600 hover:text-gray-900',
 										)}
 									>
 										{isCollapsed ? (

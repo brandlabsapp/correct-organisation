@@ -1,8 +1,10 @@
-import { retrieveToken } from '@/lib/axiosInstance';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { useUserAuth } from '@/contexts/user';
 import AIChat from './_components/Chat';
-import { redirect } from 'next/navigation';
-import { jwtDecode } from 'jwt-decode';
-import type { Metadata } from 'next';
+import { LoadingFallback } from '@/components/common/LoadingFallback';
 
 interface ChatMessage {
 	id: string;
@@ -10,8 +12,6 @@ interface ChatMessage {
 	content: string;
 	timestamp?: number;
 }
-
-// ----------- Functions----------------
 
 interface ChatConversation {
 	id: string;
@@ -68,35 +68,42 @@ const fetchAllConversations = async (
 	}
 };
 
-// -------------- Metadata --------------
+export default function AIChatPage() {
+	const searchParams = useSearchParams();
+	const router = useRouter();
+	const { user, isAuthenticated, isLoading: isAuthLoading } = useUserAuth();
+	const company = searchParams.get('company');
 
-export const metadata: Metadata = {
-	title: 'Chat',
-	description: 'Chat',
-	keywords: [
-		'Chat',
-		'Compliance',
-		'Compliance Management',
-		'Compliance Tracker',
-	],
-};
+	const [messages, setMessages] = useState<ChatMessage[]>([]);
+	const [conversations, setConversations] = useState<ChatConversation[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
 
-export default async function AIChatPage(props: {
-	searchParams: Promise<{ company: string }>;
-}) {
-	const searchParams = await props.searchParams;
-	const token = await retrieveToken();
+	useEffect(() => {
+		if (isAuthLoading) return;
 
-	if (!token) {
-		return redirect('/login');
+		if (!isAuthenticated || !user) {
+			router.push('/login');
+			return;
+		}
+
+		const loadData = async () => {
+			try {
+				const result = await fetchAllConversations(user.id, company || '');
+				setMessages(result.messages);
+				setConversations(result.conversations);
+			} catch (error) {
+				console.error('Failed to fetch conversations:', error);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		loadData();
+	}, [user, company, isAuthenticated, isAuthLoading, router]);
+
+	if (isAuthLoading || isLoading) {
+		return <LoadingFallback />;
 	}
 
-	const user = jwtDecode<AppTypes.User>(token);
-	const company = searchParams.company;
-
-	const { messages, conversations } = await fetchAllConversations(
-		user.id,
-		company
-	);
 	return <AIChat data={messages} conversations={conversations} />;
 }

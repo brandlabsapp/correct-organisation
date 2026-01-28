@@ -101,8 +101,8 @@ export class CompanyService {
     return data;
   }
 
-  async findOne(id: number) {
-    const cacheKey = `company_${id}`;
+  async findOne(uuid: string) {
+    const cacheKey = `company_${uuid}`;
     const cachedCompany = await this.cacheManager.get<CompanyDetails>(cacheKey);
 
     if (cachedCompany) {
@@ -110,7 +110,7 @@ export class CompanyService {
       return cachedCompany;
     } else {
       const found = await this.companyRepository.findOne<CompanyDetails>({
-        where: { id },
+        where: { uuid },
         include: [
           {
             model: CompanyMember,
@@ -187,12 +187,12 @@ export class CompanyService {
     }
   }
 
-  async update(id: number, updateCompanyDto: UpdateCompanyDto) {
+  async update(uuid: string, updateCompanyDto: UpdateCompanyDto) {
     try {
       const response = await this.companyRepository.update<CompanyDetails>(
         updateCompanyDto,
         {
-          where: { id },
+          where: { uuid },
         },
       );
 

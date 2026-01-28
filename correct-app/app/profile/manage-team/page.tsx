@@ -1,13 +1,23 @@
+'use client';
+
+import { useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { ManageTeam } from '@/components/profile/manage-team';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { redirect } from 'next/navigation';
 
-export default async function ManageTeamPage(props: {
-	searchParams: Promise<{ company: string }>;
-}) {
-	const searchParams = await props.searchParams;
-	if (!searchParams.company) {
-		return redirect('/profile');
+export default function ManageTeamPage() {
+	const searchParams = useSearchParams();
+	const router = useRouter();
+	const companyId = searchParams.get('company');
+
+	useEffect(() => {
+		if (!companyId) {
+			router.push('/profile');
+		}
+	}, [companyId, router]);
+
+	if (!companyId) {
+		return null;
 	}
 
 	return (

@@ -1,9 +1,12 @@
-import type { Metadata } from 'next';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Dashboard from './_components/Dashboard';
 import { FetchFallback } from '@/components/common/FetchFallback';
+import { LoadingFallback } from '@/components/common/LoadingFallback';
 import { SidebarLayout } from '@/components/common/sidebar-layout';
 
-//--------- functions to fetch data from the server
 const fetchData = async (companyId: string) => {
 	const baseUrl =
 		process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000';
@@ -25,28 +28,42 @@ const fetchData = async (companyId: string) => {
 	return data;
 };
 
-export const metadata: Metadata = {
-	title: 'Dashboard',
-	description: 'Dashboard',
-	keywords: [
-		'Dashboard',
-		'Compliance',
-		'Compliance Management',
-		'Compliance Tracker',
-	],
-};
+export default function DashboardPage() {
+	const searchParams = useSearchParams();
+	const companyId = searchParams.get('company');
 
-export default async function DashboardPage(props: {
-	searchParams: Promise<{ company: string }>;
-}) {
-	const searchParams = await props.searchParams;
-	const companyId = searchParams.company;
+	const [data, setData] = useState<any[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		if (!companyId) {
+			setIsLoading(false);
+			return;
+		}
+
+		const loadData = async () => {
+			try {
+				const result = await fetchData(companyId);
+				setData(result);
+			} catch (error) {
+				console.error('Failed to fetch dashboard data:', error);
+				setData([]);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		loadData();
+	}, [companyId]);
+
 	if (!companyId) {
 		console.error('No companyId provided');
-		return;
+		return null;
 	}
 
-	const data = await fetchData(companyId);
+	if (isLoading) {
+		return <LoadingFallback />;
+	}
 
 	if (data.length === 0) {
 		return (

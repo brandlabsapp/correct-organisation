@@ -1,7 +1,10 @@
-import type { Metadata } from 'next';
-import DocumentManagement from '@/components/custom/vault/DocumentManagement';
+'use client';
 
-// ---------------- fetch data from the server ----------------
+import { useEffect, useState } from 'react';
+import { useParams, useSearchParams } from 'next/navigation';
+import DocumentManagement from '@/components/custom/vault/DocumentManagement';
+import { LoadingFallback } from '@/components/common/LoadingFallback';
+
 async function fetchData(folderId?: string) {
 	if (!folderId) {
 		console.error('No folderId provided');
@@ -52,11 +55,6 @@ async function fetchDataCompany(companyId: string) {
 	const documents = Array.from(new Set([...data.documents]));
 	const currentFolder = data.folders[0] || null;
 
-	if (!response.ok) {
-		console.error('Failed to fetch data', response);
-		throw new Error('Failed to fetch data');
-	}
-
 	return {
 		folders,
 		documents,
@@ -64,38 +62,57 @@ async function fetchDataCompany(companyId: string) {
 	};
 }
 
-export const metadata: Metadata = {
-	title: 'Vault',
-	description: 'Vault',
-	keywords: [
-		'Vault',
-		'Compliance',
-		'Compliance Management',
-		'Compliance Tracker',
-	],
-};
+export default function Vault() {
+	const params = useParams();
+	const searchParams = useSearchParams();
+	const slug = params.slug as string | undefined;
+	const companyId = searchParams.get('company') || '';
 
-// ---------------- Server Component ----------------
-export default async function Vault(props: {
-	params: Promise<{ slug?: string }>;
-	searchParams: Promise<{ company: string }>;
-}) {
-	const searchParams = await props.searchParams;
-	const params = await props.params;
-	if (!params.slug) {
-		console.error('No folderId provided');
+	const [data, setData] = useState<{
+		folders: any[];
+		documents: any[];
+		currentFolder: any;
+	} | null>(null);
+	const [companyFolders, setCompanyFolders] = useState<any[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		if (!slug) {
+			console.error('No folderId provided');
+			setIsLoading(false);
+			return;
+		}
+
+		const loadData = async () => {
+			try {
+				const [folderData, companyData] = await Promise.all([
+					fetchData(slug),
+					fetchDataCompany(companyId),
+				]);
+				setData(folderData || null);
+				setCompanyFolders(companyData?.folders || []);
+			} catch (error) {
+				console.error('Failed to fetch vault data:', error);
+				setData(null);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		loadData();
+	}, [slug, companyId]);
+
+	if (isLoading) {
+		return <LoadingFallback />;
 	}
-	const data = await fetchData(params.slug);
-	const companyFolders = await fetchDataCompany(searchParams.company);
-	const companyId = searchParams.company;
 
 	return (
 		<DocumentManagement
 			folders={data?.folders || []}
-			companyFolders={companyFolders?.folders || []}
+			companyFolders={companyFolders}
 			documents={data?.documents || []}
 			currentFolder={data?.currentFolder || null}
-			folderId={params.slug}
+			folderId={slug}
 			companyId={companyId}
 		/>
 	);

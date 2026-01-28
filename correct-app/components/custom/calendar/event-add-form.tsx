@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -28,7 +28,6 @@ import {
 	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { DateTimePicker } from './date-picker';
-import { useEvents } from '@/contexts/event';
 import {
 	Select,
 	SelectContent,
@@ -76,7 +75,7 @@ interface EventAddFormProps {
 }
 
 export function EventAddForm({ start, end, addTask }: EventAddFormProps) {
-	const { eventAddOpen, setEventAddOpen } = useEvents();
+	const [open, setOpen] = useState(false);
 	const { user, company } = useUserAuth();
 
 	const { toast } = useToast();
@@ -134,7 +133,7 @@ export function EventAddForm({ start, end, addTask }: EventAddFormProps) {
 			id: result.data.id,
 		});
 		form.reset();
-		setEventAddOpen(false);
+		setOpen(false);	
 		showSuccessToast({
 			title: 'Event added!',
 			message: 'Event added successfully',
@@ -142,12 +141,12 @@ export function EventAddForm({ start, end, addTask }: EventAddFormProps) {
 	}
 
 	return (
-		<AlertDialog open={eventAddOpen}>
+		<AlertDialog open={open}>
 			<AlertDialogTrigger className='flex' asChild>
 				<Button
 					className='w-full md:w-full text-xs md:text-sm'
 					variant='default'
-					onClick={() => setEventAddOpen(true)}
+					onClick={() => setOpen(true)}
 				>
 					<PlusIcon className='md:h-5 md:w-5 h-3 w-3' />
 					<p>Add Task</p>
@@ -303,7 +302,7 @@ olorPicker
 							)}
 						/> */}
 						<AlertDialogFooter className='pt-2'>
-							<AlertDialogCancel onClick={() => setEventAddOpen(false)}>
+							<AlertDialogCancel onClick={() => setOpen(false)}>
 								Cancel
 							</AlertDialogCancel>
 							<AlertDialogAction type='submit' disabled={form.formState.isSubmitting}>

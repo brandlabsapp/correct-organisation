@@ -24,7 +24,7 @@ const businessSchema = z
 				.min(21, 'CIN must be at least 21 characters')
 				.max(21, 'CIN must be exactly 21 characters')
 				.regex(CIN_REGEX, 'Please enter a valid CIN format')
-				.optional()
+				.optional(),
 		),
 		documentFile: z.instanceof(File).optional(),
 	})
@@ -113,8 +113,9 @@ export default function BusinessRegistrationPage() {
 							title: 'Success',
 							message: 'Business registered successfully, proceed to business profile',
 						});
-						localStorage.setItem('companyId', result.data?.id);
-						router.push('/verify?role=owner');
+						const companyId = result.data?.uuid;
+						localStorage.setItem('companyId', companyId);
+						router.push(`/verify?role=owner&company=${companyId}`);
 					} else {
 						throw new Error(result.message || 'Failed to register business');
 					}
@@ -153,7 +154,7 @@ export default function BusinessRegistrationPage() {
 								city: result.data?.city,
 								userId: user?.id,
 							}),
-						}
+						},
 					);
 
 					const registerCompanyResult = await registerCompanyResponse.json();
@@ -169,7 +170,7 @@ export default function BusinessRegistrationPage() {
 						router.push('/verify?role=owner');
 					} else {
 						throw new Error(
-							registerCompanyResult.message || 'Failed to register business'
+							registerCompanyResult.message || 'Failed to register business',
 						);
 					}
 				}
@@ -180,7 +181,7 @@ export default function BusinessRegistrationPage() {
 				setVerificationStatus('idle');
 			}
 		},
-		[router, updateCompany, user?.id, registrationMethod, documentFile]
+		[router, updateCompany, user?.id, registrationMethod, documentFile],
 	);
 
 	return (
@@ -208,6 +209,7 @@ export default function BusinessRegistrationPage() {
 						>
 							Register with CIN
 						</button>
+						{/* Document registration is disabled for now */}
 						{/* <button
 							type='button'
 							className={`px-4 py-2 rounded-md text-body2 md:text-body1 ${
@@ -236,8 +238,8 @@ export default function BusinessRegistrationPage() {
 									verificationStatus === 'success'
 										? 'success'
 										: errors.cin
-										? 'destructive'
-										: 'default'
+											? 'destructive'
+											: 'default'
 								}
 								icon={
 									verificationStatus === 'success' && (
@@ -275,8 +277,8 @@ export default function BusinessRegistrationPage() {
 						{isSubmitting || verificationStatus === 'verifying'
 							? 'Verifying...'
 							: registrationMethod === 'cin'
-							? 'Verify Business'
-							: 'Upload & Register'}
+								? 'Verify Business'
+								: 'Upload & Register'}
 					</Button>
 				</form>
 				{verificationStatus === 'verifying' && registrationMethod === 'document' ? (

@@ -1,5 +1,10 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useParams, useSearchParams } from 'next/navigation';
 import { SidebarLayout } from '@/components/common/sidebar-layout';
 import { Separator } from '@/components/ui/separator';
+import { LoadingFallback } from '@/components/common/LoadingFallback';
 
 import TasksSection from './_components/TasksSection';
 import OverviewSection from './_components/OverviewSection';
@@ -66,23 +71,43 @@ const fetchData = async (
 	}
 };
 
-export default async function ComplianceDetailPage({
-	params,
-	searchParams,
-}: {
-	params: Promise<{ id: string }>;
-	searchParams: Promise<{ company: string }>;
-}) {
-	const { id } = await params;
-	const { company } = await searchParams;
+export default function ComplianceDetailPage() {
+	const params = useParams();
+	const searchParams = useSearchParams();
+	const id = params.id as string;
+	const company = searchParams.get('company');
+
+	const [complianceDetail, setComplianceDetail] = useState<ComplianceItem | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		if (!id || !company) {
+			setIsLoading(false);
+			return;
+		}
+
+		const loadData = async () => {
+			try {
+				const data = await fetchData(company, id);
+				setComplianceDetail(data);
+			} catch (error) {
+				console.error('Failed to fetch compliance detail:', error);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		loadData();
+	}, [id, company]);
 
 	if (!id || !company) {
 		console.error('No id provided');
-		return;
+		return null;
 	}
 
-	const complianceDetail = await fetchData(company, id);
-	console.dir(complianceDetail, { depth: null });
+	if (isLoading) {
+		return <LoadingFallback />;
+	}
 
 	if (!complianceDetail) {
 		return <div>Loading...</div>;
@@ -157,17 +182,11 @@ export default async function ComplianceDetailPage({
 		backLink: '/all-compliances',
 	};
 
-	console.log(
-		'complianceDetail',
-		complianceDetail.companyComplianceTasks[0].task
-	);
-
 	const tasks = complianceDetail.companyComplianceTasks.map((task) => ({
 		id: parseInt(task.id),
 		title: task?.task?.title || task?.title,
 		dueDate: task.dueDate,
 		deadline: task.task?.deadline,
-		// TODO: fix this
 		assignees: [],
 		completed: false,
 	}));

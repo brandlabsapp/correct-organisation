@@ -22,7 +22,7 @@ export class CompanyController {
   constructor(
     private readonly companyService: CompanyService,
     private readonly companyMemberServices: CompanyMembersService,
-  ) { }
+  ) {}
 
   @Post('register')
   create(@Body() createCompanyDto: CreateCompanyDto) {
@@ -82,10 +82,10 @@ export class CompanyController {
     }
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
+  @Get(':uuid')
+  async findOne(@Param('uuid') uuid: string) {
     try {
-      const response = await this.companyService.findOne(+id);
+      const response = await this.companyService.findOne(uuid);
       console.log(response);
       return response;
     } catch (e) {
@@ -94,14 +94,14 @@ export class CompanyController {
     }
   }
 
-  @Patch(':id')
+  @Patch(':uuid')
   async update(
-    @Param('id') id: string,
+    @Param('uuid') uuid: string,
     @Body() updateCompanyDto: UpdateCompanyDto,
   ) {
     try {
       console.log('updateCompanyDto', updateCompanyDto);
-      const response = await this.companyService.update(+id, updateCompanyDto);
+      const response = await this.companyService.update(uuid, updateCompanyDto);
       return response;
     } catch (e) {
       console.log(e);

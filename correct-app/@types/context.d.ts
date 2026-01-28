@@ -26,6 +26,9 @@ declare namespace AppTypes {
 
 	export interface Company {
 		id: number;
+		uuid: string;
+		cin: string;
+		pan: string;
 		name: string;
 		type: string;
 		incorporationDate: string;

@@ -15,6 +15,14 @@ import { knowledgeAgent } from './knowledge-agent';
 import { taskAgent } from './task-agent';
 import { webSearchAgent } from './websearch-agent';
 
+// Scorers
+import {
+	createAnswerRelevancyScorer,
+	createHallucinationScorer,
+	createContextPrecisionScorer,
+	createContextRelevanceScorer,
+} from '@mastra/evals/scorers/llm';
+
 // Processors
 import {
 	PromptInjectionDetector,
@@ -80,7 +88,20 @@ Analyze user queries and route them to the appropriate capability:
 			countMode: 'cumulative',
 		}),
 	],
-
+	scorers: {
+		relevancy: {
+			scorer: createAnswerRelevancyScorer({
+				model: 'openai/gpt-4o-mini',
+			}),
+			sampling: { type: 'ratio', rate: 0.9 },
+		},
+		hallucination: {
+			scorer: createHallucinationScorer({
+				model: 'openai/gpt-4o-mini',
+			}),
+			sampling: { type: 'ratio', rate: 0.9 },
+		},
+	},
 	tools: {
 		companyDatabaseTool,
 		serpApiSearchTool,
