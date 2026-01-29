@@ -1,6 +1,7 @@
 'use client';
 
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useState, useCallback } from 'react';
+import { SubmitHandler, Controller } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,8 +17,9 @@ import { industries } from '@/data/static/onboarding';
 import { showErrorToast } from '@/lib/utils/toast-handlers';
 import { showSuccessToast } from '@/lib/utils/toast-handlers';
 import Link from 'next/link';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Loader2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
+import { useFormWithAsyncDefaults } from '@/hooks/useFormWithAsyncDefaults';
 
 type FormValues = {
 	name: string;
@@ -27,36 +29,84 @@ type FormValues = {
 	zip: string;
 	industry: string;
 	teamSize: number;
-	revenue: string;
+	revenue?: string;
 	din: string;
 	referralCode?: string;
 };
+
+
+// Fetch city and state from Indian pincode using India Post API
+async function fetchLocationFromPincode(
+	pincode: string
+): Promise<{ city: string; state: string } | null> {
+	try {
+		const response = await fetch(
+			`https://api.postalpincode.in/pincode/${pincode}`
+		);
+		const data = await response.json();
+
+		if (data[0]?.Status === 'Success' && data[0]?.PostOffice?.length > 0) {
+			const postOffice = data[0].PostOffice[0];
+			return {
+				city: postOffice.District || postOffice.Name || '',
+				state: postOffice.State || '',
+			};
+		}
+		return null;
+	} catch (error) {
+		console.error('Error fetching pincode data:', error);
+		return null;
+	}
+}
 
 export function CompanyDetails() {
 	const { company } = useUserAuth();
 	const query = useSearchParams();
 	const companyId = query.get('company');
+	const [isFetchingPincode, setIsFetchingPincode] = useState(false);
+
 	const {
 		handleSubmit,
 		control,
+		setValue,
 		formState: { errors, isSubmitting },
-	} = useForm<FormValues>({
-		defaultValues: {
-			name: company?.name || '',
-			address: company?.address || '',
-			city: company?.city || '',
-			state: company?.state || '',
-			zip: company?.zip || '',
-			industry: company?.industry || '',
-			teamSize: company?.teamSize || 1,
-			revenue: company?.revenue || '',
-			din: company?.din || '',
-			referralCode: company?.referralCode || '',
+	} = useFormWithAsyncDefaults<FormValues, AppTypes.Company>(
+		company,
+		(data) => ({
+			name: data.name || '',
+			address: data.address || '',
+			city: data.city || '',
+			state: data.state || '',
+			zip: data.zip || '',
+			industry: data.industry || '',
+			teamSize: data.teamSize || 1,
+			revenue: data.revenue || '',
+			din: data.din || '',
+			referralCode: data.referralCode || '',
+		})
+	);
+
+	const handlePincodeChange = useCallback(
+		async (pincode: string,) => {
+			if (!/^\d{6}$/.test(pincode)) return;
+
+			setIsFetchingPincode(true);
+			try {
+				const location = await fetchLocationFromPincode(pincode);
+				if (location) {
+					setValue('city', location.city, { shouldValidate: true });
+					setValue('state', location.state, { shouldValidate: true });
+				}
+			} finally {
+				setIsFetchingPincode(false);
+			}
 		},
-	});
+		[setValue]
+	);
+
 
 	const onSubmit: SubmitHandler<FormValues> = async (data) => {
-		const response = await fetch(`/api/profile/company/${company?.id}`, {
+		const response = await fetch(`/api/profile/company/${company?.uuid}`, {
 			method: 'PATCH',
 			body: JSON.stringify(data),
 		});
@@ -134,6 +184,47 @@ export function CompanyDetails() {
 					)}
 				</div>
 
+				<div className='space-y-2'>
+					<Label htmlFor='zip'>Pincode </Label>
+					<Controller
+						name='zip'
+						control={control}
+						rules={{
+							required: 'Pincode is required',
+							pattern: {
+								value: /^\d{6}$/,
+								message: 'Please enter a valid 6-digit Indian pincode',
+							},
+						}}
+						render={({ field }) => (
+							<div className='relative'>
+								<Input
+									{...field}
+									id='zip'
+									type='text'
+									inputMode='numeric'
+									maxLength={6}
+									className='text-sm md:text-base w-full'
+									placeholder='Enter 6-digit pincode'
+									onChange={(e) => {
+										const value = e.target.value.replace(/\D/g, '');
+										field.onChange(value);
+										handlePincodeChange(value);
+									}}
+								/>
+								{isFetchingPincode && (
+									<div className='absolute right-3 top-1/2 -translate-y-1/2'>
+										<Loader2 className='h-4 w-4 animate-spin text-gray-400' />
+									</div>
+								)}
+							</div>
+						)}
+					/>
+					{errors.zip && (
+						<p className='text-red-500 text-sm'>{errors.zip.message}</p>
+					)}
+				</div>
+
 				<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 					<div className='space-y-2'>
 						<Label htmlFor='city'>City </Label>
@@ -145,8 +236,9 @@ export function CompanyDetails() {
 								<Input
 									{...field}
 									id='city'
-									className='text-sm md:text-base w-full'
-									placeholder='Enter city'
+									className='text-sm md:text-base w-full bg-gray-50'
+									placeholder='Auto-filled from pincode'
+									readOnly={isFetchingPincode}
 								/>
 							)}
 						/>
@@ -165,8 +257,9 @@ export function CompanyDetails() {
 								<Input
 									{...field}
 									id='state'
-									className='text-sm md:text-base w-full'
-									placeholder='Enter state'
+									className='text-sm md:text-base w-full bg-gray-50'
+									placeholder='Auto-filled from pincode'
+									readOnly={isFetchingPincode}
 								/>
 							)}
 						/>
@@ -174,26 +267,6 @@ export function CompanyDetails() {
 							<p className='text-red-500 text-sm'>{errors.state.message}</p>
 						)}
 					</div>
-				</div>
-
-				<div className='space-y-2'>
-					<Label htmlFor='zip'>Zip Code </Label>
-					<Controller
-						name='zip'
-						control={control}
-						rules={{ required: 'zip code is required' }}
-						render={({ field }) => (
-							<Input
-								{...field}
-								id='zip'
-								className='text-sm md:text-base w-full'
-								placeholder='Enter zip code'
-							/>
-						)}
-					/>
-					{errors.zip && (
-						<p className='text-red-500 text-sm'>{errors.zip.message}</p>
-					)}
 				</div>
 
 				<div className='space-y-2'>
@@ -229,35 +302,6 @@ export function CompanyDetails() {
 					)}
 				</div>
 
-				{/* <div className='space-y-2'>
-				<Label htmlFor='size'>Business Size</Label>
-				<Controller
-					name='size'
-					control={control}
-					rules={{ required: 'Please select a business size' }}
-					render={({ field }) => (
-						<Select
-							value={field.value}
-							onValueChange={(value) => field.onChange(value)}
-						>
-							<SelectTrigger>
-								<SelectValue placeholder='Select business size' />
-							</SelectTrigger>
-							<SelectContent>
-								{businessSizes.map((size) => (
-									<SelectItem key={size} className='text-sm md:text-base' value={size}>
-										{size}
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
-					)}
-				/>
-				{errors.size && (
-					<p className='text-red-500 text-sm'>{errors.size.message}</p>
-				)}
-			</div> */}
-
 				<div className='space-y-2'>
 					<Label htmlFor='teamSize'>Team Size </Label>
 					<Controller
@@ -284,17 +328,26 @@ export function CompanyDetails() {
 				</div>
 
 				<div className='space-y-2'>
-					<Label htmlFor='revenue'>Revenue </Label>
+					<Label htmlFor='revenue'>Annual Revenue (Optional)</Label>
 					<Controller
 						name='revenue'
 						control={control}
-						rules={{ required: 'Revenue is required' }}
+						rules={{
+							validate: (value) => {
+								if (!value) return true; // Optional field
+								const numValue = Number(value.replace(/[^0-9]/g, ''));
+								if (isNaN(numValue)) return 'Please enter a valid number';
+								if (numValue > MAX_REVENUE)
+									return 'Revenue cannot exceed ₹100 crore';
+								return true;
+							},
+						}}
 						render={({ field }) => (
 							<Input
 								{...field}
 								id='revenue'
 								className='text-sm md:text-base w-full'
-								placeholder='Enter revenue'
+								placeholder='Enter annual revenue in INR (max ₹100 crore)'
 							/>
 						)}
 					/>
@@ -331,3 +384,4 @@ export function CompanyDetails() {
 		</div>
 	);
 }
+

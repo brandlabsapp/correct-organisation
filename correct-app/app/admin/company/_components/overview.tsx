@@ -62,7 +62,7 @@ export function Overview({ companyData }: { companyData: CompanyData }) {
 			din: data.din,
 			teamSize: data.teamSize,
 		};
-		const response = await fetch(`/api/profile/company/${companyData?.id}`, {
+		const response = await fetch(`/api/profile/company/${companyData?.uuid}`, {
 			method: 'PATCH',
 			body: JSON.stringify(payload),
 		});
@@ -381,10 +381,10 @@ export function Overview({ companyData }: { companyData: CompanyData }) {
 									<p className='text-sm text-gray-900'>
 										{companyData.createdAt
 											? new Date(companyData.createdAt).toLocaleDateString('en-US', {
-													day: 'numeric',
-													month: 'long',
-													year: 'numeric',
-											  })
+												day: 'numeric',
+												month: 'long',
+												year: 'numeric',
+											})
 											: 'N/A'}
 									</p>
 								</div>

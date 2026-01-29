@@ -12,6 +12,7 @@ import { CreateChecklistDto } from './dto/create-checklist.dto';
 import { NotificationService } from '@/notification/notification.service';
 import { ApiTags } from '@nestjs/swagger';
 import { PushService } from '@/notification/push/push.service';
+import { CompanyService } from '@/company/company.service';
 
 @ApiTags('compliance')
 @Controller('checklist')
@@ -20,6 +21,7 @@ export class ChecklistController {
     private readonly checklistService: ChecklistService,
     private readonly notificationService: NotificationService,
     private readonly pushService: PushService,
+    private readonly companyService: CompanyService,
   ) {}
 
   @Post()
@@ -86,6 +88,10 @@ export class ChecklistController {
     @Query('checklistId') checklistId?: string,
   ) {
     try {
+      const company = await this.companyService.fin(companyId);
+      if (!company) {
+        throw new Error('Company not found');
+      } 
       const data = await this.checklistService.getCompanyChecklist(
         companyId,
         checklistId ? +checklistId : undefined,

@@ -72,7 +72,7 @@ export class MastraController {
   @ApiOperation({ summary: 'Fetch company details from Mastra' })
   async fetchCompanyDetails(@Param('companyId') companyId: string) {
     // const parsedCompanyId = parseInt(companyId, 10);
-    const response = await this.companyService.findOne(companyId);
+    const response = await this.companyService.findOneByUuid(companyId);
     return response;
   }
   @Get('fetch-all-companies-of-user/:userId')

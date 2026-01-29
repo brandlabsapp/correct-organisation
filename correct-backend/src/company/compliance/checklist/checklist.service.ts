@@ -166,7 +166,7 @@ export class ChecklistService {
     if (!companyId) {
       throw new BadRequestException('Company ID is required');
     }
-    const isFetchedByCompany = companyId !== null;
+
 
     try {
       const includeRelations = [
@@ -185,10 +185,6 @@ export class ChecklistService {
         {
           model: Compliance,
         },
-        {
-          model: CompanyDetails,
-          required: isFetchedByCompany,
-        },
       ];
 
       if (checklistId) {
@@ -206,7 +202,7 @@ export class ChecklistService {
       } else {
         const checklists =
           await this.checklistRepository.findAll<CompanyChecklist>({
-            where: { companyId },
+            where: {companyId},
             include: includeRelations,
             order: [['createdAt', 'DESC']],
           });

@@ -99,7 +99,7 @@ export class CompanyService {
     return data;
   }
 
-  async findOne(uuid: string) {
+  async findOneByUuid(uuid: string) {
     const cacheKey = `company_${uuid}`;
     const cachedCompany = await this.cacheManager.get<CompanyDetails>(cacheKey);
 
@@ -277,17 +277,19 @@ export class CompanyService {
     }
 
     // 3. Optional: Update verification status
-    await this.companyMembersService.update(companyMember.id, {
-      professionalDetails: professionalDetails,
-      verificationStatus: 'pending',
-      role,
-    });
+    await this.companyMembersService.update(
+      { id: companyMember.id },
+      {
+        professionalDetails: professionalDetails,
+        status: 'active',
+        role,
+      },
+    );
     return {
       message: 'Verification status updated',
       status: 'success',
     };
   }
-  catch(e) {
-    throw new BadRequestException(e.message || 'Role verification failed');
-  }
+
+
 }

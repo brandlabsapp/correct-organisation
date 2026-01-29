@@ -1,6 +1,6 @@
 'use client';
 
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { SubmitHandler } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,6 +10,7 @@ import { showErrorToast } from '@/lib/utils/toast-handlers';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
+import { useFormWithAsyncDefaults } from '@/hooks/useFormWithAsyncDefaults';
 
 type PersonalDetailsForm = {
 	name: string;
@@ -29,13 +30,16 @@ export function PersonalDetails() {
 		handleSubmit,
 		formState: { errors, isSubmitting },
 		setValue,
-	} = useForm<PersonalDetailsForm>({
-		defaultValues: {
-			name: user?.name || '',
-			email: user?.email || '',
-			phone: user?.phone || '',
-		},
-	});
+	} = useFormWithAsyncDefaults<PersonalDetailsForm, AppTypes.User>(
+		user,
+		(data) => ({
+			name: data.name || '',
+			email: data.email || '',
+			phone: data.phone || '',
+			dateOfBirth: '',
+			address: '',
+		})
+	);
 
 	const onSubmit: SubmitHandler<PersonalDetailsForm> = async (data) => {
 		try {

@@ -1,10 +1,8 @@
 const MAX_RESEND_ATTEMPTS = 3;
 const COUNTDOWN_INITIAL = 30;
 const COUNTRY_CODE = '+91';
-
-export { MAX_RESEND_ATTEMPTS, COUNTDOWN_INITIAL, COUNTRY_CODE };
-
-export const requiredHeaders = [
+const MAX_REVENUE_LIMIT = 10000000000;
+const requiredHeaders = [
 	'title',
 	'state',
 	'category',
@@ -14,8 +12,7 @@ export const requiredHeaders = [
 	'penalties',
 	'section',
 ];
-
-export const templateData = [
+const templateData = [
 	{
 		title: 'Sample Compliance Form',
 		state: 'India',
@@ -43,7 +40,13 @@ export const templateData = [
 		endDate: '2024-12-31',
 	},
 ];
+const allowedRoutes = ['/', '/auth', '/admin', '/correct', '/login'];
+const AGENT_ID = 'orchestratorAgent'
 
-export const allowedRoutes = ['/', '/auth', '/admin', '/correct', '/login'];
 
-export const AGENT_ID = 'orchestratorAgent'
+
+export { MAX_RESEND_ATTEMPTS, COUNTDOWN_INITIAL, COUNTRY_CODE, MAX_REVENUE_LIMIT, requiredHeaders, templateData, allowedRoutes, AGENT_ID };
+
+
+
+

@@ -10,6 +10,8 @@ declare namespace AppTypes {
 		updatedAt?: Date;
 		token: string;
 		address?: string;
+		aadhar?: string;
+		pan?: string;
 		companyDetails?: Company[];
 		companyMembers?: any[];
 	}
