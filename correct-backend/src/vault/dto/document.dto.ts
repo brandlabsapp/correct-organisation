@@ -42,6 +42,11 @@ export class DocumentDto {
   category: string;
   @IsArray()
   @IsOptional()
+  @Transform(({ value }) => {
+    if (Array.isArray(value)) return value.map((v) => String(v));
+    if (value === undefined || value === null) return [];
+    return [String(value)];
+  })
   tags: string[];
   @IsNumber()
   @IsOptional()

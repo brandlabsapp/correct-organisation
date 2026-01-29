@@ -1,5 +1,10 @@
 import React from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
@@ -27,9 +32,11 @@ const InputModal = ({
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className='sm:max-w-md rounded-lg space-y-3 p-4 bg-white'>
-				<div className='text-center'>
-					<h3 className='font-medium text-body1'>{title}</h3>
-				</div>
+				<DialogHeader>
+					<DialogTitle className='text-center font-medium text-body1'>
+						{title}
+					</DialogTitle>
+				</DialogHeader>
 				<Input
 					placeholder={placeholder}
 					value={value}

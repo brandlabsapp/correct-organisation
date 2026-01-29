@@ -6,6 +6,7 @@ import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Uploader from '@/components/custom/vault/Uploader';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { SidebarLayout } from '@/components/common/sidebar-layout';
 import { useUserAuth } from '@/contexts/user';
 import {
@@ -15,7 +16,9 @@ import {
 } from '@/lib/utils/toast-handlers';
 import Folder from '@/components/custom/vault/Folder';
 import Document from '@/components/custom/vault/Document';
-import CompanySelect from '@/components/profile/CompanySelect';
+import CompanySelect, {
+	type CompanySelectProps,
+} from '@/components/profile/CompanySelect';
 import { uploadFileToSupabaseClient } from '@/app/lib/supabase/supabase-db';
 
 export default function DocumentManagement({
@@ -143,6 +146,7 @@ export default function DocumentManagement({
 
 		const uploadResult = await uploadFileToSupabaseClient(
 			file,
+			companyId,
 			currentFolder?.uuid || null,
 			file.name
 		);
@@ -489,10 +493,32 @@ export default function DocumentManagement({
 		<SidebarLayout>
 			<div className='p-5 md:p-6 lg:p-8 h-full overflow-y-scroll'>
 				<div className='flex justify-between items-center mb-5 md:mb-6'>
-					<h4 className='text-heading4 font-bold text-gray-800'>Vault</h4>
+					<div className='flex items-center gap-2'>
+						<Link
+							href={`/vault?company=${companyId}`}
+							className='text-heading4 font-bold text-gray-800 hover:text-gray-600 hover:underline cursor-pointer'
+						>
+							Vault
+						</Link>
+						{currentFolder?.name && (
+							<>
+								<span className='text-gray-400'>/</span>
+								<span className='text-heading4 font-semibold text-gray-700'>
+									{currentFolder.name}
+								</span>
+							</>
+						)}
+					</div>
 				</div>
 				<div className='flex justify-between items-center'>
-					<CompanySelect totalCompanies={totalCompanies} />
+					<CompanySelect
+						totalCompanies={totalCompanies}
+						displayCompany={
+							totalCompanies.find(
+								(c) => String(c.id) === String(companyId)
+							) ?? company
+						}
+					/>
 				</div>
 				{/* Grid scales up for desktop while preserving mobile layout */}
 				<div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-4 md:gap-6 mt-5 md:mt-6'>

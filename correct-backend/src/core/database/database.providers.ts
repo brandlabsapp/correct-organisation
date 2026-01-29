@@ -27,6 +27,26 @@ import { ComplianceDocument } from '@/company/compliance/entities/compliance-doc
 import { CompanyTaskDocument } from '@/company/compliance/entities/company-task-document.entity';
 import { CompanyTaskAssignee } from '@/company/compliance/entities/company-task-assignee.entity';
 
+// Finance entities
+import { FinanceClient } from '@/finance/clients/entities/finance-client.entity';
+import { FinanceInvoice } from '@/finance/invoices/entities/finance-invoice.entity';
+import { FinanceInvoiceLineItem } from '@/finance/invoices/entities/finance-invoice-line-item.entity';
+import { FinanceInvoicePayment } from '@/finance/invoices/entities/finance-invoice-payment.entity';
+import { FinanceInvoiceActivity } from '@/finance/invoices/entities/finance-invoice-activity.entity';
+import { FinanceRecurringProfile } from '@/finance/invoices/entities/finance-recurring-profile.entity';
+import { FinanceBill } from '@/finance/bills/entities/finance-bill.entity';
+import { FinanceBillLineItem } from '@/finance/bills/entities/finance-bill-line-item.entity';
+import { FinanceBillPayment } from '@/finance/bills/entities/finance-bill-payment.entity';
+import { FinanceEstimate } from '@/finance/estimates/entities/finance-estimate.entity';
+import { FinanceEstimateLineItem } from '@/finance/estimates/entities/finance-estimate-line-item.entity';
+import { FinanceSettings } from '@/finance/settings/entities/finance-settings.entity';
+import { FinanceSequence } from '@/finance/settings/entities/finance-sequence.entity';
+import { FinanceTaxRate } from '@/finance/settings/entities/finance-tax-rate.entity';
+import { FinanceSavedItem } from '@/finance/settings/entities/finance-saved-item.entity';
+
+// Projects entity
+import { Project } from '@/projects/entities/project.entity';
+
 const logger = new Logger('Database');
 
 const logging = (sql: string, timing: number) => {
@@ -112,6 +132,24 @@ export const databaseProviders = [
         ComplianceDocument,
         CompanyTaskDocument,
         CompanyTaskAssignee,
+        // Finance entities
+        FinanceClient,
+        FinanceInvoice,
+        FinanceInvoiceLineItem,
+        FinanceInvoicePayment,
+        FinanceInvoiceActivity,
+        FinanceRecurringProfile,
+        FinanceBill,
+        FinanceBillLineItem,
+        FinanceBillPayment,
+        FinanceEstimate,
+        FinanceEstimateLineItem,
+        FinanceSettings,
+        FinanceSequence,
+        FinanceTaxRate,
+        FinanceSavedItem,
+        // Projects
+        Project,
       ]);
 
       if (process.env.SYNC === 'true') {

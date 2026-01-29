@@ -72,7 +72,12 @@ const VerifyBusinessAndRole = ({ role }: VerifyBusinessAndRoleProps) => {
 				companyId: company?.id,
 			};
 
-			const uploadResult = await uploadFileToSupabaseClient(file, null, file.name);
+			const uploadResult = await uploadFileToSupabaseClient(
+				file,
+				company?.id ?? 'verification',
+				null,
+				file.name
+			);
 
 			if (!uploadResult.success) {
 				throw new Error(

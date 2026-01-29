@@ -8,26 +8,21 @@ async function fetchData(folderId?: string) {
 		return;
 	}
 	const baseUrl =
-		process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000';
-	const folderUrl = `${baseUrl}/api/vault/folders/folder/${folderId}`;
+		process.env.SERVER_URL || 'http://localhost:8000/api/v1';
+	const folderUrl = `${baseUrl}/vault/folder/${folderId}`;
 
-	const response = await fetch(folderUrl, {
-		cache: 'no-store',
-	});
-	console.log('response', response);
-
-	const data = await response.json();
-	console.log('data', data);
+	const response = await fetch(folderUrl, { cache: 'no-store' });
 
 	if (!response.ok) {
 		console.error('Failed to fetch data', response);
 		throw new Error('Failed to fetch data');
 	}
+	const folder = await response.json();
 
 	return {
-		folders: data.data.childFolders || [],
-		documents: data.data.documents || [],
-		currentFolder: data?.data,
+		folders: folder?.childFolders ?? [],
+		documents: folder?.documents ?? [],
+		currentFolder: folder ?? null,
 	};
 }
 
@@ -37,27 +32,19 @@ async function fetchDataCompany(companyId: string) {
 		return;
 	}
 	const baseUrl =
-		process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000';
-	const folderUrl = `${baseUrl}/api/vault/company/${companyId}`;
+		process.env.SERVER_URL || 'http://localhost:8000/api/v1';
+	const folderUrl = `${baseUrl}/vault/company/${companyId}`;
 
-	const response = await fetch(folderUrl, {
-		cache: 'no-store',
-	});
+	const response = await fetch(folderUrl, { cache: 'no-store' });
 
 	if (!response.ok) {
 		console.error('Failed to fetch data', response);
 		throw new Error('Failed to fetch data');
 	}
-	const { data } = await response.json();
-
-	const folders = data.folders || [];
-	const documents = Array.from(new Set([...data.documents]));
-	const currentFolder = data.folders[0] || null;
-
-	if (!response.ok) {
-		console.error('Failed to fetch data', response);
-		throw new Error('Failed to fetch data');
-	}
+	const payload = await response.json();
+	const folders = payload?.folders ?? [];
+	const documents = Array.from(new Set([...(payload?.documents ?? [])]));
+	const currentFolder = folders[0] ?? null;
 
 	return {
 		folders,
@@ -84,7 +71,6 @@ export default async function Vault(props: {
 }) {
 	const searchParams = await props.searchParams;
 	const params = await props.params;
-	console.log('params', params);
 	if (!params.slug) {
 		console.error('No folderId provided');
 	}

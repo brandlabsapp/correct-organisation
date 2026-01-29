@@ -1,26 +1,41 @@
 'use client';
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabaseBucket = process.env.NEXT_PUBLIC_SUPABASE_BUCKET!;
-
-console.log('supabaseBucket', supabaseBucket);
-console.log('supabaseUrl', supabaseUrl);
-console.log('supabaseAnonKey', supabaseAnonKey);
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
+const supabaseBucket = process.env.NEXT_PUBLIC_SUPABASE_BUCKET ?? '';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+/**
+ * Uploads a file to Supabase Storage with structure: vault/{companyId}/{folderId|root}/{timestamp}-{fileName}
+ */
 export async function uploadFileToSupabaseClient(
 	file: File,
+	companyId: string | number,
 	folderId: string | null,
 	fileName: string
 ) {
 	try {
+		if (!supabaseBucket?.trim()) {
+			return {
+				success: false,
+				message:
+					'Storage bucket not configured. Add NEXT_PUBLIC_SUPABASE_BUCKET to your .env (e.g. vault or your Supabase bucket name).',
+			};
+		}
+		if (!supabaseUrl?.trim() || !supabaseAnonKey?.trim()) {
+			return {
+				success: false,
+				message:
+					'Supabase not configured. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to your .env.',
+			};
+		}
+
 		const timestamp = new Date().getTime();
-		const filePath = folderId
-			? `${folderId}/${timestamp}-${fileName}`
-			: `root/${timestamp}-${fileName}`;
+		const companySegment = String(companyId);
+		const folderSegment = folderId?.trim() ? folderId : 'root';
+		const filePath = `vault/${companySegment}/${folderSegment}/${timestamp}-${fileName}`;
 
 		const { data, error } = await supabase.storage
 			.from(supabaseBucket)
@@ -28,9 +43,6 @@ export async function uploadFileToSupabaseClient(
 				cacheControl: '3600',
 				upsert: false,
 			});
-
-		console.log('data', data);
-		console.log('error', error);
 
 		if (error) {
 			throw error;
