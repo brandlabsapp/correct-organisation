@@ -49,60 +49,60 @@ export class TasksController {
     }
   }
 
-  @Get('company/:companyId')
-  async findByCompany(@Param('companyId') companyId: string) {
+  @Get('company/:companyUuid')
+  async findByCompany(@Param('companyUuid') companyUuid: string) {
     try {
-      return await this.tasksService.findByCompany(+companyId);
+      return await this.tasksService.findByCompanyUuid(companyUuid);
     } catch (error) {
       console.error(error);
       throw error;
     }
   }
 
-  @Get('checklist/:checklistId')
-  async findByChecklist(@Param('checklistId') checklistId: string) {
+  @Get('checklist/:checklistUuid')
+  async findByChecklist(@Param('checklistUuid') checklistUuid: string) {
     try {
-      return await this.tasksService.findTasksByChecklist(+checklistId);
+      return await this.tasksService.findTasksByChecklistUuid(checklistUuid);
     } catch (error) {
       console.error(error);
       throw error;
     }
   }
 
-  @Get('user/:userId')
-  async findByAssignedUser(@Param('userId') userId: string) {
+  @Get('user/:userToken')
+  async findByAssignedUser(@Param('userToken') userToken: string) {
     try {
-      return await this.tasksService.findTasksByAssignedUser(+userId);
+      return await this.tasksService.findTasksByAssignedUserToken(userToken);
     } catch (error) {
       console.error(error);
       throw error;
     }
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
+  @Get(':uuid')
+  async findOne(@Param('uuid') uuid: string) {
     try {
-      return await this.tasksService.findOne(+id);
+      return await this.tasksService.findOneByUuid(uuid);
     } catch (error) {
       console.error(error);
       throw error;
     }
   }
 
-  @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
+  @Patch(':uuid')
+  async update(@Param('uuid') uuid: string, @Body() updateTaskDto: UpdateTaskDto) {
     try {
-      return await this.tasksService.update(+id, updateTaskDto);
+      return await this.tasksService.updateByUuid(uuid, updateTaskDto);
     } catch (error) {
       console.error(error);
       throw error;
     }
   }
 
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
+  @Delete(':uuid')
+  async remove(@Param('uuid') uuid: string) {
     try {
-      await this.tasksService.remove(+id);
+      await this.tasksService.removeByUuid(uuid);
       return { success: true, message: 'Task deleted successfully' };
     } catch (error) {
       console.error(error);

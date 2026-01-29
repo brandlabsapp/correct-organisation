@@ -75,7 +75,7 @@ declare namespace AppTypes {
 		company: Company | null;
 		updateCompany: (company: Company) => void;
 		fetchCompanyDetails: (companyId: string | number) => void;
-		updateCurrentCompany: (companyId: number) => void;
+		updateCurrentCompany: (companyId: string | number) => void;
 		members: Member[];
 		setMembers: (members: Member[]) => void;
 	}

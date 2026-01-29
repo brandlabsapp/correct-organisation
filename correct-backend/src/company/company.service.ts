@@ -22,8 +22,6 @@ import { DocumentService } from '@/vault/document/document.service';
 import { Document } from '@/vault/entities/document.entity';
 import { CompanyChecklist } from './compliance/entities/companyChecklist.entity';
 import { Compliance } from './compliance/entities/compliance.entity';
-import { CompanyComplianceTask } from './compliance/entities/companyTask.entity';
-import { ComplianceTask } from './compliance/entities/task.entity';
 @Injectable()
 export class CompanyService {
   private readonly logger = new Logger(CompanyService.name);
@@ -150,7 +148,6 @@ export class CompanyService {
       };
       const invitedUserPhone = createCompanyMembersDto.phone;
       let user = await this.userService.findOneByPhone(invitedUserPhone);
-      console.log('user...', user);
       if (!user) {
         user = await this.userService.create({
           phone: invitedUserPhone,

@@ -215,7 +215,7 @@ export default function DocumentManagement({
 		if (selectedDocument?.id === doc.id) {
 			setSelectedDocument(null);
 		}
-		const response = await fetch(`/api/vault/documents/${doc.id}`, {
+		const response = await fetch(`/api/vault/documents/${doc.uuid}`, {
 			method: 'DELETE',
 		});
 		const data = await response.json();
@@ -239,7 +239,7 @@ export default function DocumentManagement({
 			return;
 		}
 		const response = await fetch(
-			`/api/vault/documents/presigned-url/${document.id}`
+			`/api/vault/documents/presigned-url/${document.uuid}`
 		);
 		const { data } = await response.json();
 		setSelectedDocument({
@@ -358,7 +358,7 @@ export default function DocumentManagement({
 			});
 			return;
 		}
-		const response = await fetch(`/api/vault/folders/folder/${folder.id}`, {
+		const response = await fetch(`/api/vault/folders/folder/${folder.uuid}`, {
 			method: 'DELETE',
 		});
 		const data = await response.json();
@@ -382,7 +382,7 @@ export default function DocumentManagement({
 			f.id === folder.id ? { ...f, name: newName } : f
 		);
 		setFolders(updatedFolders);
-		const response = await fetch(`/api/vault/folders/folder/${folder.id}`, {
+		const response = await fetch(`/api/vault/folders/folder/${folder.uuid}`, {
 			method: 'PATCH',
 			body: JSON.stringify({ name: newName }),
 		});
@@ -402,9 +402,9 @@ export default function DocumentManagement({
 
 	const handleRenameDocument = async (
 		newName: string,
-		documentId?: number | null
+		documentUuid?: string | null
 	) => {
-		if (!documentId) {
+		if (!documentUuid) {
 			showErrorToast({
 				title: 'No Document Selected',
 				message: 'No document selected. Please select a document to rename.',
@@ -412,10 +412,10 @@ export default function DocumentManagement({
 			return;
 		}
 		const updatedDocuments = documents.map((doc) =>
-			doc.id === documentId ? { ...doc, name: newName } : doc
+			doc.uuid === documentUuid ? { ...doc, name: newName } : doc
 		);
 		setDocuments(updatedDocuments);
-		const response = await fetch(`/api/vault/documents/${documentId}`, {
+		const response = await fetch(`/api/vault/documents/${documentUuid}`, {
 			method: 'PATCH',
 			body: JSON.stringify({ name: newName }),
 		});
@@ -439,7 +439,7 @@ export default function DocumentManagement({
 	) => {
 		try {
 			// Call your API to update the document's folder
-			const response = await fetch(`/api/vault/documents/${movedDocument.id}`, {
+			const response = await fetch(`/api/vault/documents/${movedDocument.uuid}`, {
 				method: 'PATCH',
 				headers: {
 					'Content-Type': 'application/json',

@@ -412,4 +412,236 @@ export class TasksService {
       );
     }
   }
+
+  async findByCompanyUuid(companyUuid: string): Promise<CompanyComplianceTask[]> {
+    try {
+      const tasks =
+        await this.companyTaskRepository.findAll<CompanyComplianceTask>({
+          include: [
+            {
+              model: CompanyDetails,
+              where: { uuid: companyUuid },
+              attributes: ['name', 'uuid'],
+            },
+            {
+              model: User,
+              as: 'assignedBy',
+              attributes: ['name', 'email'],
+            },
+            {
+              model: User,
+              as: 'assignedTo',
+              attributes: ['name', 'email'],
+            },
+            {
+              model: CompanyChecklist,
+              attributes: ['title', 'description'],
+            },
+            {
+              model: Document,
+            },
+          ],
+          order: [['createdAt', 'DESC']],
+        });
+
+      this.logger.debug(
+        `Retrieved ${tasks.length} tasks for company UUID ${companyUuid}`,
+      );
+      return tasks;
+    } catch (error) {
+      this.logger.error(
+        `Failed to fetch tasks for company UUID ${companyUuid}: ${error.message}`,
+        error.stack,
+      );
+      throw new BadRequestException(
+        `Failed to fetch tasks for company: ${error.message}`,
+      );
+    }
+  }
+
+  async findTasksByChecklistUuid(
+    checklistUuid: string,
+  ): Promise<CompanyComplianceTask[]> {
+    try {
+      const tasks =
+        await this.companyTaskRepository.findAll<CompanyComplianceTask>({
+          include: [
+            {
+              model: CompanyDetails,
+              attributes: ['name'],
+            },
+            {
+              model: User,
+              as: 'assignedBy',
+              attributes: ['name', 'email'],
+            },
+            {
+              model: User,
+              as: 'assignedTo',
+              attributes: ['name', 'email'],
+            },
+            {
+              model: CompanyChecklist,
+              where: { uuid: checklistUuid },
+              attributes: ['title', 'description', 'uuid'],
+            },
+            {
+              model: Document,
+            },
+          ],
+        });
+
+      this.logger.debug(
+        `Retrieved ${tasks.length} tasks for checklist UUID ${checklistUuid}`,
+      );
+      return tasks;
+    } catch (error) {
+      this.logger.error(
+        `Failed to fetch tasks for checklist UUID ${checklistUuid}: ${error.message}`,
+        error.stack,
+      );
+      throw new BadRequestException(
+        `Failed to fetch tasks for checklist: ${error.message}`,
+      );
+    }
+  }
+
+  async findOneByUuid(uuid: string): Promise<CompanyComplianceTask> {
+    try {
+      const task =
+        await this.companyTaskRepository.findOne<CompanyComplianceTask>({
+          where: { uuid },
+          include: [
+            {
+              model: CompanyDetails,
+              attributes: ['name', 'uuid'],
+            },
+            {
+              model: User,
+              as: 'assignedBy',
+              attributes: ['name', 'email'],
+            },
+            {
+              model: User,
+              as: 'assignedTo',
+              attributes: ['name', 'email'],
+            },
+            {
+              model: CompanyChecklist,
+              attributes: ['title', 'description'],
+            },
+            {
+              model: Document,
+            },
+          ],
+        });
+
+      if (!task) {
+        throw new NotFoundException(`Task with UUID ${uuid} not found`);
+      }
+
+      return task;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      this.logger.error(
+        `Failed to fetch task with UUID ${uuid}: ${error.message}`,
+        error.stack,
+      );
+      throw new BadRequestException(`Failed to fetch task: ${error.message}`);
+    }
+  }
+
+  async updateByUuid(
+    uuid: string,
+    updateTaskDto: UpdateTaskDto,
+  ): Promise<CompanyComplianceTask> {
+    try {
+      const task = await this.findOneByUuid(uuid);
+      await task.update(updateTaskDto as any);
+      this.logger.debug(`Task with UUID ${uuid} updated successfully`);
+
+      return task.reload({
+        include: [
+          Document,
+          { model: User, as: 'assignedTo' },
+          { model: User, as: 'assignedBy' },
+        ],
+      });
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      this.logger.error(
+        `Failed to update task with UUID ${uuid}: ${error.message}`,
+        error.stack,
+      );
+      throw new BadRequestException(`Failed to update task: ${error.message}`);
+    }
+  }
+
+  async removeByUuid(uuid: string): Promise<void> {
+    try {
+      const task = await this.findOneByUuid(uuid);
+      await task.destroy();
+      this.logger.debug(`Task with UUID ${uuid} deleted successfully`);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      this.logger.error(
+        `Failed to delete task with UUID ${uuid}: ${error.message}`,
+        error.stack,
+      );
+      throw new BadRequestException(`Failed to delete task: ${error.message}`);
+    }
+  }
+
+  async findTasksByAssignedUserToken(
+    userToken: string,
+  ): Promise<CompanyComplianceTask[]> {
+    try {
+      const tasks =
+        await this.companyTaskRepository.findAll<CompanyComplianceTask>({
+          include: [
+            {
+              model: User,
+              as: 'assignedTo',
+              where: { userToken },
+              attributes: ['name', 'email', 'userToken'],
+            },
+            {
+              model: CompanyDetails,
+              attributes: ['name'],
+            },
+            {
+              model: User,
+              as: 'assignedBy',
+              attributes: ['name', 'email'],
+            },
+            {
+              model: CompanyChecklist,
+              attributes: ['title', 'description'],
+            },
+            {
+              model: Document,
+            },
+          ],
+        });
+
+      this.logger.debug(
+        `Retrieved ${tasks.length} tasks assigned to user token ${userToken}`,
+      );
+      return tasks;
+    } catch (error) {
+      this.logger.error(
+        `Failed to fetch tasks for user token ${userToken}: ${error.message}`,
+        error.stack,
+      );
+      throw new BadRequestException(
+        `Failed to fetch user tasks: ${error.message}`,
+      );
+    }
+  }
 }

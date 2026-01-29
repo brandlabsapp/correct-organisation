@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import DocumentManagement from '@/components/custom/vault/DocumentManagement';
-import { LoadingFallback } from '@/components/common/LoadingFallback';
+import { VaultSkeleton } from './_components/VaultSkeleton';
 
 async function fetchData(companyId: string) {
 	if (!companyId) {
@@ -73,7 +73,7 @@ export default function Vault() {
 	}
 
 	if (isLoading) {
-		return <LoadingFallback />;
+		return <VaultSkeleton />;
 	}
 
 	return (

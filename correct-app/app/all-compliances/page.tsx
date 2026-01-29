@@ -6,7 +6,7 @@ import { CheckCircle } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SidebarLayout } from '@/components/common/sidebar-layout';
 import { ChecklistCard } from '@/components/checklist/checklist-card';
-import { LoadingFallback } from '@/components/common/LoadingFallback';
+import { AllCompliancesSkeleton } from './_components/AllCompliancesSkeleton';
 
 interface ComplianceItem {
 	id: string;
@@ -98,7 +98,7 @@ export default function AllCompliances() {
 	}
 
 	if (isLoading) {
-		return <LoadingFallback />;
+		return <AllCompliancesSkeleton />;
 	}
 
 	return (

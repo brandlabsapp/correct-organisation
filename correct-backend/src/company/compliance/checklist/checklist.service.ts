@@ -3,6 +3,7 @@ import {
   Inject,
   Injectable,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { CompanyChecklist } from '../entities/companyChecklist.entity';
 import {
@@ -10,6 +11,7 @@ import {
   CHECKLIST_REPOSITORY,
   TASK_REPOSITORY,
   COMPANY_TASK_REPOSITORY,
+  COMPANY_REPOSITORY,
 } from '@/core/constants';
 import { Compliance } from '../entities/compliance.entity';
 import { CompanyDetails } from '@/company/entities/company.entity';
@@ -31,6 +33,8 @@ export class ChecklistService {
     private readonly taskRepository: typeof ComplianceTask,
     @Inject(COMPANY_TASK_REPOSITORY)
     private readonly companyTaskRepository: typeof CompanyComplianceTask,
+    @Inject(COMPANY_REPOSITORY)
+    private readonly companyRepository: typeof CompanyDetails,
   ) {}
 
   async createChecklist(
@@ -43,9 +47,17 @@ export class ChecklistService {
     try {
       this.logger.debug('Creating new compliance checklist');
 
+      const fetchCompany = await this.companyRepository.findByPk(
+        checklist.companyId,
+      );
+
+      if (!fetchCompany) {
+        throw new NotFoundException('Company not found');
+      }
+
       const newChecklist =
         await this.checklistRepository.create<CompanyChecklist>({
-          companyId: checklist.companyId,
+          companyId: fetchCompany.id,
           userId: checklist.userId,
           complianceId: checklist.complianceIds[0],
           status: 'pending',
@@ -148,12 +160,13 @@ export class ChecklistService {
   }
 
   async getCompanyChecklist(
-    companyId: number,
+    companyId: string | null,
     checklistId?: number,
   ): Promise<CompanyChecklist | CompanyChecklist[]> {
     if (!companyId) {
       throw new BadRequestException('Company ID is required');
     }
+    const isFetchedByCompany = companyId !== null;
 
     try {
       const includeRelations = [
@@ -172,12 +185,16 @@ export class ChecklistService {
         {
           model: Compliance,
         },
+        {
+          model: CompanyDetails,
+          required: isFetchedByCompany,
+        },
       ];
 
       if (checklistId) {
         const checklist =
           await this.checklistRepository.findOne<CompanyChecklist>({
-            where: { companyId, complianceId: checklistId },
+            where: { complianceId: checklistId },
             include: includeRelations,
           });
         this.logger.debug(
@@ -193,7 +210,6 @@ export class ChecklistService {
             include: includeRelations,
             order: [['createdAt', 'DESC']],
           });
-
         this.logger.debug(
           `Retrieved ${
             checklists?.length || 0

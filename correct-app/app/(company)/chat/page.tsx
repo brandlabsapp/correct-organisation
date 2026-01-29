@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useUserAuth } from '@/contexts/user';
 import AIChat from './_components/Chat';
-import { LoadingFallback } from '@/components/common/LoadingFallback';
+import { ChatSkeleton } from './_components/ChatSkeleton';
 
 interface ChatMessage {
 	id: string;
@@ -22,7 +22,7 @@ interface ChatConversation {
 
 const fetchAllConversations = async (
 	userId: number,
-	companyId: string
+	companyId: string,
 ): Promise<{ messages: ChatMessage[]; conversations: ChatConversation[] }> => {
 	try {
 		const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
@@ -102,7 +102,7 @@ export default function AIChatPage() {
 	}, [user, company, isAuthenticated, isAuthLoading, router]);
 
 	if (isAuthLoading || isLoading) {
-		return <LoadingFallback />;
+		return <ChatSkeleton />;
 	}
 
 	return <AIChat data={messages} conversations={conversations} />;

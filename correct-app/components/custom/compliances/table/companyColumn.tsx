@@ -86,7 +86,7 @@ export const companyColumns: ColumnDef<Company>[] = [
 		cell: ({ row }) => {
 			const company = row.original;
 			return (
-				<Link href={`/admin/company/${company.id}`} prefetch={false}>
+				<Link href={`/admin/company/${company.uuid}`} prefetch={false}>
 					<Button>Manage Company</Button>
 				</Link>
 			);

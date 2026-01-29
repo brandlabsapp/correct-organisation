@@ -1,8 +1,16 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
 import { NotificationChange } from './notification_change.entity';
+import { v4 as uuidv4 } from 'uuid';
 
 @Table({ tableName: 'NotificationObject', paranoid: true })
 export class NotificationObject extends Model<NotificationObject> {
+  @Column({
+    type: DataType.UUID,
+    defaultValue: uuidv4,
+    unique: true,
+  })
+  uuid: string;
+
   @Column({
     type: DataType.STRING,
   })

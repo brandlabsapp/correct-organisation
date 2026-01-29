@@ -63,7 +63,7 @@ export function BottomNav() {
 				{navItems.map((item) => (
 					<Link
 						key={item.href}
-						href={`${item.href}?company=${company?.id || companyId}`}
+						href={`${item.href}?company=${company?.uuid || companyId}`}
 						className={`flex flex-col items-center justify-center w-full h-full text-sm ${
 							pathname === item.href ? 'text-black' : 'text-muted-foreground'
 						}`}
@@ -82,7 +82,7 @@ export function BottomNav() {
 							<span
 								className={cn(
 									'mt-1 text-xs text-secondarygray',
-									pathname === item.href && 'text-black'
+									pathname === item.href && 'text-black',
 								)}
 							>
 								{item.label}

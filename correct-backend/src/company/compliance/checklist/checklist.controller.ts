@@ -11,6 +11,7 @@ import { ChecklistService } from './checklist.service';
 import { CreateChecklistDto } from './dto/create-checklist.dto';
 import { NotificationService } from '@/notification/notification.service';
 import { ApiTags } from '@nestjs/swagger';
+import { PushService } from '@/notification/push/push.service';
 
 @ApiTags('compliance')
 @Controller('checklist')
@@ -18,7 +19,8 @@ export class ChecklistController {
   constructor(
     private readonly checklistService: ChecklistService,
     private readonly notificationService: NotificationService,
-  ) { }
+    private readonly pushService: PushService,
+  ) {}
 
   @Post()
   async create(@Body() createChecklistDto: CreateChecklistDto) {
@@ -26,35 +28,35 @@ export class ChecklistController {
       const response =
         await this.checklistService.createChecklist(createChecklistDto);
 
-      if (this.notificationService && response.userId && response.id) {
-        // const notification = await this.notificationService.createNotification({
-        //   userId: response.userId,
-        //   title: 'New Compliance Checklist Created',
-        //   type: 'CHECKLIST_CREATION',
-        //   message: `A new checklist "${response.title}" has been created`,
-        //   objectId: response.id,
-        //   isRead: false,
-        // });
-        // if (notification && this.pushService) {
-        //   const token = await this.pushService.getDeviceToken(
-        //     notification.userId,
-        //   );
-        //   if (token && token.token) {
-        //     await this.pushService.sendPushNotificationToDeviceToken(
-        //       token.token,
-        //       {
-        //         title: notification.title,
-        //         body: notification.message,
-        //         data: {
-        //           notificationId: notification.id,
-        //           type: notification.type,
-        //           objectId: notification.objectId?.toString() || '',
-        //         },
-        //       },
-        //     );
-        //   }
-        // }
-      }
+      // if (this.notificationService && response.userId && response.id) {
+      //   const notification = await this.notificationService.createNotification({
+      //     userId: createChecklistDto.userId,
+      //     title: 'New Compliance Checklist Created',
+      //     type: 'CHECKLIST_CREATION',
+      //     message: `A new checklist "${response.title}" has been created`,
+      //     objectId: response.id,
+      //     isRead: false,
+      //   });
+      //   if (notification && this.pushService) {
+      //     const token = await this.pushService.getDeviceToken(
+      //       notification.userId,
+      //     );
+      //     if (token && token.token) {
+      //       await this.pushService.sendPushNotificationToDeviceToken(
+      //         token.token,
+      //         {
+      //           title: notification.title,
+      //           body: notification.message,
+      //           data: {
+      //             notificationId: notification.id,
+      //             type: notification.type,
+      //             objectId: notification.objectId?.toString() || '',
+      //           },
+      //         },
+      //       );
+      //     }
+      //   }
+      // }
 
       return {
         success: true,
@@ -85,7 +87,7 @@ export class ChecklistController {
   ) {
     try {
       const data = await this.checklistService.getCompanyChecklist(
-        +companyId,
+        companyId,
         checklistId ? +checklistId : undefined,
       );
       return data;

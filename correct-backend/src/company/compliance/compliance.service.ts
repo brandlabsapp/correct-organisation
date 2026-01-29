@@ -337,4 +337,126 @@ export class ComplianceService {
       );
     }
   }
+
+  async findOneByUuid(uuid: string): Promise<Compliance> {
+    try {
+      const compliance = await this.complianceRepository.findOne({
+        where: { uuid },
+        include: [
+          {
+            model: ComplianceTask,
+          },
+          {
+            model: Document,
+          },
+        ],
+      });
+      if (!compliance) {
+        throw new BadRequestException(`Compliance with UUID ${uuid} not found`);
+      }
+      return compliance;
+    } catch (error) {
+      this.logger.error(
+        `Failed to fetch compliance with UUID ${uuid}: ${error.message}`,
+        error.stack,
+      );
+      throw new BadRequestException(
+        `Failed to fetch compliance: ${error.message}`,
+      );
+    }
+  }
+
+  async updateByUuid(uuid: string, updateComplianceDto: UpdateComplianceDto) {
+    try {
+      const compliance = await this.findOneByUuid(uuid);
+      await compliance.update(updateComplianceDto);
+      this.logger.debug(`Updated compliance with UUID ${uuid}`);
+      return compliance;
+    } catch (error) {
+      this.logger.error(
+        `Failed to update compliance with UUID ${uuid}: ${error.message}`,
+        error.stack,
+      );
+      throw new BadRequestException(
+        `Failed to update compliance: ${error.message}`,
+      );
+    }
+  }
+
+  async removeByUuid(uuid: string) {
+    try {
+      const compliance = await this.findOneByUuid(uuid);
+      await compliance.destroy();
+      this.logger.debug(`Deleted compliance with UUID ${uuid}`);
+      return { success: true, message: 'Compliance deleted successfully' };
+    } catch (error) {
+      this.logger.error(
+        `Failed to delete compliance with UUID ${uuid}: ${error.message}`,
+        error.stack,
+      );
+      throw new BadRequestException(
+        `Failed to delete compliance: ${error.message}`,
+      );
+    }
+  }
+
+  async getComplianceDocumentsByUuid(uuid: string): Promise<Document[]> {
+    try {
+      const compliance = await this.findOneByUuid(uuid);
+      return compliance.docs;
+    } catch (error) {
+      this.logger.error(
+        `Failed to get documents for compliance ${uuid}: ${error.message}`,
+        error.stack,
+      );
+      throw new BadRequestException(
+        `Failed to get compliance documents: ${error.message}`,
+      );
+    }
+  }
+
+  async detachDocumentByUuid(
+    complianceUuid: string,
+    documentUuid: string,
+  ): Promise<void> {
+    try {
+      const compliance = await this.findOneByUuid(complianceUuid);
+      const document = await this.documentRepository.findOne({
+        where: { uuid: documentUuid },
+      });
+
+      if (!document) {
+        throw new BadRequestException(
+          `Document with UUID ${documentUuid} not found`,
+        );
+      }
+
+      const complianceDocument =
+        await this.complianceDocumentRepository.findOne({
+          where: {
+            complianceId: compliance.id,
+            documentId: document.id,
+          },
+        });
+
+      if (!complianceDocument) {
+        throw new BadRequestException(
+          `Document ${documentUuid} is not attached to compliance ${complianceUuid}`,
+        );
+      }
+
+      await complianceDocument.destroy();
+      this.logger.debug(
+        `Document ${documentUuid} detached from compliance ${complianceUuid}`,
+      );
+    } catch (error) {
+      this.logger.error(
+        `Failed to detach document ${documentUuid} from compliance ${complianceUuid}: ${error.message}`,
+        error.stack,
+      );
+      throw new BadRequestException(
+        `Failed to detach document: ${error.message}`,
+      );
+    }
+  }
 }

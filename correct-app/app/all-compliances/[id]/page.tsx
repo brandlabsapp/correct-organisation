@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import { SidebarLayout } from '@/components/common/sidebar-layout';
 import { Separator } from '@/components/ui/separator';
-import { LoadingFallback } from '@/components/common/LoadingFallback';
+import { ComplianceDetailSkeleton } from './_components/ComplianceDetailSkeleton';
 
 import TasksSection from './_components/TasksSection';
 import OverviewSection from './_components/OverviewSection';
@@ -106,7 +106,7 @@ export default function ComplianceDetailPage() {
 	}
 
 	if (isLoading) {
-		return <LoadingFallback />;
+		return <ComplianceDetailSkeleton />;
 	}
 
 	if (!complianceDetail) {

@@ -35,7 +35,7 @@ export default function RootLayout({
 			<body>
 				<ClientComponentWrapper fallback={<LoadingFallback />}>
 					<ThemeProvider attribute='class'>
-							<AuthLayoutWrapper>{children}</AuthLayoutWrapper>
+						<AuthLayoutWrapper>{children}</AuthLayoutWrapper>
 					</ThemeProvider>
 				</ClientComponentWrapper>
 			</body>

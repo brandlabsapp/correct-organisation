@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Dashboard from './_components/Dashboard';
 import { FetchFallback } from '@/components/common/FetchFallback';
-import { LoadingFallback } from '@/components/common/LoadingFallback';
+import { DashboardSkeleton } from './_components/DashboardSkeleton';
 import { SidebarLayout } from '@/components/common/sidebar-layout';
 
 const fetchData = async (companyId: string) => {
@@ -62,7 +62,7 @@ export default function DashboardPage() {
 	}
 
 	if (isLoading) {
-		return <LoadingFallback />;
+		return <DashboardSkeleton />;
 	}
 
 	if (data.length === 0) {
