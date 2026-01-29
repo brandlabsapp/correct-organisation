@@ -39,7 +39,7 @@ const CompanySelectDialog = ({ totalCompanies }: Props) => {
 					</DialogHeader>
 					{totalCompanies.map((company) => (
 						<CompanyCard
-							key={company.id}
+							key={company.uuid}
 							company={company}
 							setSelectedCompany={updateCompany}
 						/>

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,7 +12,7 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { useEvents } from '@/contexts/event';
+import { showErrorToast } from '@/lib/utils/toast-handlers';
 
 interface EventDeleteFormProps {
 	id?: string;
@@ -20,21 +20,40 @@ interface EventDeleteFormProps {
 }
 
 export function EventDeleteForm({ id, title }: EventDeleteFormProps) {
-	const { deleteEvent } = useEvents();
-	const { eventDeleteOpen, setEventDeleteOpen, setEventViewOpen } = useEvents();
-
+	const [open, setOpen] = useState(false);
+	const [eventViewOpen, setEventViewOpen] = useState(false);
 	const { toast } = useToast();
+
+	const deleteEvent = async (id: string) => {
+		const response = await fetch(`/api/checklist/${id}`, {
+			method: 'DELETE',
+		});
+		const result = await response.json();
+		if (result.state === 'error') {
+			showErrorToast({
+				title: 'Error deleting event!',		
+				message: result.message,
+			});
+			return;
+		}
+		toast({
+			title: 'Event deleted!',
+			description: 'Event deleted successfully',
+		});
+		setOpen(false);
+		setEventViewOpen(false);
+	};
 
 	async function onSubmit() {
 		deleteEvent(id!);
-		setEventDeleteOpen(false);
+		setOpen(false);
 		setEventViewOpen(false);
 	}
 
 	return (
-		<AlertDialog open={eventDeleteOpen}>
+		<AlertDialog open={open}>
 			<AlertDialogTrigger asChild>
-				<Button variant='destructive' onClick={() => setEventDeleteOpen(true)}>
+				<Button variant='destructive' onClick={() => setOpen(true)}>
 					Delete Event
 				</Button>
 			</AlertDialogTrigger>
@@ -46,7 +65,7 @@ export function EventDeleteForm({ id, title }: EventDeleteFormProps) {
 					Are you sure you want to delete this event?
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel onClick={() => setEventDeleteOpen(false)}>
+					<AlertDialogCancel onClick={() => setOpen(false)}>
 						Cancel
 					</AlertDialogCancel>
 					<Button variant='destructive' onClick={() => onSubmit()}>

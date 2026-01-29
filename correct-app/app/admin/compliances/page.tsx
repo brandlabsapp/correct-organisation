@@ -1,4 +1,8 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import ComplianceTabs from './_components/ComplianceTabs';
+import { LoadingFallback } from '@/components/common/LoadingFallback';
 
 const fetchAllCompanies = async () => {
 	const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
@@ -39,9 +43,34 @@ const fetchAllCompliances = async () => {
 	return data.data;
 };
 
-export default async function Compliances() {
-	const companies = await fetchAllCompanies();
-	const compliances = await fetchAllCompliances();
+export default function Compliances() {
+	const [companies, setCompanies] = useState<any[]>([]);
+	const [compliances, setCompliances] = useState<any[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		const loadData = async () => {
+			try {
+				const [companiesData, compliancesData] = await Promise.all([
+					fetchAllCompanies(),
+					fetchAllCompliances(),
+				]);
+				setCompanies(companiesData);
+				setCompliances(compliancesData);
+			} catch (error) {
+				console.error('Failed to fetch data:', error);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		loadData();
+	}, []);
+
+	if (isLoading) {
+		return <LoadingFallback />;
+	}
+
 	return (
 		<ComplianceTabs
 			initialComplianceData={compliances}

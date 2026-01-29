@@ -5,7 +5,6 @@ import {
 	SelectContent,
 	SelectItem,
 	SelectValue,
-	SelectLabel,
 } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 

@@ -247,7 +247,7 @@ export function Documents({
 			return;
 		}
 		const response = await fetch(
-			`/api/vault/documents/presigned-url/${document.id}`
+			`/api/vault/documents/presigned-url/${document.uuid}`
 		);
 		const { data } = await response.json();
 		console.log('data', data);
@@ -414,12 +414,12 @@ export function Documents({
 		setCurrentFolder(
 			lastFolder
 				? {
-						id: Number(lastFolder.id),
-						name: lastFolder.name,
-						parentId: null,
-						userId: null,
-						companyId: Number(companyId),
-				  }
+					id: Number(lastFolder.id),
+					name: lastFolder.name,
+					parentId: null,
+					userId: null,
+					companyId: Number(companyId),
+				}
 				: null
 		);
 	};

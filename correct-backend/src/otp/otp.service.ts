@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 
-const formUrlEncoded = (x: { [key: string]: string }): string =>
-  Object.keys(x).reduce((p, c) => p + `&${c}=${encodeURIComponent(x[c])}`, '');
-
 @Injectable()
 export class OtpService {
   private msg91AuthKey: string;
@@ -188,4 +185,3 @@ export class OtpService {
     }
   }
 }
-

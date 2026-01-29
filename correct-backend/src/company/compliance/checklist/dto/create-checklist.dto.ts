@@ -1,10 +1,4 @@
-import {
-  IsArray,
-  IsDate,
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-} from 'class-validator';
+import { IsArray, IsDate, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateChecklistDto {
   @IsNumber()

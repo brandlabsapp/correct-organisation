@@ -25,7 +25,6 @@ const getRouteVariant = (pathname: string): RouteVariant => {
 
 export function AuthLayoutWrapper({ children }: AuthLayoutWrapperProps) {
 	const pathname = usePathname();
-
 	const routeVariant = getRouteVariant(pathname);
 
 	if (routeVariant === 'home') {

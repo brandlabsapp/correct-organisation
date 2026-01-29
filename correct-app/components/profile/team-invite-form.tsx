@@ -51,14 +51,14 @@ export function TeamInviteForm({
 	};
 
 	return (
-		<form onSubmit={handleSubmit(handleFormSubmit)} className='space-y-4'>
+		<form onSubmit={handleSubmit(handleFormSubmit)}>
 			<div className='space-y-2'>
-				<div className='md:w-full flex flex-col md:flex-row gap-8 md:gap-2 space-x-4 px-2'>
-					<div className='md:w-full'>
+				<div className='flex px-2 gap-x-2'>
+					<div className='w-full'>
 						<Input
 							id='phone'
 							type='tel'
-							placeholder='Enter Phone Number'
+							placeholder='Enter Phone Number..'
 							className='text-sm md:text-base w-full'
 							{...register('phone')}
 						/>
@@ -66,7 +66,7 @@ export function TeamInviteForm({
 							<span className='text-red-500 text-sm'>{errors.phone.message}</span>
 						)}
 					</div>
-					<div className='w-full md:w-1/2 !ml-0'>
+					<div className='w-full md:w-1/2 ml-0!'>
 						<Select
 							onValueChange={(value) => setValue('role', value as 'admin' | 'member')}
 							defaultValue={getValues('role')}
@@ -80,15 +80,15 @@ export function TeamInviteForm({
 							</SelectContent>
 						</Select>
 					</div>
-					<Button
-						disabled={isSubmitting}
-						loading={isSubmitting}
-						type='submit'
-						className='w-24 md:w-44 px-0 !mx-0'
-					>
-						Invite
-					</Button>
 				</div>
+				<Button
+					disabled={isSubmitting}
+					loading={isSubmitting}
+					type='submit'
+					className='w-full'
+				>
+					Invite
+				</Button>
 			</div>
 		</form>
 	);

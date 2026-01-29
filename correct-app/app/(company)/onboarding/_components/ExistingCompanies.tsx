@@ -41,7 +41,7 @@ export default function ExistingCompanies({
 					lastAccessedAt: new Date().toISOString(),
 					companyId,
 				}),
-			}
+			},
 		);
 		const data = await response.json();
 		if (data.state === 'error') {
@@ -82,7 +82,7 @@ export default function ExistingCompanies({
 									<Button
 										variant='ghost'
 										className='relative flex w-full items-center justify-start space-x-2 md:space-x-4 px-3 md:px-4 py-6 md:py-10 hover:bg-gray-100'
-										onClick={() => handleCompanySelect(company.company?.id)}
+										onClick={() => handleCompanySelect(company.company?.uuid)}
 									>
 										<div className='flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-primary/10'>
 											<Building2 className='h-5 w-5 md:h-6 md:w-6 text-gray-500' />
@@ -96,8 +96,9 @@ export default function ExistingCompanies({
 											</p>
 											{company.lastAccessedAt && (
 												<p className='text-xs text-muted-foreground hidden md:block'>
-												Last accessed {format(new Date(company.lastAccessedAt), 'PPPP')} {/* date-fns format */}
-											</p>
+													Last accessed{' '}
+													{format(new Date(company.lastAccessedAt), 'PPPP')}{' '}
+												</p>
 											)}
 										</div>
 										<ChevronRight className='h-4 w-4 md:h-5 md:w-5 text-muted-foreground' />

@@ -24,6 +24,7 @@ import { useUserAuth } from '@/contexts/user';
 
 type Company = {
 	id: number;
+	uuid: string;
 	name: string;
 	industry: string;
 };
@@ -35,14 +36,14 @@ export default function CompanySwitcher({ data }: { data: Company[] }) {
 
 	// Sync with context company
 	const [selectedCompany, setSelectedCompany] = useState<Company>(
-		data.find((c) => c.id === company?.id) || data[0]
+		data.find((c) => c.uuid === company?.uuid) || data[0],
 	);
 
-	const handleCompanyChange = async (companyId: number) => {
-		const newCompany = data.find((c) => c.id === companyId);
+	const handleCompanyChange = async (companyUuid: string) => {
+		const newCompany = data.find((c) => c.uuid === companyUuid);
 		if (newCompany) {
 			setSelectedCompany(newCompany);
-			await updateCurrentCompany(companyId);
+			await updateCurrentCompany(companyUuid);
 			router.refresh();
 		}
 	};
@@ -73,9 +74,9 @@ export default function CompanySwitcher({ data }: { data: Company[] }) {
 							<CommandGroup heading='Your Companies'>
 								{data.map((company) => (
 									<CommandItem
-										key={company.id}
+										key={company.uuid}
 										onSelect={() => {
-											handleCompanyChange(company.id);
+											handleCompanyChange(company.uuid);
 											setOpen(false);
 										}}
 										className='text-sm'
@@ -88,7 +89,7 @@ export default function CompanySwitcher({ data }: { data: Company[] }) {
 										<Check
 											className={cn(
 												'ml-2 h-4 w-4',
-												selectedCompany.id === company.id ? 'opacity-100' : 'opacity-0'
+												selectedCompany.uuid === company.uuid ? 'opacity-100' : 'opacity-0',
 											)}
 										/>
 									</CommandItem>

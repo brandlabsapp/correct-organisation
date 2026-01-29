@@ -167,4 +167,61 @@ export class FolderService {
       throw err;
     }
   }
+
+  async updateFolderByUuid(uuid: string, updateFolderDto: any): Promise<Folder> {
+    try {
+      const folder = await this.getFolder({ uuid });
+      if (!folder) {
+        throw new BadRequestException('Folder not found');
+      }
+      return folder.update(updateFolderDto);
+    } catch (err) {
+      this.logger.error(err, 'updateFolderByUuid', 'FolderService');
+      throw err;
+    }
+  }
+
+  async deleteFolderByUuid(uuid: string): Promise<Record<string, string>> {
+    try {
+      const folder = await this.getFolder({ uuid });
+      if (!folder) {
+        throw new BadRequestException('Folder not found');
+      }
+      await folder.destroy();
+      return { message: 'Folder deleted successfully' };
+    } catch (err) {
+      this.logger.error(err, 'deleteFolderByUuid', 'FolderService');
+      throw err;
+    }
+  }
+
+  async findFoldersAndDocumentsByCompanyUuid(companyUuid: string): Promise<any> {
+    try {
+      const company = await this.folderRepository.sequelize.models.CompanyDetails.findOne({
+        where: { uuid: companyUuid },
+      });
+      if (!company) {
+        throw new BadRequestException('Company not found');
+      }
+      return this.findFoldersAndDocuments(company.get('id') as number);
+    } catch (err) {
+      this.logger.error(err, 'findFoldersAndDocumentsByCompanyUuid', 'FolderService');
+      throw err;
+    }
+  }
+
+  async findAllByCompanyUuid(companyUuid: string): Promise<Folder[]> {
+    try {
+      const company = await this.folderRepository.sequelize.models.CompanyDetails.findOne({
+        where: { uuid: companyUuid },
+      });
+      if (!company) {
+        throw new BadRequestException('Company not found');
+      }
+      return this.findAll({ companyId: company.get('id') as number });
+    } catch (err) {
+      this.logger.error(err, 'findAllByCompanyUuid', 'FolderService');
+      throw err;
+    }
+  }
 }

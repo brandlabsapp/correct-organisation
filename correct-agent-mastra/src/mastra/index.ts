@@ -1,13 +1,6 @@
 import { Mastra } from '@mastra/core/mastra';
 import { PinoLogger } from '@mastra/loggers';
 import { LibSQLStore } from '@mastra/libsql';
-import { weatherWorkflow } from './workflows/weather-workflow';
-import {
-	toolCallAppropriatenessScorer,
-	completenessScorer,
-	translationScorer,
-} from './scorers/weather-scorer';
-
 // Agents per orchestration diagram
 import { orchestratorAgent } from './agents/orchestrator-agent';
 import { generalAgent } from './agents/general-agent';
@@ -21,7 +14,6 @@ import { webSearchAgent } from './agents/websearch-agent';
 import { complianceScorers } from './scorers/compliance-scorers';
 
 export const mastra = new Mastra({
-	workflows: { weatherWorkflow },
 	agents: {
 		orchestratorAgent,
 		generalAgent,
@@ -30,12 +22,6 @@ export const mastra = new Mastra({
 		knowledgeAgent,
 		taskAgent,
 		webSearchAgent,
-	},
-	scorers: {
-		toolCallAppropriatenessScorer,
-		completenessScorer,
-		translationScorer,
-		...complianceScorers,
 	},
 	storage: new LibSQLStore({
 		url: ':memory:',

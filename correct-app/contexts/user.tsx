@@ -119,7 +119,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 		initializeUser();
 	}, [fetchCompanyDetails, router]);
 
-	const updateCurrentCompany = async (companyId: number) => {
+	const updateCurrentCompany = async (companyId: string | number) => {
 		try {
 			const newSearchParams = new URLSearchParams(window.location.search);
 			newSearchParams.set('company', String(companyId));

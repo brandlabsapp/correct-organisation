@@ -15,7 +15,7 @@ function SidebarLayoutContent({ children }: SidebarLayoutProps) {
 			<NavigationWrapper />
 			<div
 				className={cn(
-					'flex-1 pb-16 md:pb-0 transition-all duration-300 ease-in-out'
+					'flex-1 pb-16 md:pb-0 transition-all duration-300 ease-in-out',
 				)}
 			>
 				{children}

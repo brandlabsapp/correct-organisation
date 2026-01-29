@@ -5,10 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ChatMessage } from '@/components/chat-message';
-import { SendHorizontal, Upload, Plus } from 'lucide-react';
+import { SendHorizontal, Upload } from 'lucide-react';
 import { FileUploader } from '@/components/custom/vault/file-uploader';
 import { useChat, type Message } from 'ai/react';
-import { showErrorToast, showSuccessToast } from '@/lib/utils/toast-handlers';
+import { showErrorToast } from '@/lib/utils/toast-handlers';
 import { useUserAuth } from '@/contexts/user';
 import { SidebarLayout } from '@/components/common/sidebar-layout';
 
@@ -32,7 +32,7 @@ interface AIChatProps {
 export default function AIChat({ data, conversations }: AIChatProps) {
 	const [showUploader, setShowUploader] = useState(false);
 	const [conversation, setConversation] = useState<ChatConversation[]>(
-		Array.isArray(conversations) ? conversations : []
+		Array.isArray(conversations) ? conversations : [],
 	);
 	const [currentConversationId, setCurrentConversationId] = useState<
 		string | null
@@ -48,7 +48,7 @@ export default function AIChat({ data, conversations }: AIChatProps) {
 					id: msg.id,
 					content: msg.content,
 					role: msg.role as Message['role'],
-			  }))
+				}))
 			: [];
 	}, [data]);
 
@@ -97,7 +97,7 @@ export default function AIChat({ data, conversations }: AIChatProps) {
 	const scrollToBottom = useCallback(() => {
 		if (scrollAreaRef.current) {
 			const scrollContainer = scrollAreaRef.current.querySelector(
-				'[data-radix-scroll-area-viewport]'
+				'[data-radix-scroll-area-viewport]',
 			);
 			if (scrollContainer) {
 				scrollContainer.scrollTo({
@@ -143,7 +143,7 @@ export default function AIChat({ data, conversations }: AIChatProps) {
 			user?.id,
 			company?.id,
 			currentConversationId,
-		]
+		],
 	);
 
 	const handleFileUpload = useCallback((files: File) => {
@@ -167,7 +167,7 @@ export default function AIChat({ data, conversations }: AIChatProps) {
 	// 			},
 	// 			body: JSON.stringify({
 	// 				userId: user.id,
-	// 				companyId: company.id,
+	// companyId: company.uuid,
 	// 			}),
 	// 		});
 
@@ -197,7 +197,7 @@ export default function AIChat({ data, conversations }: AIChatProps) {
 			role: 'assistant' as const,
 			content: 'Typing...',
 		}),
-		[]
+		[],
 	);
 
 	const sendButtonText = useMemo(() => {
