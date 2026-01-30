@@ -5,11 +5,21 @@ import { responseWrapper } from '@/lib/responseWrapper';
 export const POST = async (req: Request) => {
 	try {
 		const data = await req.json();
-		const headers = { 'Content-Type': 'multipart/form-data' };
+		// Backend create-document expects multipart form fields (FilesInterceptor); send as FormData
+		const formData = new FormData();
+		Object.entries(data).forEach(([key, value]) => {
+			if (value === null || value === undefined) return;
+			if (Array.isArray(value)) {
+				value.forEach((v) => formData.append(key, String(v)));
+			} else {
+				formData.append(key, String(value));
+			}
+		});
+		// Do not set Content-Type: axios will set multipart/form-data with boundary
 		const response = await postSecureResource(
 			'/vault/create-document',
-			data,
-			headers
+			formData,
+			{}
 		);
 		if (response.state === 'error') {
 			return errorHandler(response.data, response.message, response.status);

@@ -15,6 +15,10 @@ const navItems = [
 		href: '/#features',
 	},
 	{
+		label: 'Financial Management',
+		href: '/financial-management',
+	},
+	{
 		label: 'Pricing',
 		href: '/#pricing',
 	},

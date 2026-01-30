@@ -10,9 +10,10 @@ async function fetchData(companyId: string) {
 		console.error('No companyId provided');
 		return;
 	}
+	// Backend runs on port 8000 with global prefix api/v1 (see correct-backend main.ts)
 	const baseUrl =
-		process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000';
-	const folderUrl = `${baseUrl}/api/vault/company/${companyId}`;
+		process.env.SERVER_URL || 'http://localhost:8000/api/v1';
+	const folderUrl = `${baseUrl}/vault/company/${companyId}`;
 
 	const response = await fetch(folderUrl, {
 		cache: 'no-store',
@@ -22,11 +23,13 @@ async function fetchData(companyId: string) {
 		console.error('Failed to fetch data', response);
 		throw new Error('Failed to fetch data');
 	}
-	const { data } = await response.json();
-
-	const folders = data.folders || [];
-	const documents = Array.from(new Set([...data.documents]));
-	const currentFolder = data.folders[0] || null;
+	// Backend returns { folders, documents } directly (no "data" wrapper)
+	const payload = await response.json();
+	const folders = payload?.folders ?? [];
+	const documents = Array.from(
+		new Set([...(payload?.documents ?? [])])
+	);
+	const currentFolder = folders[0] ?? null;
 
 	return {
 		folders,

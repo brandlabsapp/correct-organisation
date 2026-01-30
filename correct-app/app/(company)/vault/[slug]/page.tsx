@@ -11,8 +11,8 @@ async function fetchData(folderId?: string) {
 		return;
 	}
 	const baseUrl =
-		process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000';
-	const folderUrl = `${baseUrl}/api/vault/folders/folder/${folderId}`;
+		process.env.SERVER_URL || 'http://localhost:8000/api/v1';
+	const folderUrl = `${baseUrl}/vault/folder/${folderId}`;
 
 	const response = await fetch(folderUrl, {
 		cache: 'no-store',
@@ -24,11 +24,12 @@ async function fetchData(folderId?: string) {
 		console.error('Failed to fetch data', response);
 		throw new Error('Failed to fetch data');
 	}
+	const folder = await response.json();
 
 	return {
-		folders: data.data.childFolders || [],
-		documents: data.data.documents || [],
-		currentFolder: data?.data,
+		folders: folder?.childFolders ?? [],
+		documents: folder?.documents ?? [],
+		currentFolder: folder ?? null,
 	};
 }
 
@@ -38,22 +39,19 @@ async function fetchDataCompany(companyId: string) {
 		return;
 	}
 	const baseUrl =
-		process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000';
-	const folderUrl = `${baseUrl}/api/vault/company/${companyId}`;
+		process.env.SERVER_URL || 'http://localhost:8000/api/v1';
+	const folderUrl = `${baseUrl}/vault/company/${companyId}`;
 
-	const response = await fetch(folderUrl, {
-		cache: 'no-store',
-	});
+	const response = await fetch(folderUrl, { cache: 'no-store' });
 
 	if (!response.ok) {
 		console.error('Failed to fetch data', response);
 		throw new Error('Failed to fetch data');
 	}
-	const { data } = await response.json();
-
-	const folders = data.folders || [];
-	const documents = Array.from(new Set([...data.documents]));
-	const currentFolder = data.folders[0] || null;
+	const payload = await response.json();
+	const folders = payload?.folders ?? [];
+	const documents = Array.from(new Set([...(payload?.documents ?? [])]));
+	const currentFolder = folders[0] ?? null;
 
 	return {
 		folders,
@@ -62,48 +60,26 @@ async function fetchDataCompany(companyId: string) {
 	};
 }
 
-export default function Vault() {
-	const params = useParams();
-	const searchParams = useSearchParams();
-	const slug = params.slug as string | undefined;
-	const companyId = searchParams.get('company') || '';
+export const metadata: Metadata = {
+	title: 'Vault',
+	description: 'Vault',
+	keywords: [
+		'Vault',
+		'Compliance',
+		'Compliance Management',
+		'Compliance Tracker',
+	],
+};
 
-	const [data, setData] = useState<{
-		folders: any[];
-		documents: any[];
-		currentFolder: any;
-	} | null>(null);
-	const [companyFolders, setCompanyFolders] = useState<any[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
-
-	useEffect(() => {
-		if (!slug) {
-			console.error('No folderId provided');
-			setIsLoading(false);
-			return;
-		}
-
-		const loadData = async () => {
-			try {
-				const [folderData, companyData] = await Promise.all([
-					fetchData(slug),
-					fetchDataCompany(companyId),
-				]);
-				setData(folderData || null);
-				setCompanyFolders(companyData?.folders || []);
-			} catch (error) {
-				console.error('Failed to fetch vault data:', error);
-				setData(null);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		loadData();
-	}, [slug, companyId]);
-
-	if (isLoading) {
-		return <LoadingFallback />;
+// ---------------- Server Component ----------------
+export default async function Vault(props: {
+	params: Promise<{ slug?: string }>;
+	searchParams: Promise<{ company: string }>;
+}) {
+	const searchParams = await props.searchParams;
+	const params = await props.params;
+	if (!params.slug) {
+		console.error('No folderId provided');
 	}
 
 	return (

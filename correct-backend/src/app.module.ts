@@ -28,6 +28,8 @@ import { QdrantModule } from './qdrant/qdrant.module';
 import { ExtractionService } from './extraction/extraction.service';
 import { MastraModule } from './mastra/mastra.module';
 import { ExtractionController } from './extraction/extraction.controller';
+import { FinanceModule } from './finance/finance.module';
+import { ProjectsModule } from './projects/projects.module';
 @Module({
   imports: [
     CacheModule.register({
@@ -93,6 +95,8 @@ import { ExtractionController } from './extraction/extraction.controller';
     NotificationModule,
     QdrantModule,
     MastraModule,
+    FinanceModule,
+    ProjectsModule,
   ],
   controllers: [AppController, ExtractionController],
   providers: [

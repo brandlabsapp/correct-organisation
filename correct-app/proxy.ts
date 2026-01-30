@@ -5,6 +5,7 @@ const publicRoutes = [
 	'/',
 	'/correct',
 	'/ai-chat',
+	'/financial-management',
 	'/privacy-policy',
 	'/terms-and-conditions',
 ];

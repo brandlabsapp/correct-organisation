@@ -1,5 +1,10 @@
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import {
+	Sheet,
+	SheetContent,
+	SheetTitle,
+	SheetTrigger,
+} from '@/components/ui/sheet';
 import { Plus } from 'lucide-react';
 import React, { useState, useRef } from 'react';
 import { FaFolder } from 'react-icons/fa';
@@ -74,6 +79,7 @@ const Uploader = ({ handleFileUpload, handleCreateFolder }: Props) => {
 					</Button>
 				</SheetTrigger>
 				<SheetContent side='bottom' className='rounded-t-xl bg-white' hideCloseIcon>
+					<SheetTitle className='sr-only'>New - upload file or create folder</SheetTitle>
 					<div className='flex flex-col space-y-4 pt-5 px-1'>
 						<div
 							className='bg-blue-light flex items-center space-x-2 rounded-lg p-4 cursor-pointer'

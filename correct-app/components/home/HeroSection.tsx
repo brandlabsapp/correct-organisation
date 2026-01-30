@@ -10,7 +10,7 @@ const HeroSection = () => {
 				<div className='text-center max-w-4xl mx-auto animate-fade-in'>
 					<h1 className='text-mobile-heading1 md:text-subheading1 lg:text-[3.5rem] font-bold leading-tight mb-6'>
 						Simplify Compliance. <br />
-						<span className='text-accent'>Amplify Growth.</span>
+						<span className='text-green'>Amplify Growth.</span>
 					</h1>
 					<p className='text-mobile-heading3 md:text-heading3 text-deepgrey mb-8 max-w-2xl mx-auto'>
 						AI-powered compliance automation for Indian businesses. Navigate 69,000+
