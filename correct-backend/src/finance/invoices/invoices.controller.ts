@@ -71,7 +71,7 @@ export class InvoicesController {
 
 	@Get(':id')
 	findOne(@Req() req: any, @Param('id') id: string) {
-		const companyId = req.query.company;
+		const companyId = parseInt(String(req.query.company), 10) || 0;
 		return this.invoicesService.findOne(id, companyId);
 	}
 
@@ -81,7 +81,7 @@ export class InvoicesController {
 		@Param('id') id: string,
 		@Body() updateInvoiceDto: UpdateInvoiceDto
 	) {
-		const companyId = req.query.company;
+		const companyId = parseInt(String(req.query.company), 10) || 0;
 		const userId = req.user?.id || 1;
 		return this.invoicesService.update(id, companyId, userId, updateInvoiceDto);
 	}

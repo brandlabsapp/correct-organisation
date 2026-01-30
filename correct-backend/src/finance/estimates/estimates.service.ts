@@ -220,12 +220,13 @@ export class EstimatesService {
 			const totals = calculateInvoiceTotals(calculatedLineItems, 0);
 
 			await Promise.all(
-				calculatedLineItems.map((item) =>
-					this.lineItemRepository.create({
-						...item,
+				calculatedLineItems.map((item) => {
+					const { id: _id, ...lineItemData } = item as any;
+					return this.lineItemRepository.create({
+						...lineItemData,
 						estimateId: id,
-					})
-				)
+					});
+				})
 			);
 
 			await estimate.update(totals);

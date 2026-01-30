@@ -1,8 +1,8 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import {
 	LayoutDashboard,
 	FileText,
@@ -14,6 +14,7 @@ import {
 	RefreshCw,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useUserAuth } from '@/contexts/user';
 
 const sidebarItems = [
 	{
@@ -61,7 +62,19 @@ const sidebarItems = [
 export default function FinanceLayout({ children }: { children: ReactNode }) {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
-	const companyId = searchParams.get('company');
+	const router = useRouter();
+	const { company } = useUserAuth();
+	// Prefer company from URL; fall back to context so we never send company=null to APIs
+	const companyId = searchParams.get('company') ?? (company?.id != null ? String(company.id) : null);
+
+	// If we have a selected company in context but URL has no company, add it so all finance APIs receive it
+	useEffect(() => {
+		if (company?.id != null && !searchParams.get('company')) {
+			const params = new URLSearchParams(searchParams.toString());
+			params.set('company', String(company.id));
+			router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+		}
+	}, [company?.id, pathname, searchParams, router]);
 
 	const buildHref = (href: string) => {
 		return companyId ? `${href}?company=${companyId}` : href;
@@ -129,7 +142,14 @@ export default function FinanceLayout({ children }: { children: ReactNode }) {
 			</nav>
 
 			{/* Main Content */}
-			<main className='flex-1 overflow-auto pb-20 md:pb-0'>{children}</main>
+			<main className='flex-1 overflow-auto pb-20 md:pb-0'>
+				{!companyId && (
+					<div className='mx-4 mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800'>
+						Select a company from the header or profile to use Finance. All actions (clients, invoices, bills, etc.) are scoped to the selected company.
+					</div>
+				)}
+				{children}
+			</main>
 		</div>
 	);
 }

@@ -124,7 +124,7 @@ export function BillForm({ billId }: { billId?: string }) {
 	const fetchVendors = async () => {
 		try {
 			const response = await fetch(
-				`/api/finance/clients?company=${companyId}&type=vendor`
+				`/api/finance/clients?company=${companyId}&clientType=vendor`
 			);
 			if (response.ok) {
 				const data = await response.json();

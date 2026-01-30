@@ -192,20 +192,21 @@ export class InvoicesService {
 
 	async findOne(id: string, companyId: number): Promise<FinanceInvoice> {
 		const invoice = await this.invoiceRepository.findOne({
-			where: { id, companyId },
+			where: { id, companyId: Number(companyId) },
 			include: [
-				{
-					model: FinanceClient,
-					as: 'client',
-				},
+				{ model: FinanceClient, as: 'client' },
 				{
 					model: FinanceInvoiceLineItem,
 					as: 'lineItems',
+					required: false,
+					separate: true,
 					order: [['sortOrder', 'ASC']],
 				},
 				{
 					model: FinanceInvoicePayment,
 					as: 'payments',
+					required: false,
+					separate: true,
 					order: [['paymentDate', 'DESC']],
 				},
 			],
@@ -231,9 +232,9 @@ export class InvoicesService {
 			throw new BadRequestException('Cannot update a paid invoice');
 		}
 
-		const { lineItems, ...invoiceData } = updateInvoiceDto;
+		const { lineItems, saveAsDraft: _saveAsDraft, ...invoiceData } = updateInvoiceDto;
 
-		// Prepare update data with proper date conversion
+		// Prepare update data with proper date conversion; omit non-DB fields (e.g. saveAsDraft)
 		const updateData: any = { ...invoiceData };
 		if (invoiceData.invoiceDate) {
 			updateData.invoiceDate = new Date(invoiceData.invoiceDate);
@@ -242,52 +243,50 @@ export class InvoicesService {
 			updateData.dueDate = new Date(invoiceData.dueDate);
 		}
 
-		// Update invoice data
-		await invoice.update(updateData);
-
-		// If line items provided, recalculate and update
-		if (lineItems) {
-			// Delete existing line items
-			await this.lineItemRepository.destroy({
-				where: { invoiceId: id },
-			});
-
-			// Calculate new line item amounts
-			const calculatedLineItems = lineItems.map((item, index) => {
-				const amounts = calculateLineItemAmount(
-					item.quantity,
-					item.rate,
-					item.discountPercent || 0,
-					item.taxRate || 0
+		// Update invoice data and line items in a transaction so we don't leave invoice without line items on failure
+		const sequelize = this.invoiceRepository.sequelize;
+		const runUpdate = async (tx?: Transaction) => {
+			await invoice.update(updateData, tx ? { transaction: tx } : {});
+			if (lineItems?.length) {
+				await this.lineItemRepository.destroy({
+					where: { invoiceId: id },
+					...(tx ? { transaction: tx } : {}),
+				});
+				const calculatedLineItems = lineItems.map((item, index) => {
+					const amounts = calculateLineItemAmount(
+						item.quantity,
+						item.rate,
+						item.discountPercent || 0,
+						item.taxRate || 0
+					);
+					return { ...item, sortOrder: index, ...amounts };
+				});
+				const totals = calculateInvoiceTotals(
+					calculatedLineItems,
+					invoice.shippingTotal || 0
 				);
-				return {
-					...item,
-					sortOrder: index,
-					...amounts,
-				};
-			});
-
-			// Calculate new totals
-			const totals = calculateInvoiceTotals(
-				calculatedLineItems,
-				invoice.shippingTotal || 0
-			);
-
-			// Create new line items
-			await Promise.all(
-				calculatedLineItems.map((item) =>
-					this.lineItemRepository.create({
-						...item,
-						invoiceId: id,
+				await Promise.all(
+					calculatedLineItems.map((item) => {
+						const { id: _id, ...lineItemData } = item as any;
+						return this.lineItemRepository.create(
+							{ ...lineItemData, invoiceId: id },
+							tx ? { transaction: tx } : {}
+						);
 					})
-				)
-			);
-
-			// Update invoice totals
-			await invoice.update({
-				...totals,
-				balanceDue: totals.totalAmount - invoice.paidAmount,
-			});
+				);
+				await invoice.update(
+					{
+						...totals,
+						balanceDue: totals.totalAmount - invoice.paidAmount,
+					},
+					tx ? { transaction: tx } : {}
+				);
+			}
+		};
+		if (sequelize) {
+			await sequelize.transaction((t) => runUpdate(t));
+		} else {
+			await runUpdate();
 		}
 
 		await this.logActivity(
