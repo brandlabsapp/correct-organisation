@@ -14,6 +14,7 @@ import {
 import { UpdateConversationDto } from './dto/update-conversation.dto';
 import { MastraService } from '@/mastra/mastra.service';
 import { CreateConversationDto } from './dto/create-conversation.dto';
+import { CompanyDetails } from '@/company/entities/company.entity';
 
 @Injectable()
 export class ConversationService {
@@ -31,7 +32,7 @@ export class ConversationService {
       const { userId, companyId, messages, conversationId } =
         createConversationDto;
       let conversation: Conversation | null = null;
-      console.log("conversation id",conversationId)
+      console.log('conversation id', conversationId);
       console.log('createConversationDto', createConversationDto);
       console.log('messages', messages);
 
@@ -51,7 +52,7 @@ export class ConversationService {
         );
       }
 
-      console.log("Conversation id",conversation.id)
+      console.log('Conversation id', conversation.id);
       const latestMessage =
         messages.length > 0 ? messages[messages.length - 1] : messages[0];
 
@@ -67,7 +68,7 @@ export class ConversationService {
       const extractedToolResults = Array.isArray(mastraResponse?.steps)
         ? mastraResponse.steps.flatMap((s: any) => s?.toolResults || [])
         : undefined;
-        
+
       const normalizedToolResults =
         extractedToolResults && extractedToolResults.length
           ? extractedToolResults
@@ -105,20 +106,25 @@ export class ConversationService {
     }
   }
 
-
   private extractBotContent(mastraResponse: any): string | null {
     if (mastraResponse?.text && mastraResponse.text.trim() !== '') {
       return mastraResponse.text;
     }
 
-    if (Array.isArray(mastraResponse?.steps) && mastraResponse.steps.length > 0) {
+    if (
+      Array.isArray(mastraResponse?.steps) &&
+      mastraResponse.steps.length > 0
+    ) {
       for (let i = mastraResponse.steps.length - 1; i >= 0; i--) {
         const step = mastraResponse.steps[i];
-        
+
         const output = step?.response?.body?.output;
         if (Array.isArray(output)) {
           for (const outputItem of output) {
-            if (outputItem?.type === 'message' && Array.isArray(outputItem?.content)) {
+            if (
+              outputItem?.type === 'message' &&
+              Array.isArray(outputItem?.content)
+            ) {
               for (const contentItem of outputItem.content) {
                 if (contentItem?.type === 'output_text' && contentItem?.text) {
                   return contentItem.text;
@@ -168,46 +174,34 @@ export class ConversationService {
     }
   }
 
-  async getConversationByUserAndCompany(userId: number, companyId: number | null) {
+  async getConversationByUserAndCompany(
+    userId: number,
+    companyId: string | null,
+  ) {
     try {
-      const whereClause: any = { userId };
-      if (companyId) {
-        whereClause.companyId = companyId;
-      }
-      // If companyId is explicitly null, should we query for where companyId is NULL?
-      // Assuming 'null' means "no specific company context" or "personal context".
-      // If the intent is to find conversations associated with *this* user and *optional* company.
-      // If companyId is passed as null from controller (because URL was 'null'), we might want to find personal conversations?
-      // Or maybe the query should just be specific.
-      // Let's look at the original code:
-      /*
-        where: {
-          userId,
-          companyId,
-        },
-      */
-      // If companyId is null, Sequelize where { companyId: null } checks for NULL.
-      // So passing null is fine if we want to match rows where companyId IS NULL.
-      // If the user meant "ignore companyId", that's different.
-      // But given the context of "correct-organisation" and "correct-app", it seems strict.
-      // I will proceed with passing null to match NULL in DB.
-      
+      const isFetchedByCompany = companyId !== 'null';
+
       const response = await this.conversationRepository.findAll({
         where: {
           userId,
-          companyId,
         },
         order: [['createdAt', 'DESC']],
-        include: [ConversationMessage],
+        include: [
+          ConversationMessage,
+          {
+            model: CompanyDetails,
+            required: isFetchedByCompany,
+          },
+        ],
       });
 
-      if (!response) {
+      if (response.length === 0 || !response) {
         this.logger.error(
-          'No conversation found',
+          'No conversation found for user',
           'getConversationByUserAndCompany',
           'ConversationService',
         );
-        throw new BadRequestException('No conversation found');
+        throw new BadRequestException('No conversation found for user');
       }
       return response;
     } catch (error) {

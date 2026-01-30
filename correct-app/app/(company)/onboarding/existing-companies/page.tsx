@@ -1,8 +1,10 @@
-import { jwtDecode } from 'jwt-decode';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useUserAuth } from '@/contexts/user';
 import ExistingCompanies from '../_components/ExistingCompanies';
-import { retrieveToken } from '@/lib/axiosInstance';
-import { redirect } from 'next/navigation';
-import type { Metadata } from 'next';
+import { LoadingFallback } from '@/components/common/LoadingFallback';
 
 const fetchAllCompaniesByUserId = async (userId: number) => {
 	const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
@@ -22,37 +24,43 @@ const fetchAllCompaniesByUserId = async (userId: number) => {
 	return data?.data;
 };
 
-// ------------ Metadata ------------
+export default function ExistingCompaniesPage() {
+	const router = useRouter();
+	const { user, isAuthenticated, isLoading: isAuthLoading } = useUserAuth();
 
-export const metadata: Metadata = {
-	title: 'Existing Companies',
-	description: 'Existing Companies',
-	keywords: [
-		'Existing Companies',
-		'Compliance',
-		'Compliance Management',
-		'Compliance Tracker',
-	],
-};
+	const [companies, setCompanies] = useState<any[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
 
-export default async function ExistingCompaniesPage() {
-	const token = await retrieveToken();
+	useEffect(() => {
+		if (isAuthLoading) return;
 
-	if (!token) {
-		redirect('/login');
+		if (!isAuthenticated || !user) {
+			router.push('/login');
+			return;
+		}
+
+		const loadData = async () => {
+			try {
+				const data = await fetchAllCompaniesByUserId(user.id);
+				setCompanies(data || []);
+			} catch (error) {
+				console.error('Failed to fetch companies:', error);
+				setCompanies([]);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		loadData();
+	}, [user, isAuthenticated, isAuthLoading, router]);
+
+	if (isAuthLoading || isLoading) {
+		return <LoadingFallback />;
 	}
-	const user = jwtDecode<AppTypes.User>(token);
 
-	if (!user) {
-		redirect('/login');
-	}
-
-	const data = await fetchAllCompaniesByUserId(user.id);
-	console.log(data, 'data');
-
-	if (!data) {
+	if (!companies || companies.length === 0) {
 		return <div>No companies found</div>;
 	}
 
-	return <ExistingCompanies companies={data} />;
+	return <ExistingCompanies companies={companies} />;
 }

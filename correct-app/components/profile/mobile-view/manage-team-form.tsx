@@ -27,9 +27,9 @@ export function InviteMemberDialog({
 					Invite Team Member
 				</Button>
 			</DialogTrigger>
-			<DialogContent className='sm:max-w-[425px] text-sm md:text-base min-h-[200px] bg-white rounded-xl'>
+			<DialogContent className='sm:max-w-[425px] md:max-w-[500px] md:min-h-[300px] text-sm md:text-base min-h-[200px] bg-white rounded-xl'>
 				<DialogHeader>
-					<DialogTitle className='text-base'>Invite New Team Member</DialogTitle>
+					<DialogTitle>Invite New Team Member</DialogTitle>
 				</DialogHeader>
 				<TeamInviteForm
 					onSubmit={async (values) => {

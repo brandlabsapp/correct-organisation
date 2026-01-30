@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
 export class CreateCompanyDto {
   @IsString()
   cin: string;
@@ -29,4 +29,19 @@ export class CreateCompanyDto {
   @IsString()
   @IsOptional()
   country: string;
+}
+
+export class VerifyRoleDto {
+  @IsNumber()
+  @IsOptional()
+  userId: number;
+  @IsNumber()
+  @IsOptional()
+  companyId: number;
+  @IsString()
+  @IsOptional()
+  role: string;
+  @IsObject()
+  @IsOptional()
+  data: any;
 }

@@ -25,7 +25,7 @@ export async function POST(request: Request) {
 			});
 			(await cookies()).set({
 				name: 'companyId',
-				value: response.data.data.id,
+				value: response.data.data.uuid,
 				secure: true,
 				httpOnly: true,
 				sameSite: 'strict',
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
 			response.data.data,
 			true,
 			response.message,
-			response.state
+			response.state,
 		);
 	} catch (error: any) {
 		console.error('Error in Next.js API route:', error);
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
 				message: 'Internal Server Error',
 				error: error.message,
 			},
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 }

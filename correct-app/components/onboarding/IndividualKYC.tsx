@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
@@ -9,7 +9,14 @@ import { useUserAuth } from '@/contexts/user';
 
 export default function IndividualKYC() {
 	const router = useRouter();
-	const { company } = useUserAuth();
+	const { company, user, isLoading } = useUserAuth();
+
+	// Check if user already has Aadhaar and PAN, redirect to success page
+	useEffect(() => {
+		if (!isLoading && user?.aadhar && user?.pan) {
+			router.replace('/onboarding/individual-kyc/success');
+		}
+	}, [user, isLoading, router]);
 	const [data, setData] = useState({
 		aadhar: '',
 		pan: '',
@@ -67,6 +74,15 @@ export default function IndividualKYC() {
 			setIsSubmitting(false);
 		}
 	};
+
+	// Show loading while checking user data
+	if (isLoading || (user?.aadhar && user?.pan)) {
+		return (
+			<div className='bg-white md:max-w-xl md:mx-auto md:px-4 md:sm:px-6 md:lg:px-8 md:py-4 md:lg:py-6 p-5 space-y-5 flex items-center justify-center min-h-[300px]'>
+				<p className='text-body1 text-gray-500'>Loading...</p>
+			</div>
+		);
+	}
 
 	return (
 		<div className='bg-white md:max-w-xl md:mx-auto md:px-4 md:sm:px-6 md:lg:px-8 md:py-4 md:lg:py-6 p-5 space-y-5'>

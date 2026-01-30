@@ -22,7 +22,7 @@ interface DocumentProps {
 		newFolderId: number | null
 	) => void;
 	handleDelete: () => void;
-	handleRename: (newName: string, documentId?: number | null) => void;
+	handleRename: (newName: string, documentUuid?: string | null) => void;
 }
 
 const getFileIcon = (extension: string | undefined) => {
@@ -88,7 +88,7 @@ const Document = ({
 
 	const handleConfirmRename = () => {
 		if (newFileName.trim() !== '') {
-			handleRename(newFileName, document.id);
+			handleRename(newFileName, document.uuid);
 			setIsRenameDialogOpen(false);
 		}
 	};

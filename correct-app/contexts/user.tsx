@@ -65,13 +65,15 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 					title: 'Error',
 					message: data.message || 'Failed to fetch company details',
 				});
-				clearCookies('Authentication');
-				clearCookies('companyId');
-				localStorage.clear();
-				router.push('/login');
+				if (response.status === 401) {
+					clearCookies('Authentication');
+					clearCookies('companyId');
+					localStorage.clear();
+					router.push('/login');
+				}
 			}
 		},
-		[],
+		[router],
 	);
 
 	useEffect(() => {
@@ -101,14 +103,21 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 					setUser(data.data);
 					setIsAuthenticated(true);
 				} else {
-					showErrorToast({
-						title: 'Failed to Authenticate',
-						message: data.message || 'Failed to authenticate. Please try again.',
-					});
-					setUser(null);
-					setIsAuthenticated(false);
-					clearCookies('Authentication');
-					router.push('/');
+					if (response.status === 401) {
+						showErrorToast({
+							title: 'Failed to Authenticate',
+							message: data.message || 'Failed to authenticate. Please try again.',
+						});
+						setUser(null);
+						setIsAuthenticated(false);
+						clearCookies('Authentication');
+						router.push('/');
+					} else {
+						showErrorToast({
+							title: 'Error',
+							message: data.message || 'An error occurred. Please try again.',
+						});
+					}
 				}
 			} finally {
 				isInitializingRef.current = false;
@@ -119,7 +128,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 		initializeUser();
 	}, [fetchCompanyDetails, router]);
 
-	const updateCurrentCompany = async (companyId: number) => {
+	const updateCurrentCompany = async (companyId: string | number) => {
 		try {
 			const newSearchParams = new URLSearchParams(window.location.search);
 			newSearchParams.set('company', String(companyId));

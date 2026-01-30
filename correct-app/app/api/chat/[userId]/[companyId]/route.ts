@@ -3,15 +3,19 @@ import { errorHandler } from '@/lib/errorHandler';
 import { responseWrapper } from '@/lib/responseWrapper';
 
 export async function GET(
-    req: Request,
-    props: { params: Promise<{ userId: string; companyId: string }> }
+	req: Request,
+	props: { params: Promise<{ userId: string; companyId: string }> },
 ) {
-    const params = await props.params;
-    try {
+	const params = await props.params;
+	try {
 		const userId = params.userId;
 		const companyId = params.companyId;
+
+		console.log('userid', userId);
+		console.log('companyid', companyId);
+
 		const response = await getSecureResource(
-			`/conversation/user-company/${userId}/${companyId}`
+			`/conversation/user-company/${userId}/${companyId}`,
 		);
 		if (response.state === 'error') {
 			return errorHandler(response.data, response.message, response.status);

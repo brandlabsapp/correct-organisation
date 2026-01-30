@@ -43,7 +43,7 @@ const VerifyBusinessAndRole = ({ role }: VerifyBusinessAndRoleProps) => {
 				: '',
 			tags: ['ROC Mumbai'],
 		}),
-		[company]
+		[company],
 	);
 
 	const validateForm = useCallback(() => {
@@ -81,7 +81,7 @@ const VerifyBusinessAndRole = ({ role }: VerifyBusinessAndRoleProps) => {
 
 			if (!uploadResult.success) {
 				throw new Error(
-					uploadResult.message || 'Failed to upload file to Supabase'
+					uploadResult.message || 'Failed to upload file to Supabase',
 				);
 			}
 
@@ -134,7 +134,8 @@ const VerifyBusinessAndRole = ({ role }: VerifyBusinessAndRoleProps) => {
 		setIsLoading(true);
 		try {
 			const documentData = await prepareDocumentData();
-			await submitVerification(documentData);
+			console.log('documentData...', documentData);
+			const response = await submitVerification(documentData);
 
 			showSuccessToast({
 				title: 'Success',

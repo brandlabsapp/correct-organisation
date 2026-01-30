@@ -32,11 +32,11 @@ export class VaultController {
     private readonly folderService: FolderService,
   ) { }
 
-  @Get('company/:companyId')
-  async findUserFolders(@Param('companyId') companyId: string) {
+  @Get('company/:companyUuid')
+  async findUserFolders(@Param('companyUuid') companyUuid: string) {
     try {
       const response =
-        await this.vaultService.findFoldersByCompanyId(+companyId);
+        await this.vaultService.findFoldersByCompanyUuid(companyUuid);
       return response;
     } catch (err) {
       console.log(err);
@@ -44,10 +44,10 @@ export class VaultController {
     }
   }
 
-  @Get('get-presigned-url/:id')
-  async getPresignedUrl(@Param('id') id: string) {
+  @Get('get-presigned-url/:uuid')
+  async getPresignedUrl(@Param('uuid') uuid: string) {
     try {
-      const document = await this.documentService.findDocumentById(+id);
+      const document = await this.documentService.findDocumentByUuid(uuid);
       if (!document) {
         throw new NotFoundException('Document not found');
       }
@@ -98,10 +98,10 @@ export class VaultController {
     }
   }
 
-  @Get('folders/:companyId')
-  async findFolderById(@Param('companyId') companyId: number) {
+  @Get('folders/:companyUuid')
+  async findFolderById(@Param('companyUuid') companyUuid: string) {
     try {
-      const response = await this.vaultService.findAllFolders(companyId);
+      const response = await this.vaultService.findAllFoldersByCompanyUuid(companyUuid);
       return response;
     } catch (err) {
       console.log(err);
@@ -137,14 +137,14 @@ export class VaultController {
     }
   }
 
-  @Patch('folder/:id')
+  @Patch('folder/:uuid')
   async update(
-    @Param('id') id: string,
+    @Param('uuid') uuid: string,
     @Body() updateFolderDto: UpdateFolderDto,
   ) {
     try {
-      const response = await this.folderService.updateFolder(
-        +id,
+      const response = await this.folderService.updateFolderByUuid(
+        uuid,
         updateFolderDto,
       );
       return response;
@@ -154,14 +154,14 @@ export class VaultController {
     }
   }
 
-  @Patch('update-document/:id')
+  @Patch('update-document/:uuid')
   async updateDocument(
-    @Param('id') id: string,
+    @Param('uuid') uuid: string,
     @Body() updateDocumentDto: UpdateDocumentDto,
   ) {
     try {
-      const response = await this.documentService.updateDocument(
-        +id,
+      const response = await this.documentService.updateDocumentByUuid(
+        uuid,
         updateDocumentDto,
       );
       console.log('response...', response);
@@ -172,11 +172,11 @@ export class VaultController {
     }
   }
 
-  @Delete('delete-folder/:id')
-  async deleteFolder(@Param('id') id: string) {
+  @Delete('delete-folder/:uuid')
+  async deleteFolder(@Param('uuid') uuid: string) {
     try {
-      console.log('id...', id);
-      const response = await this.folderService.deleteFolder(+id);
+      console.log('uuid...', uuid);
+      const response = await this.folderService.deleteFolderByUuid(uuid);
       console.log('response...', response);
       return response;
     } catch (err) {
@@ -185,10 +185,10 @@ export class VaultController {
     }
   }
 
-  @Delete('delete-document/:id')
-  async removeDocument(@Param('id') id: string) {
+  @Delete('delete-document/:uuid')
+  async removeDocument(@Param('uuid') uuid: string) {
     try {
-      const response = await this.vaultService.removeDocument(+id);
+      const response = await this.vaultService.removeDocumentByUuid(uuid);
       return response;
     } catch (err) {
       console.log(err);

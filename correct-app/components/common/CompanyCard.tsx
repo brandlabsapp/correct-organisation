@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
-import React from 'react';
 import { useRouter } from 'next/navigation';
+
 type Props = {
 	company: AppTypes.Company;
 	setSelectedCompany: (company: AppTypes.Company) => void;
@@ -11,15 +11,15 @@ const CompanyCard = ({ company, setSelectedCompany, className }: Props) => {
 	const router = useRouter();
 	const handleSwitchCompany = () => {
 		setSelectedCompany(company);
-		router.push(`/profile?company=${company.id}`);
+		router.push(`/profile?company=${company.uuid}`);
 	};
 	return (
 		<div
 			className={cn(
 				'flex items-center gap-2 cursor-pointer py-3 px-4 rounded-lg bg-lightgray',
-				className
+				className,
 			)}
-			key={company.id}
+			key={company.uuid}
 			onClick={handleSwitchCompany}
 		>
 			<div className='h-6 w-6 rounded-full bg-gray-dark flex items-center justify-center'>

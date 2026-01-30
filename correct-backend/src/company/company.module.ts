@@ -9,7 +9,7 @@ import { DocumentModule } from '@/vault/document/document.module';
 @Module({
   controllers: [CompanyController],
   providers: [CompanyService, ...companyProviders],
-  exports: [CompanyService],
+  exports: [CompanyService, ...companyProviders],
   imports: [CompanyMembersModule, UserModule, DinModule, DocumentModule],
 })
 export class CompanyModule {}

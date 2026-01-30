@@ -10,6 +10,8 @@ declare namespace AppTypes {
 		updatedAt?: Date;
 		token: string;
 		address?: string;
+		aadhar?: string;
+		pan?: string;
 		companyDetails?: Company[];
 		companyMembers?: any[];
 	}
@@ -26,6 +28,9 @@ declare namespace AppTypes {
 
 	export interface Company {
 		id: number;
+		uuid: string;
+		cin: string;
+		pan: string;
 		name: string;
 		type: string;
 		incorporationDate: string;
@@ -72,7 +77,7 @@ declare namespace AppTypes {
 		company: Company | null;
 		updateCompany: (company: Company) => void;
 		fetchCompanyDetails: (companyId: string | number) => void;
-		updateCurrentCompany: (companyId: number) => void;
+		updateCurrentCompany: (companyId: string | number) => void;
 		members: Member[];
 		setMembers: (members: Member[]) => void;
 	}

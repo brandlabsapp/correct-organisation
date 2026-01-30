@@ -22,8 +22,6 @@ import { DocumentService } from '@/vault/document/document.service';
 import { Document } from '@/vault/entities/document.entity';
 import { CompanyChecklist } from './compliance/entities/companyChecklist.entity';
 import { Compliance } from './compliance/entities/compliance.entity';
-import { CompanyComplianceTask } from './compliance/entities/companyTask.entity';
-import { ComplianceTask } from './compliance/entities/task.entity';
 @Injectable()
 export class CompanyService {
   private readonly logger = new Logger(CompanyService.name);
@@ -101,8 +99,8 @@ export class CompanyService {
     return data;
   }
 
-  async findOne(id: number) {
-    const cacheKey = `company_${id}`;
+  async findOneByUuid(uuid: string) {
+    const cacheKey = `company_${uuid}`;
     const cachedCompany = await this.cacheManager.get<CompanyDetails>(cacheKey);
 
     if (cachedCompany) {
@@ -110,7 +108,7 @@ export class CompanyService {
       return cachedCompany;
     } else {
       const found = await this.companyRepository.findOne<CompanyDetails>({
-        where: { id },
+        where: { uuid },
         include: [
           {
             model: CompanyMember,
@@ -150,7 +148,6 @@ export class CompanyService {
       };
       const invitedUserPhone = createCompanyMembersDto.phone;
       let user = await this.userService.findOneByPhone(invitedUserPhone);
-      console.log('user...', user);
       if (!user) {
         user = await this.userService.create({
           phone: invitedUserPhone,
@@ -187,12 +184,12 @@ export class CompanyService {
     }
   }
 
-  async update(id: number, updateCompanyDto: UpdateCompanyDto) {
+  async update(uuid: string, updateCompanyDto: UpdateCompanyDto) {
     try {
       const response = await this.companyRepository.update<CompanyDetails>(
         updateCompanyDto,
         {
-          where: { id },
+          where: { uuid },
         },
       );
 
@@ -280,17 +277,19 @@ export class CompanyService {
     }
 
     // 3. Optional: Update verification status
-    await this.companyMembersService.update(companyMember.id, {
-      professionalDetails: professionalDetails,
-      verificationStatus: 'pending',
-      role,
-    });
+    await this.companyMembersService.update(
+      { id: companyMember.id },
+      {
+        professionalDetails: professionalDetails,
+        status: 'active',
+        role,
+      },
+    );
     return {
       message: 'Verification status updated',
       status: 'success',
     };
   }
-  catch(e) {
-    throw new BadRequestException(e.message || 'Role verification failed');
-  }
+
+
 }

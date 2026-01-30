@@ -11,7 +11,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { CompanyService } from './company.service';
-import { CreateCompanyDto } from './dto/create-company.dto';
+import { CreateCompanyDto, VerifyRoleDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { CreateCompanyMembersDto } from './dto/company-member.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -22,7 +22,7 @@ export class CompanyController {
   constructor(
     private readonly companyService: CompanyService,
     private readonly companyMemberServices: CompanyMembersService,
-  ) { }
+  ) {}
 
   @Post('register')
   create(@Body() createCompanyDto: CreateCompanyDto) {
@@ -36,7 +36,7 @@ export class CompanyController {
   }
 
   @Post('verify-role')
-  async verifyRole(@Body() dto: any) {
+  async verifyRole(@Body() dto: VerifyRoleDto) {
     try {
       const result = await this.companyService.verifyRole(dto);
       return { success: true, data: result };
@@ -82,10 +82,10 @@ export class CompanyController {
     }
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
+  @Get(':uuid')
+  async findOne(@Param('uuid') uuid: string) {
     try {
-      const response = await this.companyService.findOne(+id);
+      const response = await this.companyService.findOneByUuid(uuid);
       console.log(response);
       return response;
     } catch (e) {
@@ -94,14 +94,15 @@ export class CompanyController {
     }
   }
 
-  @Patch(':id')
+  @Patch(':uuid')
   async update(
-    @Param('id') id: string,
+    @Param('uuid') uuid: string,
     @Body() updateCompanyDto: UpdateCompanyDto,
   ) {
     try {
       console.log('updateCompanyDto', updateCompanyDto);
-      const response = await this.companyService.update(+id, updateCompanyDto);
+      console.log('uuid', uuid);
+      const response = await this.companyService.update(uuid, updateCompanyDto);
       return response;
     } catch (e) {
       console.log(e);

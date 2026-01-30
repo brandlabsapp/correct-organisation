@@ -1,4 +1,9 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import Dashboard from '../_components/dashboard';
+import { LoadingFallback } from '@/components/common/LoadingFallback';
 
 const fetchCompanyDetails = async (slug: string) => {
 	const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
@@ -33,18 +38,45 @@ const fetchAllCompliances = async () => {
 	return data.data;
 };
 
-export default async function CompanyPage(props: {
-	params: Promise<{ slug: string }>;
-}) {
-	const params = await props.params;
-	const slug = params.slug;
-	const [companyDetails, allCompliances] = await Promise.all([
-		fetchCompanyDetails(slug),
-		fetchAllCompliances(),
-	]);
+export default function CompanyPage() {
+	const params = useParams();
+	const slug = params.slug as string;
 
-	console.log('companyDetails', companyDetails);
-	console.log('allCompliances', allCompliances);
+	const [companyDetails, setCompanyDetails] = useState<any>(null);
+	const [allCompliances, setAllCompliances] = useState<any[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		if (!slug) {
+			setIsLoading(false);
+			return;
+		}
+
+		const loadData = async () => {
+			try {
+				const [companyData, compliancesData] = await Promise.all([
+					fetchCompanyDetails(slug),
+					fetchAllCompliances(),
+				]);
+				setCompanyDetails(companyData);
+				setAllCompliances(compliancesData);
+			} catch (error) {
+				console.error('Failed to fetch company data:', error);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		loadData();
+	}, [slug]);
+
+	if (isLoading) {
+		return <LoadingFallback />;
+	}
+
+	if (!companyDetails) {
+		return <div>Failed to load company details</div>;
+	}
 
 	return (
 		<div className='bg-white'>

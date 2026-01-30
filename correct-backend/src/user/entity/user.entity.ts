@@ -76,6 +76,11 @@ export class User extends Model<User> {
   @Column({
     type: DataType.STRING,
   })
+  din: string;
+
+  @Column({
+    type: DataType.STRING,
+  })
   referralCode: string;
 
   @Column({

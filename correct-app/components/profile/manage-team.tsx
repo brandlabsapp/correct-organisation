@@ -34,23 +34,22 @@ type TeamMember = {
 };
 
 export const ManageTeam = () => {
-	const { user, members } = useUserAuth();
+	const { user, members, company } = useUserAuth();
 	console.log(members);
+	const companyId = company?.id;
 
 	const query = useSearchParams();
-	const companyId = query.get('company') || '';
 	const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
 	const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
 
 	useEffect(() => {
-		console.log(members);
 		if (members) {
 			setTeamMembers(members);
 		}
 	}, [members]);
 
 	const handleAddMember = async (values: any) => {
-		if (!companyId) {
+		if (!company?.id) {
 			showErrorToast({ title: 'Error', message: 'Company ID not found.' });
 			return;
 		}
@@ -59,7 +58,7 @@ export const ManageTeam = () => {
 			const response = await fetch('/api/profile/team', {
 				method: 'POST',
 				body: JSON.stringify({
-					companyId: parseInt(companyId),
+					companyId: companyId,
 					phone: values.phone,
 					role: values.role,
 				}),

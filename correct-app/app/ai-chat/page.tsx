@@ -118,7 +118,7 @@ const AIChatPage = () => {
 
 		setIsLoadingConversations(true);
 		try {
-			const companyIdParam = company?.id ? company.id : 'null';
+			const companyIdParam = company?.uuid ? company.uuid : 'null';
 			const response = await fetch(`/api/chat/${user.id}/${companyIdParam}`);
 			const data = await response.json();
 
@@ -206,7 +206,7 @@ const AIChatPage = () => {
 			method: 'POST',
 			body: JSON.stringify({
 				userId: user?.id,
-				companyId: company?.id,
+				companyId: company?.uuid,
 			}),
 		});
 		const { data } = await response.json();
@@ -258,8 +258,8 @@ const AIChatPage = () => {
 				if (user?.id) {
 					formData.append('userId', user.id.toString());
 				}
-				if (company?.id) {
-					formData.append('companyId', company.id.toString());
+				if (company?.uuid) {
+					formData.append('companyId', String(company.uuid));
 				}
 				formData.append('source', 'marketing-chat');
 
@@ -367,7 +367,7 @@ const AIChatPage = () => {
 					messages: [{ role: 'user', content: messageToSend }],
 					data: {
 						userId: user?.id,
-						companyId: company?.id,
+						companyId: company?.uuid,
 						conversationId: activeChatId === '1' ? undefined : parseInt(activeChatId),
 					},
 					files: uploadedFiles,

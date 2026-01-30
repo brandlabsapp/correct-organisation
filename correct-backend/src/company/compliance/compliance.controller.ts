@@ -60,56 +60,56 @@ export class ComplianceController {
     }
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
+  @Get(':uuid')
+  async findOne(@Param('uuid') uuid: string) {
     try {
-      return await this.complianceService.findOne(+id);
+      return await this.complianceService.findOneByUuid(uuid);
     } catch (error) {
       console.error(error);
       throw error;
     }
   }
 
-  @Patch(':id')
+  @Patch(':uuid')
   async update(
-    @Param('id') id: string,
+    @Param('uuid') uuid: string,
     @Body() updateComplianceDto: UpdateComplianceDto,
   ) {
     try {
-      return await this.complianceService.update(+id, updateComplianceDto);
+      return await this.complianceService.updateByUuid(uuid, updateComplianceDto);
     } catch (error) {
       console.error(error);
       throw error;
     }
   }
 
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
+  @Delete(':uuid')
+  async remove(@Param('uuid') uuid: string) {
     try {
-      return await this.complianceService.remove(+id);
+      return await this.complianceService.removeByUuid(uuid);
     } catch (error) {
       console.error(error);
       throw error;
     }
   }
 
-  @Get(':id/documents')
-  async getComplianceDocuments(@Param('id') id: string) {
+  @Get(':uuid/documents')
+  async getComplianceDocuments(@Param('uuid') uuid: string) {
     try {
-      return await this.complianceService.getComplianceDocuments(+id);
+      return await this.complianceService.getComplianceDocumentsByUuid(uuid);
     } catch (error) {
       console.error(error);
       throw error;
     }
   }
 
-  @Delete(':id/documents/:documentId')
+  @Delete(':uuid/documents/:documentUuid')
   async detachDocument(
-    @Param('id') id: string,
-    @Param('documentId') documentId: string,
+    @Param('uuid') uuid: string,
+    @Param('documentUuid') documentUuid: string,
   ) {
     try {
-      await this.complianceService.detachDocument(+id, +documentId);
+      await this.complianceService.detachDocumentByUuid(uuid, documentUuid);
       return { success: true, message: 'Document detached successfully' };
     } catch (error) {
       console.error(error);

@@ -96,4 +96,45 @@ export class VaultService {
       throw err;
     }
   }
+
+  async removeDocumentByUuid(uuid: string) {
+    try {
+      const response = await this.documentService.deleteDocumentByUuid(uuid);
+      return response;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
+
+  async findFoldersByCompanyUuid(companyUuid: string) {
+    try {
+      const response =
+        await this.folderService.findFoldersAndDocumentsByCompanyUuid(companyUuid);
+      return response;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
+
+  async findAllFoldersByCompanyUuid(companyUuid: string) {
+    try {
+      const response = await this.folderService.findAllByCompanyUuid(companyUuid);
+      return response;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
+
+  async findDocumentByUuid(uuid: string) {
+    try {
+      const response = await this.documentService.findDocumentByUuid(uuid);
+      return response;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
 }

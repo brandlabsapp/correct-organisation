@@ -1,9 +1,8 @@
 'use client';
-import React, { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import {
 	Form,
@@ -32,7 +31,6 @@ import {
 	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { DateTimePicker } from './date-picker';
-import { useEvents } from '@/contexts/event';
 import { CalendarEvent } from '@/utils/data';
 import { showSuccessToast } from '@/lib/utils/toast-handlers';
 import { enUS } from 'date-fns/locale';
@@ -67,14 +65,31 @@ interface EventEditFormProps {
 	displayButton: boolean;
 }
 
-export function EventEditForm({
+export async function EventEditForm({
 	oldEvent,
 	event,
 	isDrag,
 	displayButton,
 }: EventEditFormProps) {
-	const { addEvent, deleteEvent } = useEvents();
-	const { eventEditOpen, setEventEditOpen } = useEvents();
+	// const { addEvent, deleteEvent } = useEvents();
+	// const { eventEditOpen, setEventEditOpen } = useEvents();
+
+	const [open, setOpen] = useState(false);
+	const createEvent = async (event: object) => {
+		await fetch('/api/events', {
+			method: 'POST',
+			body: JSON.stringify(event),
+		});
+		return;
+	}
+
+	const deleteEvent = async (id: string) => {
+		await fetch('/api/events', {
+			method: 'DELETE',
+			body: JSON.stringify(event),
+		});
+		return;
+	}
 
 	const form = useForm<z.infer<typeof eventEditFormSchema>>({
 		resolver: zodResolver(eventEditFormSchema),
@@ -90,11 +105,10 @@ export function EventEditForm({
 				end: oldEvent.end,
 				color: oldEvent.backgroundColor!,
 			};
-
 			deleteEvent(oldEvent.id);
-			addEvent(resetEvent);
+			createEvent(resetEvent);
 		}
-		setEventEditOpen(false);
+		setOpen(false);
 	};
 
 	useEffect(() => {
@@ -118,8 +132,8 @@ export function EventEditForm({
 			color: data.color,
 		};
 		deleteEvent(data.id);
-		addEvent(newEvent);
-		setEventEditOpen(false);
+		createEvent(newEvent);
+		setOpen(false);
 
 		showSuccessToast({
 			title: 'Event edited!',
@@ -128,13 +142,13 @@ export function EventEditForm({
 	}
 
 	return (
-		<AlertDialog open={eventEditOpen}>
+		<AlertDialog open={open}>
 			{displayButton && (
 				<AlertDialogTrigger asChild>
 					<Button
 						className='w-full sm:w-24 text-xs md:text-sm mb-1'
 						variant='default'
-						onClick={() => setEventEditOpen(true)}
+						onClick={() => setOpen(true)}
 					>
 						Edit Event
 					</Button>

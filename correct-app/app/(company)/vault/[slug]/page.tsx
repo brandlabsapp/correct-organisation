@@ -1,7 +1,10 @@
-import type { Metadata } from 'next';
-import DocumentManagement from '@/components/custom/vault/DocumentManagement';
+'use client';
 
-// ---------------- fetch data from the server ----------------
+import { useEffect, useState } from 'react';
+import { useParams, useSearchParams } from 'next/navigation';
+import DocumentManagement from '@/components/custom/vault/DocumentManagement';
+import { LoadingFallback } from '@/components/common/LoadingFallback';
+
 async function fetchData(folderId?: string) {
 	if (!folderId) {
 		console.error('No folderId provided');
@@ -11,7 +14,11 @@ async function fetchData(folderId?: string) {
 		process.env.SERVER_URL || 'http://localhost:8000/api/v1';
 	const folderUrl = `${baseUrl}/vault/folder/${folderId}`;
 
-	const response = await fetch(folderUrl, { cache: 'no-store' });
+	const response = await fetch(folderUrl, {
+		cache: 'no-store',
+	});
+
+	const data = await response.json();
 
 	if (!response.ok) {
 		console.error('Failed to fetch data', response);
@@ -74,17 +81,14 @@ export default async function Vault(props: {
 	if (!params.slug) {
 		console.error('No folderId provided');
 	}
-	const data = await fetchData(params.slug);
-	const companyFolders = await fetchDataCompany(searchParams.company);
-	const companyId = searchParams.company;
 
 	return (
 		<DocumentManagement
 			folders={data?.folders || []}
-			companyFolders={companyFolders?.folders || []}
+			companyFolders={companyFolders}
 			documents={data?.documents || []}
 			currentFolder={data?.currentFolder || null}
-			folderId={params.slug}
+			folderId={slug}
 			companyId={companyId}
 		/>
 	);
