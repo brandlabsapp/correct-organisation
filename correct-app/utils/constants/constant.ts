@@ -40,13 +40,16 @@ const templateData = [
 		endDate: '2024-12-31',
 	},
 ];
-const allowedRoutes = ['/', '/auth', '/admin', '/correct', '/login'];
-const AGENT_ID = 'orchestratorAgent'
+const allowedRoutes = ['/auth', '/admin', '/correct', '/login'];
+const AGENT_ID = 'orchestratorAgent';
 
-
-
-export { MAX_RESEND_ATTEMPTS, COUNTDOWN_INITIAL, COUNTRY_CODE, MAX_REVENUE_LIMIT, requiredHeaders, templateData, allowedRoutes, AGENT_ID };
-
-
-
-
+export {
+	MAX_RESEND_ATTEMPTS,
+	COUNTDOWN_INITIAL,
+	COUNTRY_CODE,
+	MAX_REVENUE_LIMIT,
+	requiredHeaders,
+	templateData,
+	allowedRoutes,
+	AGENT_ID,
+};

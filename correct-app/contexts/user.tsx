@@ -14,7 +14,7 @@ import { showErrorToast } from '@/lib/utils/toast-handlers';
 import { allowedRoutes } from '@/utils/constants/constant';
 
 const UserAuthContext = createContext<AppTypes.UserAuthContextType | undefined>(
-	undefined,
+	undefined
 );
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -73,7 +73,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 				}
 			}
 		},
-		[router],
+		[router]
 	);
 
 	useEffect(() => {
@@ -95,7 +95,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 			try {
 				const response = await fetch('/api/profile/me');
 				const data = await response.json();
-				console.log('data', data);
 				if (data.success) {
 					if (!allowedRoutes.includes(pathname)) {
 						await fetchCompanyDetails();

@@ -88,10 +88,10 @@ export class ChecklistController {
     @Query('checklistId') checklistId?: string,
   ) {
     try {
-      const company = await this.companyService.fin(companyId);
+      const company = await this.companyService.findOneByUuid(companyId);
       if (!company) {
         throw new Error('Company not found');
-      } 
+      }
       const data = await this.checklistService.getCompanyChecklist(
         companyId,
         checklistId ? +checklistId : undefined,
