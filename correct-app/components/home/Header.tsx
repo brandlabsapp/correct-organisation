@@ -33,7 +33,9 @@ const navItems = [
 ];
 
 const Header = () => {
-	const { user } = useUserAuth();
+	const { user, company, isLoading } = useUserAuth();
+
+	const showDashboard = isLoading || !!user || !!company;
 
 	return (
 		<header className='sticky top-0 z-50 shadow-md bg-white'>
@@ -57,8 +59,8 @@ const Header = () => {
 				</nav>
 
 				<div className='flex items-center'>
-					{user ? (
-						<Link href='/dashboard'>
+					{showDashboard ? (
+						<Link href={`/dashboard?company=${company?.uuid}`}>
 							<Button className='btn-primary'>Dashboard</Button>
 						</Link>
 					) : (

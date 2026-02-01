@@ -160,13 +160,12 @@ export class ChecklistService {
   }
 
   async getCompanyChecklist(
-    companyId: string | null,
+    companyId: number,
     checklistId?: number,
   ): Promise<CompanyChecklist | CompanyChecklist[]> {
     if (!companyId) {
       throw new BadRequestException('Company ID is required');
     }
-
 
     try {
       const includeRelations = [
@@ -202,7 +201,7 @@ export class ChecklistService {
       } else {
         const checklists =
           await this.checklistRepository.findAll<CompanyChecklist>({
-            where: {companyId},
+            where: { companyId },
             include: includeRelations,
             order: [['createdAt', 'DESC']],
           });

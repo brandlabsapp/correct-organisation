@@ -2,6 +2,8 @@ import { cn } from '@/lib/utils';
 import { BottomNav } from './bottom-nav';
 import Image from 'next/image';
 import { Button } from '../ui/button';
+import { useRouter } from 'next/navigation';
+import { useUserAuth } from '@/contexts/user';
 
 export const FetchFallback = ({
 	title,
@@ -16,6 +18,8 @@ export const FetchFallback = ({
 	subDescription?: string;
 	descriptionClassName?: string;
 }) => {
+	const router = useRouter();
+	const { company } = useUserAuth();
 	return (
 		<div className='flex flex-col min-h-screen bg-white justify-center items-center'>
 			<div className='flex flex-col justify-center items-center w-[270px] sm:w-[350px]'>
@@ -51,7 +55,12 @@ export const FetchFallback = ({
 						</p>
 					)}
 				</div>
-				<Button className='w-full mt-6'>Explore Resources</Button>
+				<Button
+					onClick={() => router.push(`/learn?company=${company?.uuid}`)}
+					className='w-full mt-6'
+				>
+					Explore Resources
+				</Button>
 			</div>
 			<BottomNav />
 		</div>
