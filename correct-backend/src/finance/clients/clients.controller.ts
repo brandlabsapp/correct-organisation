@@ -14,19 +14,23 @@ import { ClientsService } from './clients.service';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { ClientType } from './entities/finance-client.entity';
+import { CompanyService } from '@/company/company.service';
 
 @Controller('finance/clients')
 export class ClientsController {
-	constructor(private readonly clientsService: ClientsService) {}
+	constructor(
+		private readonly clientsService: ClientsService,
+		private readonly companyService: CompanyService,
+	) {}
 
 	@Post()
-	create(@Req() req: any, @Body() createClientDto: CreateClientDto) {
-		const companyId = req.query.company || req.body.companyId;
-		return this.clientsService.create(companyId, createClientDto);
+	async create(@Req() req: any, @Body() createClientDto: CreateClientDto) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.clientsService.create(company.id, createClientDto);
 	}
 
 	@Get()
-	findAll(
+	async findAll(
 		@Req() req: any,
 		@Query('clientType') clientType?: ClientType,
 		@Query('isActive') isActive?: string,
@@ -35,8 +39,8 @@ export class ClientsController {
 		@Query('limit') limit?: string,
 		@Query('offset') offset?: string
 	) {
-		const companyId = req.query.company;
-		return this.clientsService.findAll(companyId, {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.clientsService.findAll(company.id, {
 			clientType,
 			isActive: isActive ? isActive === 'true' : undefined,
 			isArchived: isArchived ? isArchived === 'true' : undefined,
@@ -47,36 +51,36 @@ export class ClientsController {
 	}
 
 	@Get(':id')
-	findOne(@Req() req: any, @Param('id') id: string) {
-		const companyId = req.query.company;
-		return this.clientsService.findOne(id, companyId);
+	async findOne(@Req() req: any, @Param('id') id: string) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.clientsService.findOne(id, company.id);
 	}
 
 	@Put(':id')
-	update(
+	async update(
 		@Req() req: any,
 		@Param('id') id: string,
 		@Body() updateClientDto: UpdateClientDto
 	) {
-		const companyId = req.query.company;
-		return this.clientsService.update(id, companyId, updateClientDto);
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.clientsService.update(id, company.id, updateClientDto);
 	}
 
 	@Delete(':id')
-	remove(@Req() req: any, @Param('id') id: string) {
-		const companyId = req.query.company;
-		return this.clientsService.remove(id, companyId);
+	async remove(@Req() req: any, @Param('id') id: string) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.clientsService.remove(id, company.id);
 	}
 
 	@Post(':id/archive')
-	archive(@Req() req: any, @Param('id') id: string) {
-		const companyId = req.query.company;
-		return this.clientsService.archive(id, companyId);
+	async archive(@Req() req: any, @Param('id') id: string) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.clientsService.archive(id, company.id);
 	}
 
 	@Post(':id/unarchive')
-	unarchive(@Req() req: any, @Param('id') id: string) {
-		const companyId = req.query.company;
-		return this.clientsService.unarchive(id, companyId);
+	async unarchive(@Req() req: any, @Param('id') id: string) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.clientsService.unarchive(id, company.id);
 	}
 }

@@ -249,11 +249,11 @@ export function RecurringList() {
 							New Recurring Profile
 						</Button>
 					</DialogTrigger>
-					<DialogContent className='max-w-2xl max-h-[90vh] overflow-y-auto'>
-						<DialogHeader>
+					<DialogContent className='max-w-2xl max-h-[90vh] overflow-y-auto p-0'>
+						<DialogHeader className='px-6 pt-6 pb-2'>
 							<DialogTitle>Create Recurring Invoice Profile</DialogTitle>
 						</DialogHeader>
-						<div className='space-y-4 py-4'>
+						<div className='space-y-4 px-6 pb-6'>
 							<div className='grid grid-cols-2 gap-4'>
 								<div className='space-y-2'>
 									<Label>Profile Name *</Label>
@@ -346,11 +346,18 @@ export function RecurringList() {
 							</div>
 
 							{/* Line Items */}
-							<div className='space-y-2'>
-								<Label>Line Items</Label>
+							<div className='space-y-3'>
+								<Label className='text-base font-medium'>Line Items</Label>
+								<div className='hidden sm:flex flex-wrap gap-3 pb-2 border-b text-sm font-medium text-gray-600'>
+									<div className='flex-1 min-w-[120px]'>Description</div>
+									<div className='w-16 shrink-0'>Qty</div>
+									<div className='w-24 shrink-0'>Rate</div>
+									<div className='w-16 shrink-0'>Tax %</div>
+								</div>
 								{formData.lineItems.map((item, index) => (
-									<div key={index} className='flex gap-2 items-end'>
-										<div className='flex-1'>
+									<div key={index} className='flex flex-wrap gap-3 items-end sm:flex-nowrap'>
+										<div className='flex-1 min-w-0 w-full sm:min-w-[120px] space-y-1.5'>
+											<Label className='sm:hidden text-xs text-gray-500'>Description</Label>
 											<Input
 												value={item.description}
 												onChange={(e) => {
@@ -359,9 +366,11 @@ export function RecurringList() {
 													setFormData({ ...formData, lineItems: items });
 												}}
 												placeholder='Description'
+												className='min-w-0'
 											/>
 										</div>
-										<div className='w-20'>
+										<div className='w-16 shrink-0 space-y-1.5'>
+											<Label className='sm:hidden text-xs text-gray-500'>Qty</Label>
 											<Input
 												type='number'
 												value={item.quantity}
@@ -371,9 +380,11 @@ export function RecurringList() {
 													setFormData({ ...formData, lineItems: items });
 												}}
 												placeholder='Qty'
+												className='min-w-0 w-full'
 											/>
 										</div>
-										<div className='w-28'>
+										<div className='w-24 shrink-0 min-w-0 space-y-1.5'>
+											<Label className='sm:hidden text-xs text-gray-500'>Rate</Label>
 											<Input
 												type='number'
 												value={item.rate}
@@ -383,9 +394,11 @@ export function RecurringList() {
 													setFormData({ ...formData, lineItems: items });
 												}}
 												placeholder='Rate'
+												className='min-w-0 w-full'
 											/>
 										</div>
-										<div className='w-20'>
+										<div className='w-16 shrink-0 space-y-1.5'>
+											<Label className='sm:hidden text-xs text-gray-500'>Tax %</Label>
 											<Input
 												type='number'
 												value={item.taxRate}
@@ -395,6 +408,7 @@ export function RecurringList() {
 													setFormData({ ...formData, lineItems: items });
 												}}
 												placeholder='Tax %'
+												className='min-w-0 w-full'
 											/>
 										</div>
 									</div>

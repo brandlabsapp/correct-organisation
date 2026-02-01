@@ -313,10 +313,10 @@ export function BillForm({ billId }: { billId?: string }) {
 
 			{/* Main Form */}
 			<Card>
-				<CardHeader>
+				<CardHeader className='px-6 pt-6 pb-2'>
 					<CardTitle>Bill Details</CardTitle>
 				</CardHeader>
-				<CardContent className='space-y-6 p-6'>
+				<CardContent className='space-y-6 px-6 pb-6'>
 					{/* Vendor & Invoice Number */}
 					<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
 						<div className='space-y-2'>
@@ -426,26 +426,26 @@ export function BillForm({ billId }: { billId?: string }) {
 
 			{/* Line Items */}
 			<Card>
-				<CardHeader>
+				<CardHeader className='px-6 pt-6 pb-2'>
 					<CardTitle>Line Items</CardTitle>
 				</CardHeader>
-				<CardContent className='space-y-6 p-6'>
+				<CardContent className='space-y-6 px-6 pb-6'>
 					{/* Table Header - Desktop Only */}
-					<div className='hidden md:grid grid-cols-[minmax(0,4fr)_minmax(80px,1fr)_minmax(120px,2fr)_minmax(80px,1fr)_minmax(120px,2fr)_minmax(140px,1.5fr)_60px] gap-4 pb-2 border-b'>
-						<div className='text-sm font-medium text-gray-600'>Description</div>
-						<div className='text-sm font-medium text-gray-600'>Qty</div>
-						<div className='text-sm font-medium text-gray-600'>Rate</div>
-						<div className='text-sm font-medium text-gray-600'>Tax %</div>
-						<div className='text-sm font-medium text-gray-600'>SAC/HSN</div>
-						<div className='text-sm font-medium text-gray-600 text-right'>Total</div>
-						<div></div>
+					<div className='hidden md:flex flex-wrap gap-3 pb-2 border-b'>
+						<div className='flex-[2] min-w-[140px] text-sm font-medium text-gray-600'>Description</div>
+						<div className='w-16 shrink-0 text-sm font-medium text-gray-600'>Qty</div>
+						<div className='flex-1 min-w-[80px] max-w-[120px] text-sm font-medium text-gray-600'>Rate</div>
+						<div className='w-16 shrink-0 text-sm font-medium text-gray-600'>Tax %</div>
+						<div className='w-24 shrink-0 text-sm font-medium text-gray-600'>SAC/HSN</div>
+						<div className='w-28 shrink-0 text-sm font-medium text-gray-600 text-right'>Total</div>
+						<div className='w-10 shrink-0' />
 					</div>
 					{lineItems.map((item, index) => (
 						<div
 							key={index}
-							className='grid grid-cols-1 md:grid-cols-[minmax(0,4fr)_minmax(80px,1fr)_minmax(120px,2fr)_minmax(80px,1fr)_minmax(120px,2fr)_minmax(140px,1.5fr)_60px] gap-4 items-end border-b pb-6 last:border-b-0'
+							className='flex flex-wrap gap-3 items-end border-b pb-6 last:border-b-0 md:flex-nowrap'
 						>
-							<div className='space-y-2'>
+							<div className='space-y-2 flex-[2] min-w-0 w-full md:min-w-[140px]'>
 								<Label className='md:hidden'>Description</Label>
 								<Textarea
 									value={item.description}
@@ -454,9 +454,10 @@ export function BillForm({ billId }: { billId?: string }) {
 									}
 									placeholder='Item description'
 									rows={2}
+									className='min-w-0'
 								/>
 							</div>
-							<div className='space-y-2'>
+							<div className='space-y-2 w-16 shrink-0'>
 								<Label className='md:hidden'>Qty</Label>
 								<Input
 									type='text'
@@ -477,10 +478,10 @@ export function BillForm({ billId }: { billId?: string }) {
 										});
 										updateLineItem(index, 'quantity', normalized || '0');
 									}}
-									className='text-right'
+									className='text-right min-w-0 w-full'
 								/>
 							</div>
-							<div className='space-y-2'>
+							<div className='space-y-2 flex-1 min-w-[80px] max-w-[120px]'>
 								<Label className='md:hidden'>Rate</Label>
 								<Input
 									type='text'
@@ -508,10 +509,10 @@ export function BillForm({ billId }: { billId?: string }) {
 											e.target.select();
 										}
 									}}
-									className='text-right'
+									className='text-right min-w-0 w-full'
 								/>
 							</div>
-							<div className='space-y-2'>
+							<div className='space-y-2 w-16 shrink-0'>
 								<Label className='md:hidden'>Tax %</Label>
 								<Input
 									type='text'
@@ -536,10 +537,10 @@ export function BillForm({ billId }: { billId?: string }) {
 										});
 										updateLineItem(index, 'taxRate', normalized || '0');
 									}}
-									className='text-right'
+									className='text-right min-w-0 w-full'
 								/>
 							</div>
-							<div className='space-y-2'>
+							<div className='space-y-2 w-24 shrink-0 min-w-0'>
 								<Label className='md:hidden'>SAC/HSN</Label>
 								<Input
 									value={item.sacCode || item.hsnCode}
@@ -548,17 +549,18 @@ export function BillForm({ billId }: { billId?: string }) {
 										updateLineItem(index, 'sacCode', e.target.value)
 									}
 									placeholder='Code'
+									className='min-w-0 w-full'
 								/>
 							</div>
-							<div className='space-y-2'>
+							<div className='space-y-2 w-28 shrink-0'>
 								<Label className='md:hidden'>Total</Label>
-								<div className='h-10 flex items-center justify-end font-medium tabular-nums text-sm px-3 border border-secondarygray rounded-md bg-gray-50'>
+								<div className='h-10 flex items-center justify-end font-medium tabular-nums text-sm px-3 border border-secondarygray rounded-md bg-gray-50 min-w-0'>
 									<span className='truncate'>
 										{formatCurrency(calculateLineTotal(item), formData.currency)}
 									</span>
 								</div>
 							</div>
-							<div className='flex justify-end items-end pb-0.5'>
+							<div className='flex justify-end items-end pb-0.5 w-10 shrink-0'>
 								<Button
 									variant='ghost'
 									size='icon'
@@ -607,10 +609,10 @@ export function BillForm({ billId }: { billId?: string }) {
 
 			{/* Notes */}
 			<Card>
-				<CardHeader>
+				<CardHeader className='px-6 pt-6 pb-2'>
 					<CardTitle>Notes</CardTitle>
 				</CardHeader>
-				<CardContent className='space-y-6 p-6'>
+				<CardContent className='space-y-6 px-6 pb-6'>
 					<div className='space-y-2'>
 						<Label>Notes</Label>
 						<Textarea

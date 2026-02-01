@@ -14,22 +14,24 @@ import { CreateEstimateDto } from './dto/create-estimate.dto';
 import { UpdateEstimateDto } from './dto/update-estimate.dto';
 import { EstimateStatus } from './entities/finance-estimate.entity';
 import { SequenceService } from '../settings/sequence.service';
+import { CompanyService } from '@/company/company.service';
 
 @Controller('finance/estimates')
 export class EstimatesController {
 	constructor(
 		private readonly estimatesService: EstimatesService,
-		private readonly sequenceService: SequenceService
+		private readonly sequenceService: SequenceService,
+		private readonly companyService: CompanyService,
 	) {}
 
 	@Post()
-	create(@Req() req: any, @Body() createEstimateDto: CreateEstimateDto) {
-		const companyId = req.query.company || req.body.companyId;
-		return this.estimatesService.create(companyId, createEstimateDto);
+	async create(@Req() req: any, @Body() createEstimateDto: CreateEstimateDto) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.estimatesService.create(company.id, createEstimateDto);
 	}
 
 	@Get()
-	findAll(
+	async findAll(
 		@Req() req: any,
 		@Query('status') status?: EstimateStatus,
 		@Query('clientId') clientId?: string,
@@ -41,8 +43,8 @@ export class EstimatesController {
 		@Query('limit') limit?: string,
 		@Query('offset') offset?: string
 	) {
-		const companyId = req.query.company;
-		return this.estimatesService.findAll(companyId, {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.estimatesService.findAll(company.id, {
 			status,
 			clientId,
 			projectId,
@@ -56,62 +58,62 @@ export class EstimatesController {
 	}
 
 	@Get('preview-number')
-	previewNumber(@Req() req: any) {
-		const companyId = req.query.company;
-		return this.sequenceService.previewNextNumber(companyId, 'est');
+	async previewNumber(@Req() req: any) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.sequenceService.previewNextNumber(company.id, 'est');
 	}
 
 	@Get(':id')
-	findOne(@Req() req: any, @Param('id') id: string) {
-		const companyId = req.query.company;
-		return this.estimatesService.findOne(id, companyId);
+	async findOne(@Req() req: any, @Param('id') id: string) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.estimatesService.findOne(id, company.id);
 	}
 
 	@Put(':id')
-	update(
+	async update(
 		@Req() req: any,
 		@Param('id') id: string,
 		@Body() updateEstimateDto: UpdateEstimateDto
 	) {
-		const companyId = req.query.company;
-		return this.estimatesService.update(id, companyId, updateEstimateDto);
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.estimatesService.update(id, company.id, updateEstimateDto);
 	}
 
 	@Delete(':id')
-	remove(@Req() req: any, @Param('id') id: string) {
-		const companyId = req.query.company;
-		return this.estimatesService.remove(id, companyId);
+	async remove(@Req() req: any, @Param('id') id: string) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.estimatesService.remove(id, company.id);
 	}
 
 	@Post(':id/mark-sent')
-	markAsSent(@Req() req: any, @Param('id') id: string) {
-		const companyId = req.query.company;
-		return this.estimatesService.markAsSent(id, companyId);
+	async markAsSent(@Req() req: any, @Param('id') id: string) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.estimatesService.markAsSent(id, company.id);
 	}
 
 	@Post(':id/accept')
-	markAsAccepted(@Req() req: any, @Param('id') id: string) {
-		const companyId = req.query.company;
-		return this.estimatesService.markAsAccepted(id, companyId);
+	async markAsAccepted(@Req() req: any, @Param('id') id: string) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.estimatesService.markAsAccepted(id, company.id);
 	}
 
 	@Post(':id/reject')
-	markAsRejected(@Req() req: any, @Param('id') id: string) {
-		const companyId = req.query.company;
-		return this.estimatesService.markAsRejected(id, companyId);
+	async markAsRejected(@Req() req: any, @Param('id') id: string) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.estimatesService.markAsRejected(id, company.id);
 	}
 
 	@Post(':id/convert-to-invoice')
-	convertToInvoice(
+	async convertToInvoice(
 		@Req() req: any,
 		@Param('id') id: string,
 		@Query('isExport') isExport?: string
 	) {
-		const companyId = req.query.company;
+		const company = await this.companyService.findOneByUuid(req.query.company);
 		const userId = req.user?.id || 1;
 		return this.estimatesService.convertToInvoice(
 			id,
-			companyId,
+			company.id,
 			userId,
 			isExport === 'true'
 		);

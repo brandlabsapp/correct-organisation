@@ -22,6 +22,10 @@ export async function GET(
 ) {
 	const { id } = await props.params;
 	const { searchParams } = new URL(req.url);
+	const company = searchParams.get('company');
+	if (!company || company === 'null') {
+		return errorHandler(null, 'Company is required.', 400);
+	}
 	const path = buildBackendPath(id, 'get', searchParams);
 	const response = await getSecureResource(path);
 	if (response.state === 'error') {
@@ -55,6 +59,10 @@ export async function DELETE(
 ) {
 	const { id } = await props.params;
 	const { searchParams } = new URL(req.url);
+	const company = searchParams.get('company');
+	if (!company || company === 'null') {
+		return errorHandler(null, 'Company is required.', 400);
+	}
 	const path = buildBackendPath(id, 'delete', searchParams);
 	const response = await deleteSecureResource(path);
 	if (response.state === 'error') {

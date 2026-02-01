@@ -19,6 +19,7 @@ export class CompanyDetails extends Model<CompanyDetails> {
   @Column({
     type: DataType.UUID,
     defaultValue: uuidv4,
+    unique: true,
   })
   uuid: string;
 

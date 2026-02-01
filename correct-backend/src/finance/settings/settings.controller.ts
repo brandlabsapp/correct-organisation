@@ -12,85 +12,95 @@ import { SettingsService } from './settings.service';
 import { UpdateSettingsDto } from './dto/update-settings.dto';
 import { CreateTaxRateDto } from './dto/create-tax-rate.dto';
 import { CreateSavedItemDto } from './dto/create-saved-item.dto';
+import { CompanyService } from '@/company/company.service';
 
 @Controller('finance/settings')
 export class SettingsController {
-	constructor(private readonly settingsService: SettingsService) {}
+	constructor(
+		private readonly settingsService: SettingsService,
+		private readonly companyService: CompanyService,
+	) {}
 
 	// ============ Settings ============
 
 	@Get()
-	getSettings(@Req() req: any) {
-		const companyId = req.query.company;
-		return this.settingsService.getSettings(companyId);
+	async getSettings(@Req() req: any) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.settingsService.getSettings(company.id);
 	}
 
 	@Put()
-	updateSettings(@Req() req: any, @Body() updateSettingsDto: UpdateSettingsDto) {
-		const companyId = req.query.company;
-		return this.settingsService.updateSettings(companyId, updateSettingsDto);
+	async updateSettings(
+		@Req() req: any,
+		@Body() updateSettingsDto: UpdateSettingsDto
+	) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.settingsService.updateSettings(company.id, updateSettingsDto);
 	}
 
 	// ============ Tax Rates ============
 
 	@Get('tax-rates')
-	getTaxRates(@Req() req: any) {
-		const companyId = req.query.company;
-		return this.settingsService.getTaxRates(companyId);
+	async getTaxRates(@Req() req: any) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.settingsService.getTaxRates(company.id);
 	}
 
 	@Post('tax-rates')
-	createTaxRate(@Req() req: any, @Body() createTaxRateDto: CreateTaxRateDto) {
-		const companyId = req.query.company;
-		return this.settingsService.createTaxRate(companyId, createTaxRateDto);
+	async createTaxRate(
+		@Req() req: any,
+		@Body() createTaxRateDto: CreateTaxRateDto
+	) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.settingsService.createTaxRate(company.id, createTaxRateDto);
 	}
 
 	@Put('tax-rates/:id')
-	updateTaxRate(
+	async updateTaxRate(
 		@Req() req: any,
 		@Param('id') id: string,
 		@Body() updateDto: Partial<CreateTaxRateDto> & { isActive?: boolean }
 	) {
-		const companyId = req.query.company;
-		return this.settingsService.updateTaxRate(id, companyId, updateDto);
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.settingsService.updateTaxRate(id, company.id, updateDto);
 	}
 
 	@Delete('tax-rates/:id')
-	deleteTaxRate(@Req() req: any, @Param('id') id: string) {
-		const companyId = req.query.company;
-		return this.settingsService.deleteTaxRate(id, companyId);
+	async deleteTaxRate(@Req() req: any, @Param('id') id: string) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.settingsService.deleteTaxRate(id, company.id);
 	}
 
 	// ============ Saved Items ============
 
 	@Get('saved-items')
-	getSavedItems(@Req() req: any) {
-		const companyId = req.query.company;
-		return this.settingsService.getSavedItems(companyId);
+	async getSavedItems(@Req() req: any) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.settingsService.getSavedItems(company.id);
 	}
 
 	@Post('saved-items')
-	createSavedItem(
+	async createSavedItem(
 		@Req() req: any,
 		@Body() createSavedItemDto: CreateSavedItemDto
 	) {
-		const companyId = req.query.company;
-		return this.settingsService.createSavedItem(companyId, createSavedItemDto);
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.settingsService.createSavedItem(company.id, createSavedItemDto);
 	}
 
 	@Put('saved-items/:id')
-	updateSavedItem(
+	async updateSavedItem(
 		@Req() req: any,
 		@Param('id') id: string,
 		@Body() updateDto: Partial<CreateSavedItemDto> & { isActive?: boolean }
 	) {
-		const companyId = req.query.company;
-		return this.settingsService.updateSavedItem(id, companyId, updateDto);
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.settingsService.updateSavedItem(id, company.id, updateDto);
 	}
 
 	@Delete('saved-items/:id')
-	deleteSavedItem(@Req() req: any, @Param('id') id: string) {
-		const companyId = req.query.company;
-		return this.settingsService.deleteSavedItem(id, companyId);
+	async deleteSavedItem(@Req() req: any, @Param('id') id: string) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.settingsService.deleteSavedItem(id, company.id);
 	}
 }

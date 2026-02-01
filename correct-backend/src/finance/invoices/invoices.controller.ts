@@ -15,23 +15,25 @@ import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { RecordPaymentDto } from './dto/record-payment.dto';
 import { InvoiceStatus, InvoiceType } from './entities/finance-invoice.entity';
 import { SequenceService } from '../settings/sequence.service';
+import { CompanyService } from '@/company/company.service';
 
 @Controller('finance/invoices')
 export class InvoicesController {
 	constructor(
 		private readonly invoicesService: InvoicesService,
-		private readonly sequenceService: SequenceService
+		private readonly sequenceService: SequenceService,
+		private readonly companyService: CompanyService,
 	) {}
 
 	@Post()
-	create(@Req() req: any, @Body() createInvoiceDto: CreateInvoiceDto) {
-		const companyId = req.query.company || req.body.companyId;
+	async create(@Req() req: any, @Body() createInvoiceDto: CreateInvoiceDto) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
 		const userId = req.user?.id || 1; // TODO: Get from auth
-		return this.invoicesService.create(companyId, userId, createInvoiceDto);
+		return this.invoicesService.create(company.id, userId, createInvoiceDto);
 	}
 
 	@Get()
-	findAll(
+	async findAll(
 		@Req() req: any,
 		@Query('status') status?: InvoiceStatus,
 		@Query('clientId') clientId?: string,
@@ -44,8 +46,8 @@ export class InvoicesController {
 		@Query('limit') limit?: string,
 		@Query('offset') offset?: string
 	) {
-		const companyId = req.query.company;
-		return this.invoicesService.findAll(companyId, {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.invoicesService.findAll(company.id, {
 			status,
 			clientId,
 			projectId,
@@ -60,73 +62,78 @@ export class InvoicesController {
 	}
 
 	@Get('preview-number')
-	previewNumber(
+	async previewNumber(
 		@Req() req: any,
 		@Query('type') type: 'domestic' | 'export' = 'domestic'
 	) {
-		const companyId = req.query.company;
+		const company = await this.companyService.findOneByUuid(req.query.company);
 		const documentType = type === 'export' ? 'exp' : 'inv';
-		return this.sequenceService.previewNextNumber(companyId, documentType);
+		return this.sequenceService.previewNextNumber(company.id, documentType);
 	}
 
 	@Get(':id')
-	findOne(@Req() req: any, @Param('id') id: string) {
-		const companyId = parseInt(String(req.query.company), 10) || 0;
-		return this.invoicesService.findOne(id, companyId);
+	async findOne(@Req() req: any, @Param('id') id: string) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.invoicesService.findOne(id, company.id);
 	}
 
 	@Put(':id')
-	update(
+	async update(
 		@Req() req: any,
 		@Param('id') id: string,
 		@Body() updateInvoiceDto: UpdateInvoiceDto
 	) {
-		const companyId = parseInt(String(req.query.company), 10) || 0;
+		const company = await this.companyService.findOneByUuid(req.query.company);
 		const userId = req.user?.id || 1;
-		return this.invoicesService.update(id, companyId, userId, updateInvoiceDto);
+		return this.invoicesService.update(id, company.id, userId, updateInvoiceDto);
 	}
 
 	@Delete(':id')
-	remove(@Req() req: any, @Param('id') id: string) {
-		const companyId = req.query.company;
-		return this.invoicesService.remove(id, companyId);
+	async remove(@Req() req: any, @Param('id') id: string) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.invoicesService.remove(id, company.id);
 	}
 
 	@Post(':id/mark-sent')
-	markAsSent(@Req() req: any, @Param('id') id: string) {
-		const companyId = req.query.company;
+	async markAsSent(@Req() req: any, @Param('id') id: string) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
 		const userId = req.user?.id || 1;
-		return this.invoicesService.markAsSent(id, companyId, userId);
+		return this.invoicesService.markAsSent(id, company.id, userId);
 	}
 
 	@Post(':id/mark-paid')
-	markAsPaid(@Req() req: any, @Param('id') id: string) {
-		const companyId = req.query.company;
+	async markAsPaid(@Req() req: any, @Param('id') id: string) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
 		const userId = req.user?.id || 1;
-		return this.invoicesService.markAsPaid(id, companyId, userId);
+		return this.invoicesService.markAsPaid(id, company.id, userId);
 	}
 
 	@Post(':id/payments')
-	recordPayment(
+	async recordPayment(
 		@Req() req: any,
 		@Param('id') id: string,
 		@Body() paymentDto: RecordPaymentDto
 	) {
-		const companyId = req.query.company;
+		const company = await this.companyService.findOneByUuid(req.query.company);
 		const userId = req.user?.id || 1;
-		return this.invoicesService.recordPayment(id, companyId, userId, paymentDto);
+		return this.invoicesService.recordPayment(
+			id,
+			company.id,
+			userId,
+			paymentDto
+		);
 	}
 
 	@Post(':id/duplicate')
-	duplicate(@Req() req: any, @Param('id') id: string) {
-		const companyId = req.query.company;
+	async duplicate(@Req() req: any, @Param('id') id: string) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
 		const userId = req.user?.id || 1;
-		return this.invoicesService.duplicate(id, companyId, userId);
+		return this.invoicesService.duplicate(id, company.id, userId);
 	}
 
 	@Get(':id/activities')
-	getActivities(@Req() req: any, @Param('id') id: string) {
-		const companyId = req.query.company;
-		return this.invoicesService.getActivities(id, companyId);
+	async getActivities(@Req() req: any, @Param('id') id: string) {
+		const company = await this.companyService.findOneByUuid(req.query.company);
+		return this.invoicesService.getActivities(id, company.id);
 	}
 }

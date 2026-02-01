@@ -115,6 +115,13 @@ export function ClientList() {
 	};
 
 	const handleOpenDialog = (client?: Client) => {
+		if (!companyId || companyId === 'null') {
+			showErrorToast({
+				title: 'Company required',
+				message: 'Please select a company from the header to add or edit clients.',
+			});
+			return;
+		}
 		if (client) {
 			setEditingClient(client);
 			setFormData({
@@ -138,6 +145,20 @@ export function ClientList() {
 	};
 
 	const handleSubmit = async () => {
+		if (!companyId || companyId === 'null') {
+			showErrorToast({
+				title: 'Company required',
+				message: 'Please select a company before creating or updating a client.',
+			});
+			return;
+		}
+		if (!formData.name?.trim()) {
+			showErrorToast({
+				title: 'Validation',
+				message: 'Client name is required.',
+			});
+			return;
+		}
 		try {
 			const url = editingClient
 				? `/api/finance/clients/${editingClient.id}?company=${companyId}`
@@ -149,6 +170,7 @@ export function ClientList() {
 				body: JSON.stringify(formData),
 			});
 
+			const data = await response.json().catch(() => ({}));
 			if (response.ok) {
 				showSuccessToast({
 					title: 'Success',
@@ -158,17 +180,16 @@ export function ClientList() {
 				resetForm();
 				fetchClients();
 			} else {
-				const error = await response.json();
 				showErrorToast({
 					title: 'Error',
-					message: error.message || 'Failed to save client',
+					message: data.message || `Failed to save client (${response.status})`,
 				});
 			}
 		} catch (error) {
 			console.error('Error saving client:', error);
 			showErrorToast({
 				title: 'Error',
-				message: 'Failed to save client',
+				message: 'Failed to save client. Please try again.',
 			});
 		}
 	};
@@ -216,6 +237,7 @@ export function ClientList() {
 							<Button
 								className='bg-green hover:bg-green/90'
 								onClick={() => handleOpenDialog()}
+								disabled={!companyId || companyId === 'null'}
 							>
 								<Plus className='h-4 w-4 mr-2' />
 								New Client
@@ -397,7 +419,13 @@ export function ClientList() {
 			{/* Client Table */}
 			<Card>
 				<CardContent className='p-0'>
-					{loading ? (
+					{!companyId || companyId === 'null' ? (
+						<EmptyState
+							type='generic'
+							title='Select a company'
+							description='Choose a company from the header to view and add clients.'
+						/>
+					) : loading ? (
 						<ListSkeleton rows={5} />
 					) : clients.length === 0 ? (
 						<EmptyState

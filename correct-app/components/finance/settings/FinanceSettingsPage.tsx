@@ -237,10 +237,10 @@ export function FinanceSettingsPage() {
 				{/* General Settings */}
 				<TabsContent value='general'>
 					<Card>
-						<CardHeader>
+						<CardHeader className='px-6 pt-6 pb-2'>
 							<CardTitle>General Settings</CardTitle>
 						</CardHeader>
-						<CardContent className='space-y-6'>
+						<CardContent className='space-y-6 px-6 pb-6'>
 							<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 								<div className='space-y-2'>
 									<Label>Default Currency</Label>
@@ -320,10 +320,10 @@ export function FinanceSettingsPage() {
 				{/* Tax Rates */}
 				<TabsContent value='tax-rates'>
 					<Card>
-						<CardHeader>
+						<CardHeader className='px-6 pt-6 pb-2'>
 							<CardTitle>Tax Rates</CardTitle>
 						</CardHeader>
-						<CardContent className='space-y-6'>
+						<CardContent className='space-y-6 px-6 pb-6'>
 							{/* Add New Tax Rate */}
 							<div className='flex gap-4 items-end'>
 								<div className='flex-1 space-y-2'>
@@ -398,10 +398,10 @@ export function FinanceSettingsPage() {
 				{/* Saved Items */}
 				<TabsContent value='saved-items'>
 					<Card>
-						<CardHeader>
+						<CardHeader className='px-6 pt-6 pb-2'>
 							<CardTitle>Saved Items</CardTitle>
 						</CardHeader>
-						<CardContent className='space-y-6'>
+						<CardContent className='space-y-6 px-6 pb-6'>
 							{/* Add New Saved Item */}
 							<div className='grid grid-cols-1 md:grid-cols-4 gap-4 items-end'>
 								<div className='space-y-2'>
@@ -488,10 +488,10 @@ export function FinanceSettingsPage() {
 				{/* Bank Details */}
 				<TabsContent value='bank'>
 					<Card>
-						<CardHeader>
+						<CardHeader className='px-6 pt-6 pb-2'>
 							<CardTitle>Bank Details</CardTitle>
 						</CardHeader>
-						<CardContent className='space-y-4'>
+						<CardContent className='space-y-4 px-6 pb-6'>
 							<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 								<div className='space-y-2'>
 									<Label>Bank Name</Label>
