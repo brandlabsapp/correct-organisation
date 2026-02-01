@@ -93,7 +93,7 @@ export class ChecklistController {
         throw new Error('Company not found');
       }
       const data = await this.checklistService.getCompanyChecklist(
-        companyId,
+        company.id,
         checklistId ? +checklistId : undefined,
       );
       return data;
